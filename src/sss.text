@@ -1,0 +1,67 @@
+ <>
+      <div className="container-fluid bg-primary text-white p-2 text-center">
+        {" "}
+        <h2>
+          <b>BALY</b>{" "}
+        </h2>
+      </div>
+      <div className="container text-center p-4 text-primary">
+        <h2>
+          <b>Welcome To Baly Ticketing System </b>{" "}
+        </h2>
+      </div>
+      <div className="container p-2 border rounded bg-primary text-white">
+        <h2>Login Page</h2>
+
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            className="form-control"
+            id="email"
+            placeholder="Enter email"
+            name="email"
+            onChange={handleUsername}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="pwd">Password:</label>
+          <input
+            type="password"
+            className="form-control"
+            id="pwd"
+            placeholder="Enter password"
+            name="pswd"
+            onChange={handlePassword}
+          />
+        </div>
+        <div className="form-group form-check">
+          <label className="form-check-label">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              name="remember"
+              checked={null}
+              onChange={handleRememberMe}
+            />{" "}
+            Remember me
+          </label>
+        </div>
+        <button className="btn btn-light text-dark" onClick={onClickLoginBtn}>
+          <b>Sign In</b>
+        </button>
+        {/* <button
+          className="btn btn-light text-dark ml-2"
+          to="/home"
+          onClick={onClickLoginBtn}
+        >
+          <b>Sign Up</b>
+        </button> */}
+      </div>
+      <>
+        {/* Footer */}
+        <div className="container-fluid text-center bg-primary fixed-bottom text-white p-2 mt-3">
+          <b>2022 @By Baly BI Team </b>
+        </div>
+      </>
+    </>
