@@ -166,10 +166,12 @@ function Tickets() {
   };
 
   async function GetAllTickets() {
-    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjczZjExZGI5LTc2ZTQtNDFiYy05ZTk1LTZkZTkwMmJiNDQyMCJ9.uV8tQj6lcTM4JSySi-PkE97qqmacVgNgMjACn2K6Fg0`;
+    setLoading(true);
+
+    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjFjOTE1MmQwLTgyNWEtNDBlNS1hOGY1LTM1ODY2Zjk4ZTAyNiJ9.S_kbD0U_8UbqtDMBVWSgUvlSBSdSh74qwPNZtuOLH7I`;
 
     let res = await fetch(
-      "http://10.11.12.181:8000/api/ticket_system/get_all_ticket",
+      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/get_all_ticket",
       {
         method: "GET",
         headers: {
@@ -181,6 +183,8 @@ function Tickets() {
 
     let jsData = await res.json();
     setTickets(jsData);
+    setLoading(false);
+
     console.log(jsData);
   }
 

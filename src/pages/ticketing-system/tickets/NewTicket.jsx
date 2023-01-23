@@ -21,6 +21,29 @@ function NewTicketPage() {
 
   const [selectedVendor, setSelectedVendor] = useState("");
 
+  //db fetch backend
+  async function GetAllVendorsWithAccountManagers() {
+    setLoading(true);
+
+    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjFjOTE1MmQwLTgyNWEtNDBlNS1hOGY1LTM1ODY2Zjk4ZTAyNiJ9.S_kbD0U_8UbqtDMBVWSgUvlSBSdSh74qwPNZtuOLH7I`;
+
+    let res = await fetch(
+      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/all_vendors_user",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    let jsData = await res.json();
+    console.log(jsData);
+    // setTickets(jsData);
+    setLoading(false);
+  }
+
   //this function is used to control the auto assignement of the vendor to specific account manager
   async function autoAssignAccountManager(selectedVendor) {
     setSelectedVendor(selectedVendor);
@@ -31,7 +54,7 @@ function NewTicketPage() {
       .eq("enName", selectedVendor);
 
     if (vendor.length > 0) {
-      console.log(vendor[0].account_manager);
+      // console.log(vendor[0].account_manager);
       setSelectedAccountManager(vendor[0].account_manager);
     }
   }
@@ -52,6 +75,29 @@ function NewTicketPage() {
   }
 
   //Issue Type
+
+  //get all issue
+  async function GetAllIssueTypes() {
+    setLoading(true);
+
+    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjFjOTE1MmQwLTgyNWEtNDBlNS1hOGY1LTM1ODY2Zjk4ZTAyNiJ9.S_kbD0U_8UbqtDMBVWSgUvlSBSdSh74qwPNZtuOLH7I`;
+
+    let res = await fetch(
+      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/all_issue_types",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    let jsData = await res.json();
+    console.log(jsData);
+    // setTickets(jsData);
+    setLoading(false);
+  }
   const [selectedIssueType, setSelectedIssueType] = useState("");
   const issueType = [{ label: "Payment", value: "Payment" }];
 
@@ -97,13 +143,15 @@ function NewTicketPage() {
   //priority
   const [priority, setPriority] = useState([]);
   const priorityDropDown = [
-    { label: "low", value: "4" },
-    { label: "mid", value: "3" },
-    { label: "high", value: "2" },
-    { label: "urgent", value: "1" },
+    { label: "Low", value: "Low" },
+    { label: "Medium", value: "Medium" },
+    { label: "High", value: "High" },
+    { label: "Urgent", value: "Urgent" },
   ];
 
   useEffect(() => {
+    GetAllVendorsWithAccountManagers();
+    GetAllIssueTypes();
     loadVendors();
     // loadAllAccountManagers();
   }, []);
@@ -178,7 +226,7 @@ function NewTicketPage() {
       <div className="container text-center border  border-3 bg-dark mt-2 p-3 w-50 rounded">
         {/* vendor name */}
         <div className="container border-bottom border-light border-3  p-2">
-          <p className="text-white">Vendor</p>
+          <b className="text-white">Vendor</b>
           <Select
             options={vendorsDropDownMenu}
             // onChange={(opt) => setSelectedVendor(opt.value)}
@@ -230,14 +278,7 @@ function NewTicketPage() {
         {/* Assign To */}
         <div className="container border-bottom border-light border-3   m-1 p-2">
           <p className="text-white">Account Manager</p>
-          {/* <Select
-            isDisabled={true}
-            options={accountManagerDropDown}
-            label={selectedAccountManager}
-            value={selectedAccountManager}
-            onChange={(opt) => setSelectedAccountManager(opt.value)}
-            isMulti
-          /> */}
+
           <div className="container text-center text-dark bg-light  ">
             {selectedAccountManager}
           </div>
