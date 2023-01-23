@@ -135,7 +135,7 @@ function NavBar() {
               </Link>
             </li>
 
-            <Divider />
+            {/* <Divider />
             <li className="nav-item ">
               <Link
                 className="text-dark bg-white p-2 rounded"
@@ -148,7 +148,7 @@ function NavBar() {
               >
                 <b> Reports 📄 </b>
               </Link>
-            </li>
+            </li> */}
 
             <Divider />
             <li className="nav-item ">

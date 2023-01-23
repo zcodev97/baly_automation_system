@@ -130,6 +130,7 @@ function Tickets() {
             created_at: row.created,
             resolved_at: row.resolve_at,
             resolved_by: row.resolve_by,
+            comments: row.comment_ticket,
           },
         });
       }
