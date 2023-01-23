@@ -168,7 +168,7 @@ function Tickets() {
   async function GetAllTickets() {
     setLoading(true);
 
-    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjFjOTE1MmQwLTgyNWEtNDBlNS1hOGY1LTM1ODY2Zjk4ZTAyNiJ9.S_kbD0U_8UbqtDMBVWSgUvlSBSdSh74qwPNZtuOLH7I`;
+    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjhmNWZlZjVjLTM4ZGUtNGI2YS1hNTE4LTNkZWY0YWE5MGM0MyJ9.DIuzjjlcRf7Jr-pUPHJl08OJnxzr4UE-zi6C_GbzbNg`;
 
     let res = await fetch(
       "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/get_all_ticket",
@@ -181,11 +181,11 @@ function Tickets() {
       }
     );
 
-    let jsData = await res.json();
-    setTickets(jsData);
+    let ticketJsonData = await res.json();
+    setTickets(ticketJsonData);
     setLoading(false);
 
-    console.log(jsData);
+    console.log(ticketJsonData);
   }
 
   const dateFormatter = (cell) => {

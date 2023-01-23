@@ -21,11 +21,27 @@ function NewTicketPage() {
 
   const [selectedVendor, setSelectedVendor] = useState("");
 
-  //db fetch backend
-  async function GetAllVendorsWithAccountManagers() {
+  //this function is used to control the auto assignement of the vendor to specific account manager
+  async function autoAssignAccountManager(selectedVendor) {
+    setSelectedVendor(selectedVendor);
+
+    let accountManager = accountMangersArray.find(function (element) {
+      return element.key === selectedVendor;
+    });
+
+    setSelectedAccountManager(accountManager.value);
+  }
+
+  let dropVendors = [];
+
+  let accountManagers = [];
+
+  const [accountMangersArray, setAccountManagerArray] = useState([]);
+
+  async function loadVendors() {
     setLoading(true);
 
-    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjFjOTE1MmQwLTgyNWEtNDBlNS1hOGY1LTM1ODY2Zjk4ZTAyNiJ9.S_kbD0U_8UbqtDMBVWSgUvlSBSdSh74qwPNZtuOLH7I`;
+    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjhmNWZlZjVjLTM4ZGUtNGI2YS1hNTE4LTNkZWY0YWE5MGM0MyJ9.DIuzjjlcRf7Jr-pUPHJl08OJnxzr4UE-zi6C_GbzbNg`;
 
     let res = await fetch(
       "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/all_vendors_user",
@@ -38,49 +54,36 @@ function NewTicketPage() {
       }
     );
 
-    let jsData = await res.json();
-    console.log(jsData);
-    // setTickets(jsData);
-    setLoading(false);
-  }
+    let vendors = await res.json();
 
-  //this function is used to control the auto assignement of the vendor to specific account manager
-  async function autoAssignAccountManager(selectedVendor) {
-    setSelectedVendor(selectedVendor);
-
-    let { data: vendor, error } = await supabase
-      .from("vendors")
-      .select("*")
-      .eq("enName", selectedVendor);
-
-    if (vendor.length > 0) {
-      // console.log(vendor[0].account_manager);
-      setSelectedAccountManager(vendor[0].account_manager);
-    }
-  }
-
-  let dropVendors = [];
-
-  async function loadVendors() {
-    setLoading(true);
-
-    let { data: vendors, error } = await supabase.from("vendors").select("*");
     setVendors(vendors);
     vendors.forEach((vendor) => {
-      dropVendors.push({ label: vendor.enName, value: vendor.enName });
+      dropVendors.push({
+        label: vendor.vendor_title,
+        value: vendor.vendor_title,
+      });
+      accountManagers.push({
+        key: vendor.vendor_title,
+        value: vendor.username,
+      });
     });
-
+    setAccountManagerArray(accountManagers);
     setVendorsDropDownMenu(dropVendors);
     setLoading(false);
   }
 
   //Issue Type
 
+  const [selectedIssueType, setSelectedIssueType] = useState("");
+  const [issueTypes, setIssueTypes] = useState([]);
+
+  let issueTypesList = [];
+
   //get all issue
   async function GetAllIssueTypes() {
     setLoading(true);
 
-    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjFjOTE1MmQwLTgyNWEtNDBlNS1hOGY1LTM1ODY2Zjk4ZTAyNiJ9.S_kbD0U_8UbqtDMBVWSgUvlSBSdSh74qwPNZtuOLH7I`;
+    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjhmNWZlZjVjLTM4ZGUtNGI2YS1hNTE4LTNkZWY0YWE5MGM0MyJ9.DIuzjjlcRf7Jr-pUPHJl08OJnxzr4UE-zi6C_GbzbNg`;
 
     let res = await fetch(
       "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/all_issue_types",
@@ -93,13 +96,21 @@ function NewTicketPage() {
       }
     );
 
-    let jsData = await res.json();
-    console.log(jsData);
-    // setTickets(jsData);
+    let issueTypes = await res.json();
+
+    issueTypes.forEach((issue) => {
+      issueTypesList.push({
+        label: issue.title,
+        value: issue.id,
+      });
+    });
+
+    setIssueTypes(issueTypesList);
+
+    console.log(issueTypes);
+
     setLoading(false);
   }
-  const [selectedIssueType, setSelectedIssueType] = useState("");
-  const issueType = [{ label: "Payment", value: "Payment" }];
 
   //order ID
   const [orderId, setOrderId] = useState(0);
@@ -116,29 +127,7 @@ function NewTicketPage() {
   }
 
   //assign to
-  const [selectedAccountManager, setSelectedAccountManager] = useState("");
-
-  const [accountManagerDropDown, setAccountManagerDropDown] = useState([]);
-  let accountManagersList = [];
-
-  // async function loadAllAccountManagers() {
-  //   setLoading(true);
-
-  //   let { data: accountManagersDB, error } = await supabase
-  //     .from("users")
-  //     .select("*")
-  //     .eq("user_type", "2");
-
-  //   accountManagersDB.forEach((accountManager) => {
-  //     accountManagersList.push({
-  //       label: accountManager.email,
-  //       value: accountManager.email,
-  //     });
-  //   });
-
-  //   setAccountManagerDropDown(accountManagersList);
-  //   setLoading(false);
-  // }
+  const [selectedAccountManager, setSelectedAccountManager] = useState(null);
 
   //priority
   const [priority, setPriority] = useState([]);
@@ -150,7 +139,6 @@ function NewTicketPage() {
   ];
 
   useEffect(() => {
-    GetAllVendorsWithAccountManagers();
     GetAllIssueTypes();
     loadVendors();
     // loadAllAccountManagers();
@@ -161,60 +149,48 @@ function NewTicketPage() {
   }
 
   async function addNewTicket() {
-    const { data, error } = await supabase.from("tickets").insert([
+    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjhmNWZlZjVjLTM4ZGUtNGI2YS1hNTE4LTNkZWY0YWE5MGM0MyJ9.DIuzjjlcRf7Jr-pUPHJl08OJnxzr4UE-zi6C_GbzbNg`;
+
+    console.log({
+      user_assign_to: selectedAccountManager,
+      issue_type: selectedIssueType,
+      vendor: selectedVendor,
+      order_id: orderId,
+      description: description,
+      comment: "",
+      priority: priority,
+    });
+
+    fetch(
+      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/create_ticket",
       {
-        created_by: username,
-        vendor: selectedVendor,
-        issue_type: selectedIssueType,
-        order_id: orderId,
-        description: description,
-        assign_to: selectedAccountManager,
-        priority: priority,
-        status: "pending",
-        created_at: getDate(),
-      },
-    ]);
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
 
-    // console.log({
-    //   created_by: username,
-    //   vendor: selectedVendor,
-    //   issue_type: selectedIssueType,
-    //   order_id: orderId,
-    //   description: description,
-    //   assign_to: selectedAccountManager,
-    //   priority: priority,
-    //   status: "pending",
-    //   created_at: getDate(),
-    // });
-
-    // console.log(data);
-    // console.log(error);
-
-    if (data === null) {
-      alert("new ticket added 😁");
-      navigate("/tickets");
-    }
+        body: JSON.stringify({
+          user_assign_to: selectedAccountManager,
+          issue_type: selectedIssueType,
+          vendor: selectedVendor,
+          order_id: orderId,
+          description: description,
+          comment: "",
+          priority: priority,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        alert("new ticket added 😁");
+        navigate("/tickets");
+      })
+      .catch((error) => {
+        alert("Error In Adding new ticket 😕");
+      });
   }
-
-  //get all vendors
-  // async function GetAllVendorsFromDB() {
-  //   let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjczZjExZGI5LTc2ZTQtNDFiYy05ZTk1LTZkZTkwMmJiNDQyMCJ9.uV8tQj6lcTM4JSySi-PkE97qqmacVgNgMjACn2K6Fg0`;
-
-  //   let res = await fetch(
-  //     "http://10.11.12.181:8000/api/ticket_system/all_vendors",
-  //     {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //   );
-
-  //   let jsData = await res.json();
-  //   setTickets(jsData);
-  //   console.log(jsData);
-  // }
 
   if (loading) {
     return <Loading />;
@@ -239,7 +215,7 @@ function NewTicketPage() {
         <div className="container border-bottom border-light border-3   m-1 p-2">
           <p className="text-white">Issue Type</p>
           <Select
-            options={issueType}
+            options={issueTypes}
             onChange={(opt) => setSelectedIssueType(opt.value)}
             // isMulti
           />
@@ -293,18 +269,6 @@ function NewTicketPage() {
             // isMulti
           />
         </div>
-
-        {/* upload File Button */}
-        {/* <div className="container m-1 p-2">
-          <p className="text-white">Choose File (Optional).</p>
-          <div className="form-group text-white">
-            <input
-              type="file"
-              className="form-control-file border"
-              name="file"
-            />
-          </div>
-        </div> */}
 
         {/* Submit Ticket Button */}
         <div className="container mt-2 text-center">
