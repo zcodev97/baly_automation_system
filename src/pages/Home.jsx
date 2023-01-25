@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import NavBar from "../components/navBar";
 import React, { useState, useEffect } from "react";
 
 function HomePage() {
+  const navigate = useNavigate();
+
   const [randomNumber, setRandomNumber] = useState(0);
   const [grossClassName, setGrossClassName] = useState("");
 
@@ -18,6 +21,10 @@ function HomePage() {
     } else if ((rand >= 0) & (rand <= 60)) {
       setGrossClassName("container text-danger");
     }
+  }
+
+  function GetNEwCustomersReport() {
+    navigate("/get_new_customers_report");
   }
 
   useEffect(() => {
@@ -118,6 +125,12 @@ function HomePage() {
           </button>
           <button className="btn btn-dark border-light border-1 m-1">
             <b> Voucher Usage 🔃</b>
+          </button>
+          <button
+            className="btn btn-dark border-light border-1 m-1"
+            onClick={GetNEwCustomersReport}
+          >
+            <b> Get New Customers 🧑‍🤝‍🧑</b>
           </button>
         </div>
       </div>

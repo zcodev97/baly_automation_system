@@ -19,6 +19,7 @@ import ReportView from "./pages/ReportView";
 import ReportsPage from "./pages/Reports";
 import MostSellingItemsPerVendor from "./pages/MostSellingItemsPerVendor";
 import HomePage from "./pages/Home";
+import GetNewCustomersReportPage from "./pages/reports/GetNewCustomers";
 
 function App() {
   const [savedUser, setSavedUser] = useState([]);
@@ -99,6 +100,11 @@ function App() {
               <Route path="/adduser" element={<AddUser />} />
 
               <Route path="/get_report" element={<ReportView />} />
+
+              <Route
+                path="/get_new_customers_report"
+                element={<GetNewCustomersReportPage />}
+              />
 
               <Route
                 path="/most_selling"
