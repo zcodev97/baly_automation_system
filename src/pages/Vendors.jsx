@@ -12,14 +12,14 @@ import NavBar from "../components/navBar";
 // Fields to show in the table, and what object properties in the data they bind to
 const fields = [
   {
-    dataField: "enName",
-    text: "enName",
+    dataField: "vendor_title",
+    text: "Vendor",
     sort: true,
     filter: textFilter(),
   },
   {
-    dataField: "account_manager",
-    text: "Assigned To",
+    dataField: "account_manager_username",
+    text: "Account Manager",
     sort: true,
     filter: textFilter(),
   },
@@ -33,7 +33,20 @@ function Vendors() {
 
   async function getVendors() {
     setLoading(true);
-    let { data: vendors, error } = await supabase.from("vendors").select("*");
+    var token = localStorage.getItem("token");
+
+    let res = await fetch(
+      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/account_manager/get_vendor_am",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    let vendors = await res.json();
     setVendors(vendors);
     setLoading(false);
   }
@@ -43,8 +56,9 @@ function Vendors() {
       navigate("/vendor_details", {
         state: {
           id: row.id,
-          enName: row.enName,
-          account_manager: row.account_manager,
+          account_manager_id: row.account_manager_id,
+          account_manager_username: row.account_manager_username,
+          vendor_title: row.vendor_title,
         },
       });
     },
@@ -78,6 +92,7 @@ function Vendors() {
 
       <div className="container-fluid p-4 text-center">
         <BootstrapTable
+          hover={true}
           className="text-light"
           bordered={false}
           bootstrap4

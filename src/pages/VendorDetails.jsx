@@ -23,21 +23,23 @@ function VendorDetails({ id }) {
   const location = useLocation();
 
   const fields = [
-    // {
-    //   dataField: "id",
-    //   text: "ID",
-    // },
     {
-      dataField: "enName",
-      text: "Vendor",
+      dataField: "account_manager_username",
+      text: "Account Manager Username",
+    },
+
+    {
+      dataField: "vendor_title",
+      text: "Vendor Title",
     },
   ];
 
   var data = [
     {
       id: location.state.id,
-      enName: location.state.enName,
-      account_manager: location.state.account_manager,
+      account_manager_id: location.state.account_manager_id,
+      account_manager_username: location.state.account_manager_username,
+      vendor_title: location.state.vendor_title,
     },
   ];
 
@@ -122,7 +124,7 @@ function VendorDetails({ id }) {
         <BootstrapTable bootstrap4 keyField="id" columns={fields} data={data} />
       </div>
 
-      <div className="container  w-50  p-2 bg-dark rounded">
+      {/* <div className="container  w-50  p-2 bg-dark rounded">
         <div className="container m-2 p-2">
           <p className="text-white">New Vendor Name</p>
           <input
@@ -138,7 +140,7 @@ function VendorDetails({ id }) {
         <div className="btn btn-success m-2" onClick={handleUpdateVendorName}>
           Update Vendor Name
         </div>
-      </div>
+      </div> */}
       <div className="container m-1"></div>
 
       <div className="container  w-50 p-2 bg-dark rounded">
