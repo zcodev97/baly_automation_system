@@ -20,6 +20,7 @@ import ReportsPage from "./pages/Reports";
 import MostSellingItemsPerVendor from "./pages/MostSellingItemsPerVendor";
 import HomePage from "./pages/Home";
 import GetNewCustomersReportPage from "./pages/reports/GetNewCustomers";
+import HourlyReportPage from "./pages/reports/Hourly";
 
 function App() {
   const [savedUser, setSavedUser] = useState([]);
@@ -69,58 +70,57 @@ function App() {
   return (
     <>
       <div className="container-fluid bg-light" style={{ height: "100vh" }}>
-        <>
-          <BrowserRouter>
-            <Routes>
-              <Route
-                path="/"
-                element={currentUsername.length > 0 ? <HomePage /> : <Login />}
-              />
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={currentUsername.length > 0 ? <HomePage /> : <Login />}
+            />
 
-              <Route path="/home" element={<HomePage />} />
+            <Route path="/home" element={<HomePage />} />
 
-              <Route path="/tickets" element={<Tickets />} />
+            <Route path="/tickets" element={<Tickets />} />
 
-              <Route path="/account-managers" element={<Vendors />} />
+            <Route path="/account-managers" element={<Vendors />} />
 
-              <Route path="/vendors" element={<Vendors />} />
+            <Route path="/vendors" element={<Vendors />} />
 
-              <Route path="/addvendor" element={<AddVendor />} />
+            <Route path="/addvendor" element={<AddVendor />} />
 
-              <Route path="/users" element={<Users />} />
+            <Route path="/users" element={<Users />} />
 
-              <Route path="/user_details" element={<UserDetails />} />
+            <Route path="/user_details" element={<UserDetails />} />
 
-              <Route path="/ticket_details" element={<TicketDetails />} />
+            <Route path="/ticket_details" element={<TicketDetails />} />
 
-              <Route path="/vendor_details" element={<VendorDetails />} />
+            <Route path="/vendor_details" element={<VendorDetails />} />
 
-              <Route path="/newticket" element={<NewTicket />} />
+            <Route path="/newticket" element={<NewTicket />} />
 
-              <Route path="/adduser" element={<AddUser />} />
+            <Route path="/adduser" element={<AddUser />} />
 
-              <Route path="/get_report" element={<ReportView />} />
+            <Route path="/get_report" element={<ReportView />} />
 
-              <Route
-                path="/get_new_customers_report"
-                element={<GetNewCustomersReportPage />}
-              />
+            <Route
+              path="/get_new_customers_report"
+              element={<GetNewCustomersReportPage />}
+            />
+            <Route path="/get_hourly_report" element={<HourlyReportPage />} />
 
-              <Route
-                path="/most_selling"
-                element={<MostSellingItemsPerVendor />}
-              />
+            <Route
+              path="/most_selling"
+              element={<MostSellingItemsPerVendor />}
+            />
 
-              <Route path="/reports" element={<ReportsPage />} />
+            <Route path="/reports" element={<ReportsPage />} />
 
-              <Route path="/login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
 
-              <Route path="*" element={<NoPage />} />
-            </Routes>
-          </BrowserRouter>
+            <Route path="*" element={<NoPage />} />
+          </Routes>
+        </BrowserRouter>
 
-          <Footer />
-        </>
+        <Footer />
       </div>
     </>
   );

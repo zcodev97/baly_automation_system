@@ -26,6 +26,9 @@ function HomePage() {
   function GetNEwCustomersReport() {
     navigate("/get_new_customers_report");
   }
+  function GetHourlyReport() {
+    navigate("/get_hourly_report");
+  }
 
   useEffect(() => {
     setInterval(() => updateNumber(), 5000);
@@ -111,7 +114,10 @@ function HomePage() {
         <hr className="mt-5" />
         <div className="container mt-5 bg-dark p-1 border-1">
           <h3>Reports</h3>
-          <button className="btn btn-dark border-light border-1 m-1">
+          <button
+            className="btn btn-dark border-light border-1 m-1"
+            onClick={GetHourlyReport}
+          >
             <b> Hourly Report ⌛</b>
           </button>
           <button className="btn btn-dark border-light border-1 m-1">

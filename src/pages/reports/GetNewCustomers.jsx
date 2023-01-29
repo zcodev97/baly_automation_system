@@ -89,7 +89,7 @@ function GetNewCustomersReportPage() {
 
   async function getReport() {
     setLoading(true);
-    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjhmNWZlZjVjLTM4ZGUtNGI2YS1hNTE4LTNkZWY0YWE5MGM0MyJ9.DIuzjjlcRf7Jr-pUPHJl08OJnxzr4UE-zi6C_GbzbNg`;
+    var token = localStorage.getItem("token");
 
     let formattedFirstDateStart = new Date(startFirstDate)
       .toISOString()

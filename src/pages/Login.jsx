@@ -18,20 +18,30 @@ function Login() {
   const [users, setUsers] = useState([]);
 
   async function checkIfUsernameAndPasswordIsCorrect() {
-    let { data: users, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("email", username)
-      .eq("password", password);
-    // console.log(error);
+    fetch(
+      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/auth/signin",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-    if (users.length === 0) {
-      alert("Error username or password");
-      return;
-    }
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        localStorage.setItem("token", data.token.access);
 
-    setUsers(users);
-    return users[0].user_type;
+        navigate("/tickets");
+      })
+      .catch((error) => {
+        alert("Username or Password Incorrect 😕");
+      });
   }
 
   // useEffect(() => {
@@ -41,22 +51,17 @@ function Login() {
   async function onClickLoginBtn() {
     setLoading(true);
 
-    let user_type = await checkIfUsernameAndPasswordIsCorrect();
-
-    if (username.length < 6) {
-      alert("Username must be more than 8 Characters");
+    if (username.length < 3) {
+      alert("Username must be more than 3 Characters");
     }
 
-    if (password.length < 6) {
-      alert("Password must be more than 8 Characters");
+    if (password.length < 3) {
+      alert("Password must be more than 3 Characters");
     }
 
-    localStorage.setItem("username", JSON.stringify(username));
-    localStorage.setItem("password", JSON.stringify(password));
-    localStorage.setItem("user_type", user_type);
-    // localStorage.setItem("checked", JSON.stringify(checked));
+    await checkIfUsernameAndPasswordIsCorrect();
 
-    navigate("/tickets", { replace: true });
+    // navigate("/tickets", { replace: true });
 
     setLoading(false);
   }

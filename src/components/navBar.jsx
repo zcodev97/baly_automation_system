@@ -51,7 +51,7 @@ function NavBar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-sm bg-dark bg-light   p-3">
+      <nav className="navbar navbar-expand-sm bg-dark p-2 rounded ">
         <div className="container-fluid">
           <ul className="navbar-nav">
             {/* Divider */}
@@ -105,7 +105,7 @@ function NavBar() {
               </Link>
             </li>
 
-            <Divider />
+            {/* <Divider />
             <li className="nav-item ">
               <Link
                 className="text-dark bg-white p-2 rounded"
@@ -118,7 +118,7 @@ function NavBar() {
               >
                 <b> Add User ➕👤</b>
               </Link>
-            </li>
+            </li> */}
 
             <Divider />
             <li className="nav-item ">

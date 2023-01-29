@@ -17,13 +17,6 @@ import moment from "moment";
 // Data for the table to display; can be anything
 
 function Tickets() {
-  const [userType, SetUserType] = useState("0");
-
-  var currentLocalUsername = localStorage.getItem("username");
-  var currentUserType = localStorage.getItem("user_type");
-
-  var currentUsername = currentLocalUsername.replaceAll('"', "");
-
   const navigate = useNavigate();
 
   const [tickets, setTickets] = useState([]);
@@ -45,95 +38,25 @@ function Tickets() {
   const [urgentResolvedPriorityTickets, setUrgenResolvedtPriorityTickets] =
     useState(0);
 
-  async function getAllTickets() {
-    setLoading(true);
-
-    let currentUserType = localStorage.getItem("user_type") ?? "";
-
-    //get  low Pending priority tickets
-    setLowPendingPriorityTickets(await getSpecificTickets("4", "pending"));
-
-    //get mid Pending priority tickets
-    setMidPendingPriorityTickets(await getSpecificTickets("3", "pending"));
-
-    //get high Pending priority tickets
-    setHighPendingPriorityTickets(await getSpecificTickets("2", "pending"));
-
-    //get urgent Pending priority tickets
-    setUrgenPendingtPriorityTickets(await getSpecificTickets("1", "pending"));
-
-    //get  low Resolved priority tickets
-    setLowResolvedPriorityTickets(await getSpecificTickets("4", "resolved"));
-
-    //get mid Resolved priority tickets
-    setMidResolvedPriorityTickets(await getSpecificTickets("3", "resolved"));
-
-    //get high Resolved priority tickets
-    setHighResolvedPriorityTickets(await getSpecificTickets("2", "resolved"));
-
-    //get urgent Resolved priority tickets
-    setUrgenResolvedtPriorityTickets(await getSpecificTickets("1", "resolved"));
-
-    if (currentUserType === "1") {
-      //admin
-      var { data: ticketsDB, error } = await supabase
-        .from("tickets")
-        .select("*");
-    }
-
-    if (currentUserType === "2") {
-      // Account Manager
-      var { data: ticketsDB, error } = await supabase
-        .from("tickets")
-        .select("*")
-        .eq("assign_to", currentUsername);
-    }
-
-    if (currentUserType === "3") {
-      // CC
-      var { data: ticketsDB, error } = await supabase
-        .from("tickets")
-        .select("*")
-        .eq("created_by", currentUsername);
-    }
-
-    if (ticketsDB.length > 0) {
-      // console.log(ticketsDB);
-      setTickets(ticketsDB);
-    }
-    setLoading(false);
-  }
-
-  async function getSpecificTickets(priority, status) {
-    let { data: requiredTicket, error } = await supabase
-      .from("tickets")
-      .select("priority")
-      .eq("priority", priority)
-      .eq("status", status);
-    return requiredTicket.length;
-  }
-
   const rowEvents = {
     onClick: (e, row, rowIndex) => {
-      if (currentUserType === "1" || currentUserType === "2") {
-        navigate("/ticket_details", {
-          state: {
-            id: row.id,
-            created_by: row.created_by,
-            vendor: row.vendor,
-            issue_type: row.issue_type,
-            order_id: row.order_id,
-            description: row.description,
-            assign_to: row.assign_to,
-            priority: row.priority,
-            status: row.status,
-            created_at: row.created,
-            resolved_at: row.resolve_at,
-            resolved_by: row.resolve_by,
-            comments: row.comment_ticket,
-          },
-        });
-      }
+      navigate("/ticket_details", {
+        state: {
+          id: row.id,
+          created_by: row.created_by,
+          vendor: row.vendor,
+          issue_type: row.issue_type,
+          order_id: row.order_id,
+          description: row.description,
+          assign_to: row.assign_to,
+          priority: row.priority,
+          status: row.status,
+          created_at: row.created,
+          resolved_at: row.resolve_at,
+          resolved_by: row.resolve_by,
+          comments: row.comment_ticket,
+        },
+      });
     },
   };
 
@@ -168,8 +91,7 @@ function Tickets() {
 
   async function GetAllTickets() {
     setLoading(true);
-
-    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjhmNWZlZjVjLTM4ZGUtNGI2YS1hNTE4LTNkZWY0YWE5MGM0MyJ9.DIuzjjlcRf7Jr-pUPHJl08OJnxzr4UE-zi6C_GbzbNg`;
+    var token = localStorage.getItem("token");
 
     let res = await fetch(
       "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/get_all_ticket",
@@ -284,7 +206,7 @@ function Tickets() {
   return (
     <>
       <NavBar />
-
+      {/* 
       <div className="d-flex justify-content-center  p-1 bg-dark rounded-bottom ">
         <div className="col-md-6 center-block ">
           <div className="container text-center  w-50 bg-dark text-light rounded p-2 ">
@@ -377,7 +299,7 @@ function Tickets() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <BootstrapTable
         // className="table-responsive"

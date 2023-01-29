@@ -41,7 +41,7 @@ function NewTicketPage() {
   async function loadVendors() {
     setLoading(true);
 
-    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjhmNWZlZjVjLTM4ZGUtNGI2YS1hNTE4LTNkZWY0YWE5MGM0MyJ9.DIuzjjlcRf7Jr-pUPHJl08OJnxzr4UE-zi6C_GbzbNg`;
+    var token = localStorage.getItem("token");
 
     let res = await fetch(
       "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/all_vendors_user",
@@ -83,7 +83,7 @@ function NewTicketPage() {
   async function GetAllIssueTypes() {
     setLoading(true);
 
-    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjhmNWZlZjVjLTM4ZGUtNGI2YS1hNTE4LTNkZWY0YWE5MGM0MyJ9.DIuzjjlcRf7Jr-pUPHJl08OJnxzr4UE-zi6C_GbzbNg`;
+    var token = localStorage.getItem("token");
 
     let res = await fetch(
       "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/all_issue_types",
@@ -149,17 +149,7 @@ function NewTicketPage() {
   }
 
   async function addNewTicket() {
-    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjhmNWZlZjVjLTM4ZGUtNGI2YS1hNTE4LTNkZWY0YWE5MGM0MyJ9.DIuzjjlcRf7Jr-pUPHJl08OJnxzr4UE-zi6C_GbzbNg`;
-
-    // console.log({
-    //   user_assign_to: selectedAccountManager,
-    //   issue_type: selectedIssueType,
-    //   vendor: selectedVendor,
-    //   order_id: orderId,
-    //   description: description,
-    //   comment: "",
-    //   priority: priority,
-    // });
+    var token = localStorage.getItem("token");
 
     fetch(
       "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/create_ticket",
