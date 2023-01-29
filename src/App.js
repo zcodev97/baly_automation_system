@@ -5,7 +5,6 @@ import Footer from "./components/footer";
 import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import supabase from "./supabase";
 import { useEffect, useState } from "react";
 import TicketDetails from "./pages/ticketing-system/tickets/TicketDetails";
 import Loading from "./components/loading";
@@ -27,38 +26,39 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [currentUsername, setcurrentUsername] = useState("");
 
-  var savedUsername = localStorage.getItem("username") ?? "";
-  var savedPassword = localStorage.getItem("password") ?? "";
-  var user_type = localStorage.getItem("user_type") ?? "";
-  // var checked = localStorage.getItem("checked") ?? "";
-
-  var username = savedUsername.replaceAll('"', "");
-  var password = savedPassword.replaceAll('"', "");
-
   async function getSavedUserInLocalStorage() {
     setLoading(true);
-    if (username.length > 0) {
-      let { data: user, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("email", username)
-        .eq("password", password);
 
-      if (user.length > 0) {
-        // console.log(user);
-        setcurrentUsername(user[0].email);
-        setSavedUser(user);
-        setLoading(false);
-        return;
-      }
+    var token = localStorage.getItem("token");
+
+    if (token !== null) {
+      fetch(
+        "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/auth/signin",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setcurrentUsername(data.id);
+        })
+        .catch((error) => {
+          alert("Username or Password Incorrect 😕");
+        });
+      return;
     }
 
-    setcurrentUsername("");
     setLoading(false);
+
+    return null;
   }
 
   useEffect(() => {
-    getSavedUserInLocalStorage();
+    // getSavedUserInLocalStorage();
   }, []);
 
   if (loading) {
@@ -72,10 +72,7 @@ function App() {
       <div className="container-fluid bg-light" style={{ height: "100vh" }}>
         <BrowserRouter>
           <Routes>
-            <Route
-              path="/"
-              element={currentUsername.length > 0 ? <HomePage /> : <Login />}
-            />
+            <Route path="/" element={<HomePage />} />
 
             <Route path="/home" element={<HomePage />} />
 

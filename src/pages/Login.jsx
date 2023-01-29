@@ -1,8 +1,4 @@
-import logo from "../components/baly_image.png";
 import { useState, React, useEffect } from "react";
-import { Outlet, Link } from "react-router-dom";
-import supabase from "../supabase";
-import ShowErrorMessage from "../components/ShowErrorMessage";
 import Loading from "../components/loading";
 import { useNavigate } from "react-router-dom";
 
@@ -13,19 +9,17 @@ function Login() {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  var loginPage;
-
-  const [users, setUsers] = useState([]);
 
   async function checkIfUsernameAndPasswordIsCorrect() {
-    fetch(
+    setLoading(true);
+    await fetch(
       "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/auth/signin",
       {
         method: "POST",
         headers: {
+          accept: "application/json",
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({
           username: username,
           password: password,
@@ -36,12 +30,14 @@ function Login() {
       .then((data) => {
         console.log(data);
         localStorage.setItem("token", data.token.access);
-
-        navigate("/tickets");
+        localStorage.setItem("email", data.account.email);
+        localStorage.setItem("username", data.account.username);
+        navigate("/tickets", { replace: true });
       })
       .catch((error) => {
-        alert("Username or Password Incorrect 😕");
+        alert(error);
       });
+    setLoading(false);
   }
 
   // useEffect(() => {
@@ -103,7 +99,7 @@ function Login() {
           <div className="form-group">
             <label htmlFor="email">Email:</label>
             <input
-              type="email"
+              type="text"
               className="form-control"
               id="email"
               placeholder="Enter email"

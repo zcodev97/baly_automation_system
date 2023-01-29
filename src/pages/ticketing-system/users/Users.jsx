@@ -10,21 +10,9 @@ import Loading from "../../../components/loading";
 import NoDataView from "../../../components/noData";
 import NavBar from "../../../components/navBar";
 var fields = [
-  // {
-  //   dataField: "id",
-  //   text: "ID",
-  //   sort: true,
-  //   filter: textFilter(),
-  // },
-  {
-    dataField: "email",
-    text: "Email",
-    sort: true,
-    filter: textFilter(),
-  },
   {
     dataField: "username",
-    text: "username",
+    text: "Username",
     sort: true,
     filter: textFilter(),
   },
@@ -41,8 +29,20 @@ var fields = [
     filter: textFilter(),
   },
   {
+    dataField: "email",
+    text: "Email",
+    sort: true,
+    filter: textFilter(),
+  },
+  {
     dataField: "phone_number",
-    text: "Is Active",
+    text: "Phone Number",
+    sort: true,
+    filter: textFilter(),
+  },
+  {
+    dataField: "rate",
+    text: "Rate",
     sort: true,
     filter: textFilter(),
   },
@@ -53,42 +53,42 @@ function Users() {
   const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
+
   async function getAllUsers() {
     setLoading(true);
-    let { data: users, error } = await supabase.from("users").select("*");
+    var token = localStorage.getItem("token");
 
-    for (let index = 0; index < users.length; index++) {
-      const element = users[index];
-      if (element.user_type === 1) {
-        users[index].user_type = "admin";
+    let res = await fetch(
+      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/all_users",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
-      if (element.user_type === 2) {
-        users[index].user_type = "Account Manager";
-      }
-      if (element.user_type === 3) {
-        users[index].user_type = "CC";
-      }
-    }
+    );
 
+    let users = await res.json();
     setUsers(users);
     setLoading(false);
   }
 
-  const rowEvents = {
-    onClick: (e, row, rowIndex) => {
-      navigate("/user_details", {
-        state: {
-          id: row.id,
-          email: row.email,
-          username: row.username,
-          firstName: row.first_name,
-          lastName: row.last_name,
-          phoneNumber: row.phone_number,
-          userPermissions: row.user_permissions,
-        },
-      });
-    },
-  };
+  // const rowEvents = {
+  //   onClick: (e, row, rowIndex) => {
+  //     navigate("/user_details", {
+  //       state: {
+  //         id: row.id,
+  //         email: row.email,
+  //         username: row.username,
+  //         firstName: row.first_name,
+  //         lastName: row.last_name,
+  //         phoneNumber: row.phone_number,
+  //         userPermissions: row.user_permissions,
+  //       },
+  //     });
+  //   },
+  // };
 
   const pagination = paginationFactory({
     page: 1,
@@ -101,28 +101,8 @@ function Users() {
     alwaysShowAllBtns: true,
   });
 
-  function goToAddUserPage() {}
-
-  async function GetAllUsersFromDB() {
-    let token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwayI6IjczZjExZGI5LTc2ZTQtNDFiYy05ZTk1LTZkZTkwMmJiNDQyMCJ9.uV8tQj6lcTM4JSySi-PkE97qqmacVgNgMjACn2K6Fg0`;
-
-    let res = await fetch(
-      "http://10.11.12.181:8000/api/ticket_system/all_users",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    let users = await res.json();
-    setUsers(users);
-  }
-
   useEffect(() => {
-    GetAllUsersFromDB();
+    getAllUsers();
   }, []);
 
   if (loading) {
@@ -146,7 +126,7 @@ function Users() {
           data={users}
           pagination={pagination}
           filter={filterFactory()}
-          rowEvents={rowEvents}
+          // rowEvents={rowEvents}
         />
       </div>
     </>

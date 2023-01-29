@@ -11,12 +11,6 @@ import NavBar from "../components/navBar";
 
 // Fields to show in the table, and what object properties in the data they bind to
 const fields = [
-  // {
-  //   dataField: "id",
-  //   text: "ID",
-  //   sort: true,
-  //   filter: textFilter(),
-  // },
   {
     dataField: "enName",
     text: "enName",

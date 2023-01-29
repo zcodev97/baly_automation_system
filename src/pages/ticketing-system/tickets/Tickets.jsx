@@ -115,6 +115,10 @@ function Tickets() {
     return cell != null ? moment(cell).format("MM/DD/YYYY") : "";
   };
 
+  function addTicket() {
+    navigate("/newticket");
+  }
+
   useEffect(() => {
     GetAllTickets();
     // getAllTickets();
@@ -314,6 +318,14 @@ function Tickets() {
         rowStyle={rowStyle}
         rowEvents={rowEvents}
       />
+      <div className="container-fluid  text-start ">
+        <b
+          className="btn btn-success border w-10 text-center border-3 mt-2 mb-2"
+          onClick={addTicket}
+        >
+          Add Ticket ➕
+        </b>
+      </div>
     </>
   );
 }

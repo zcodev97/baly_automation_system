@@ -6,10 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 // db password Qymbg5QhNbAzRn!
 
-function timeout(delay) {
-  return new Promise((res) => setTimeout(res, delay));
-}
-
 function NavBar() {
   const navigate = useNavigate();
 
@@ -20,6 +16,7 @@ function NavBar() {
   var user_type = localStorage.getItem("user_type") ?? "";
   var savedUsername = localStorage.getItem("username") ?? "";
   var username = savedUsername.replaceAll('"', "");
+
   function getUserType() {
     setCurrentUsername(username);
     if (username.length > 0) {
@@ -29,9 +26,8 @@ function NavBar() {
 
   async function handleLogout() {
     setLoading(true);
-    localStorage.removeItem("username");
-    localStorage.removeItem("password");
-    setCurrentUsername("");
+    localStorage.removeItem("token");
+
     setLoading(false);
     // console.log(showNavBar);
     navigate("/login", { replace: true });
@@ -51,7 +47,7 @@ function NavBar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-sm bg-dark p-2 rounded ">
+      <nav className="navbar navbar-expand-sm bg-dark p-2   ">
         <div className="container-fluid">
           <ul className="navbar-nav">
             {/* Divider */}
@@ -78,7 +74,7 @@ function NavBar() {
                 <b> Tickets 🎟️ </b>
               </Link>
             </li>
-
+            {/* 
             <Divider />
             <li className="nav-item ">
               <Link
@@ -88,7 +84,7 @@ function NavBar() {
               >
                 <b> New Ticket ➕📃</b>
               </Link>
-            </li>
+            </li> */}
 
             <Divider />
             <li className="nav-item ">
@@ -153,16 +149,16 @@ function NavBar() {
             <Divider />
             <li className="nav-item ">
               <Link
-                className="text-dark bg-white p-2 rounded"
+                className="text-light bg-primary p-2 rounded"
                 style={{
                   textDecoration: "none",
                   display: "block",
                 }}
               >
-                <b> 👤 Current User : {localStorage.getItem("username")}</b>
+                <b> 👤 {localStorage.getItem("username")}</b>
               </Link>
             </li>
-            <Divider />
+            {/* <Divider />
             <li className="nav-item ">
               <Link
                 className="text-dark bg-dark p-2 rounded border-light border-3"
@@ -180,7 +176,7 @@ function NavBar() {
                     : "Admin"}{" "}
                 </b>
               </Link>
-            </li>
+            </li> */}
 
             <Divider />
 
