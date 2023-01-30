@@ -62,7 +62,7 @@ function Tickets() {
 
   const pagination = paginationFactory({
     page: 1,
-    sizePerPage: 5,
+    sizePerPage: 10,
     lastPageText: ">>",
     firstPageText: "<<",
     nextPageText: ">",

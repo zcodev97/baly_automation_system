@@ -29,7 +29,8 @@ function Login() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
-        localStorage.setItem("token", data.token.access);
+        console.log(data.token.access_token);
+        localStorage.setItem("token", data.token.access_token);
         localStorage.setItem("email", data.account.email);
         localStorage.setItem("username", data.account.username);
         navigate("/tickets", { replace: true });

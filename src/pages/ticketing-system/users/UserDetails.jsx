@@ -40,28 +40,6 @@ function UserDetails() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [userPermission, setUserPermission] = useState([]);
 
-  async function deacitveUser() {
-    // const { data, error } = await supabase
-    //   .from("users")
-    //   .update({ is_active: false })
-    //   .eq("id", location.state.id);
-    // if (data === null) {
-    //   alert("user has been deactivated successfully");
-    //   navigate("/users");
-    // }
-  }
-
-  async function deleteUser() {
-    // const { data, error } = await supabase
-    //   .from("users")
-    //   .delete()
-    //   .eq("id", location.state.id);
-    // if (data === null) {
-    //   alert("user has been deleted successfully");
-    //   navigate("/users");
-    // }
-  }
-
   useEffect(() => {
     setEmail(location.state.email);
     setFirstName(location.state.firstName);
@@ -82,6 +60,7 @@ function UserDetails() {
             <b> Username</b>
           </p>
           <input
+            disabled={true}
             value={username}
             type="text"
             className="form-control text-center"
@@ -98,6 +77,7 @@ function UserDetails() {
             <b> Email</b>
           </p>
           <input
+            disabled={true}
             value={email}
             type="text"
             className="form-control text-center "
@@ -114,6 +94,7 @@ function UserDetails() {
             <b> First Name</b>
           </p>
           <input
+            disabled={true}
             value={firstName}
             type="text"
             className="form-control text-center"
@@ -130,6 +111,7 @@ function UserDetails() {
             <b> Last Name</b>
           </p>
           <input
+            disabled={true}
             value={lastName}
             type="text"
             className="form-control text-center"
@@ -146,6 +128,7 @@ function UserDetails() {
             <b> Phone Number</b>
           </p>
           <input
+            disabled={true}
             value={phoneNumber}
             type="text"
             className="form-control text-center"

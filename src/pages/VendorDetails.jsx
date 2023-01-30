@@ -46,15 +46,24 @@ function VendorDetails({ id }) {
   async function loadAllAccountManagers() {
     setLoading(true);
 
-    let { data: accountManagersDB, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("user_type", "2");
+    var token = localStorage.getItem("token");
 
-    accountManagersDB.forEach((accountManager) => {
+    let res = await fetch(
+      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/account_manager/all_am",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    let accountManagers = await res.json();
+
+    accountManagers.forEach((accountManager) => {
       accountManagersList.push({
-        label: accountManager.email,
-        value: accountManager.email,
+        label: accountManager.username,
+        value: accountManager.id,
       });
     });
 
@@ -62,50 +71,45 @@ function VendorDetails({ id }) {
     setLoading(false);
   }
 
-  async function handleDeleteAction() {
-    const { data, error } = await supabase
-      .from("vendors")
-      .delete()
-      .eq("id", location.state.id);
-
-    if (data === null) {
-      alert("vendor has been deleted 😕");
-      navigate("/vendors");
-    }
-  }
-
-  function handleNewVendorName(e) {
-    setNewVendorName(e.target.value);
-  }
-
-  async function handleUpdateVendorName() {
-    const { data, error } = await supabase
-      .from("vendors")
-      .update({ enName: newVendorName })
-      .eq("id", location.state.id);
-
-    if (data === null) {
-      alert("vendor name has been updated 😁");
-      navigate("/vendors");
-    }
-  }
-
   async function updateVendorAccountManager() {
-    const { data, error } = await supabase
-      .from("vendors")
-      .update({ account_manager: selectedAccountManager })
-      .eq("id", location.state.id);
+    setLoading(true);
 
-    if (data === null) {
+    var token = localStorage.getItem("token");
+
+    let res = null;
+    fetch(
+      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/account_manager/assign_vendor_am`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          account_manager_id: selectedAccountManager,
+          vendor: data[0].vendor_title,
+        }),
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        res = data;
+        navigate("/vendors");
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("Error In Updating Vendor 😕");
+      });
+
+    if (res !== null) {
       alert(
         "account manager for vendor " +
-          location.state.enName +
-          " updated to " +
-          selectedAccountManager +
-          " 😁"
+          location.state.vendor_title +
+          " updated "
       );
-      navigate("/vendors");
     }
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -124,23 +128,6 @@ function VendorDetails({ id }) {
         <BootstrapTable bootstrap4 keyField="id" columns={fields} data={data} />
       </div>
 
-      {/* <div className="container  w-50  p-2 bg-dark rounded">
-        <div className="container m-2 p-2">
-          <p className="text-white">New Vendor Name</p>
-          <input
-            type="email"
-            className="form-control"
-            id="uname"
-            placeholder="New Vendor Name"
-            name="uname"
-            required=""
-            onChange={handleNewVendorName}
-          />
-        </div>
-        <div className="btn btn-success m-2" onClick={handleUpdateVendorName}>
-          Update Vendor Name
-        </div>
-      </div> */}
       <div className="container m-1"></div>
 
       <div className="container  w-50 p-2 bg-dark rounded">
@@ -150,7 +137,9 @@ function VendorDetails({ id }) {
         <p className="text-white">Assign To</p>
         <Select
           options={accountManagerDropDown}
-          onChange={(opt) => setSelectedAccountManager(opt.value)}
+          onChange={(opt) => {
+            setSelectedAccountManager(opt.value);
+          }}
           // isMulti
         />
         <div
@@ -158,9 +147,6 @@ function VendorDetails({ id }) {
           onClick={updateVendorAccountManager}
         >
           Update Account Manager
-        </div>
-        <div className="btn btn-danger" onClick={handleDeleteAction}>
-          Delete Vendor
         </div>
       </div>
     </>

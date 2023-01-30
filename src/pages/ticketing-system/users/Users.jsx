@@ -74,21 +74,21 @@ function Users() {
     setLoading(false);
   }
 
-  // const rowEvents = {
-  //   onClick: (e, row, rowIndex) => {
-  //     navigate("/user_details", {
-  //       state: {
-  //         id: row.id,
-  //         email: row.email,
-  //         username: row.username,
-  //         firstName: row.first_name,
-  //         lastName: row.last_name,
-  //         phoneNumber: row.phone_number,
-  //         userPermissions: row.user_permissions,
-  //       },
-  //     });
-  //   },
-  // };
+  const rowEvents = {
+    onClick: (e, row, rowIndex) => {
+      navigate("/user_details", {
+        state: {
+          id: row.id,
+          email: row.email,
+          username: row.username,
+          firstName: row.first_name,
+          lastName: row.last_name,
+          phoneNumber: row.phone_number,
+          userPermissions: row.user_permissions,
+        },
+      });
+    },
+  };
 
   const pagination = paginationFactory({
     page: 1,
@@ -126,7 +126,7 @@ function Users() {
           data={users}
           pagination={pagination}
           filter={filterFactory()}
-          // rowEvents={rowEvents}
+          rowEvents={rowEvents}
         />
       </div>
     </>
