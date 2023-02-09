@@ -11,6 +11,7 @@ import Loading from "./components/loading";
 import { Vendors } from "./pages/Vendors";
 import VendorDetails from "./pages/VendorDetails";
 import { Users } from "./pages/ticketing-system/users/Users";
+
 import AddUser from "./pages/ticketing-system/users/AddUser";
 import UserDetails from "./pages/ticketing-system/users/UserDetails";
 import AddVendor from "./pages/AddVendor";
@@ -20,45 +21,55 @@ import MostSellingItemsPerVendor from "./pages/MostSellingItemsPerVendor";
 import HomePage from "./pages/Home";
 import GetNewCustomersReportPage from "./pages/reports/GetNewCustomers";
 import HourlyReportPage from "./pages/reports/Hourly";
+import BACKEND_URL from "./global";
 
 function App() {
   const [savedUser, setSavedUser] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentUsername, setcurrentUsername] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
   async function getSavedUserInLocalStorage() {
     setLoading(true);
 
     var token = localStorage.getItem("token");
 
-    if (token !== null) {
-      fetch(
-        "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/auth/signin",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          setcurrentUsername(data.id);
-        })
-        .catch((error) => {
-          alert("Username or Password Incorrect 😕");
-        });
+    console.log(token === null);
+
+    if (token === null || token === "") {
+      setLoggedIn(false);
+
+      setLoading(false);
+
+      alert("You Must Login");
+      // navigate("/login");
+
       return;
     }
 
+    fetch(BACKEND_URL + "auth", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setcurrentUsername(data.id);
+        // navigate("/home");
+        setLoggedIn(true);
+      })
+      .catch((error) => {
+        alert("Username or Password Incorrect 😕");
+      });
     setLoading(false);
 
-    return null;
+    return;
   }
 
   useEffect(() => {
-    // getSavedUserInLocalStorage();
+    getSavedUserInLocalStorage();
   }, []);
 
   if (loading) {
@@ -72,7 +83,7 @@ function App() {
       <div className="container-fluid bg-light" style={{ height: "100vh" }}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={loggedIn ? <HomePage /> : <Login />} />
 
             <Route path="/home" element={<HomePage />} />
 

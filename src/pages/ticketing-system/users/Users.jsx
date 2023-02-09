@@ -1,4 +1,5 @@
 import BootstrapTable from "react-bootstrap-table-next";
+
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
@@ -9,6 +10,7 @@ import supabase from "../../../supabase";
 import Loading from "../../../components/loading";
 import NoDataView from "../../../components/noData";
 import NavBar from "../../../components/navBar";
+import BACKEND_URL from "../../../global";
 var fields = [
   {
     dataField: "username",
@@ -58,16 +60,13 @@ function Users() {
     setLoading(true);
     var token = localStorage.getItem("token");
 
-    let res = await fetch(
-      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/all_users",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    let res = await fetch(BACKEND_URL + "ticket_system/all_users", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     let users = await res.json();
     setUsers(users);
@@ -116,9 +115,8 @@ function Users() {
   return (
     <>
       <NavBar />
-      <div className="container-fluid bg-light rounded p-4 text-center">
+      <div className="container w-75 bg-light rounded p-4 text-center">
         <BootstrapTable
-          bootstrap4
           hover={true}
           bordered={false}
           keyField="id"

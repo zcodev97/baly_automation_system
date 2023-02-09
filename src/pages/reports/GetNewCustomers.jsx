@@ -1,3 +1,9 @@
+// for excel and pdf
+import * as XLSX from "xlsx";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
+//
+
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BootstrapTable from "react-bootstrap-table-next";
@@ -14,6 +20,8 @@ import * as Icon from "react-bootstrap-icons";
 import moment from "moment";
 import DateTimePicker from "react-datetime-picker";
 
+// var json2xls = require("json2xls");
+
 function GetNewCustomersReportPage() {
   const navigate = useNavigate();
 
@@ -24,6 +32,49 @@ function GetNewCustomersReportPage() {
   const [startSecondDate, setStartSecondDate] = useState(new Date());
   const [endSecondDate, setEndSecondDate] = useState(new Date());
   const [data, setData] = useState([]);
+
+  //convert json to excel
+  const JSONToExcel = (jsonData, fileName) => {
+    const worksheet = XLSX.utils.json_to_sheet(jsonData);
+    const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+  };
+
+  function exportToPDF() {
+    const pdf = new jsPDF();
+
+    const head = fields.map(function (json) {
+      return [json.text];
+    });
+
+    const body = data.map(function (json) {
+      return [
+        json.week,
+        json.total_new,
+        json.new_net,
+        json.order_1,
+        json.order_2,
+        json.order_3,
+        json.order_4,
+      ];
+    });
+
+    console.log(body);
+
+    // Add header text
+    pdf.setFont("helvetica");
+    pdf.setFontSize(20);
+    pdf.text("New Customers", pdf.internal.pageSize.width / 2, 20, {
+      align: "center",
+    });
+
+    pdf.autoTable({
+      head: [head],
+      body: [...body],
+    });
+
+    pdf.save("table.pdf");
+  }
 
   const pagination = paginationFactory({
     page: 1,
@@ -205,7 +256,7 @@ function GetNewCustomersReportPage() {
         </button>
       </div>
 
-      <div className="container w-50 mt-4 ">
+      <div className="container w-50 mt-4 " id="get_new_customers_table">
         <BootstrapTable
           // className="table-responsive"
           bordered={true}
@@ -218,6 +269,23 @@ function GetNewCustomersReportPage() {
           filter={filterFactory()}
           rowStyle={rowStyle}
         />
+        <div className="row">
+          <div className="col-md-6">
+            <div
+              className="container btn btn-success"
+              onClick={() => {
+                JSONToExcel(data, "ExampleFile");
+              }}
+            >
+              <b> Export Excel</b>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="container btn btn-danger" onClick={exportToPDF}>
+              <b> Export PDF</b>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import { useState, React, useEffect } from "react";
 import Loading from "../components/loading";
 import { useNavigate } from "react-router-dom";
+import BACKEND_URL from "../global";
 
 function Login() {
   const navigate = useNavigate();
@@ -12,20 +13,17 @@ function Login() {
 
   async function checkIfUsernameAndPasswordIsCorrect() {
     setLoading(true);
-    await fetch(
-      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/auth/signin",
-      {
-        method: "POST",
-        headers: {
-          accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: username,
-          password: password,
-        }),
-      }
-    )
+    await fetch(BACKEND_URL + "auth/signin", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

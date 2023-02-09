@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Loading from "../components/loading";
 import NavBar from "../components/navBar";
+import BACKEND_URL from "../global";
 
 function VendorDetails({ id }) {
   const navigate = useNavigate();
@@ -48,16 +49,13 @@ function VendorDetails({ id }) {
 
     var token = localStorage.getItem("token");
 
-    let res = await fetch(
-      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/account_manager/all_am",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    let res = await fetch(BACKEND_URL + "account_manager/all_am", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
     let accountManagers = await res.json();
 
     accountManagers.forEach((accountManager) => {
@@ -77,20 +75,17 @@ function VendorDetails({ id }) {
     var token = localStorage.getItem("token");
 
     let res = null;
-    fetch(
-      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/account_manager/assign_vendor_am`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          account_manager_id: selectedAccountManager,
-          vendor: data[0].vendor_title,
-        }),
-      }
-    )
+    fetch(BACKEND_URL + `account_manager/assign_vendor_am`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        account_manager_id: selectedAccountManager,
+        vendor: data[0].vendor_title,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -132,7 +127,7 @@ function VendorDetails({ id }) {
 
       <div className="container  w-50 p-2 bg-dark rounded">
         <p className="text-white">
-          Current Assigned to <b> {location.state.account_manager} </b>
+          Current Assigned to <b> {location.state.account_manager_username} </b>
         </p>
         <p className="text-white">Assign To</p>
         <Select

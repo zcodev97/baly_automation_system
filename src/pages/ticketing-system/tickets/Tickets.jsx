@@ -13,6 +13,7 @@ import { Navbar } from "react-bootstrap";
 import NavBar from "../../../components/navBar";
 import * as Icon from "react-bootstrap-icons";
 import moment from "moment";
+import BACKEND_URL from "../../../global";
 
 // Data for the table to display; can be anything
 
@@ -93,16 +94,13 @@ function Tickets() {
     setLoading(true);
     var token = localStorage.getItem("token");
 
-    let res = await fetch(
-      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/get_all_ticket",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    let res = await fetch(BACKEND_URL + "ticket_system/get_all_ticket", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     let ticketJsonData = await res.json();
     setTickets(ticketJsonData);
@@ -132,6 +130,7 @@ function Tickets() {
       sort: true,
       filter: textFilter(),
       showTitle: false,
+      fixed: true,
     },
     {
       dataField: "issue_type",
@@ -203,9 +202,9 @@ function Tickets() {
     return <Loading />;
   }
 
-  if (tickets.length === 0) {
-    return <NoDataView />;
-  }
+  // if (tickets.length === 0) {
+  //   return <NoDataView />;
+  // }
 
   return (
     <>
@@ -308,7 +307,6 @@ function Tickets() {
       <BootstrapTable
         // className="table-responsive"
         bordered={false}
-        bootstrap4
         hover={true}
         keyField="id"
         columns={fields}
@@ -318,6 +316,7 @@ function Tickets() {
         rowStyle={rowStyle}
         rowEvents={rowEvents}
       />
+
       <div className="container-fluid  text-start ">
         <b
           className="btn btn-success border w-10 text-center border-3 mt-2 mb-2"

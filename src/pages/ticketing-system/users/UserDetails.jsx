@@ -5,27 +5,14 @@ import supabase from "../../../supabase";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import NavBar from "../../../components/navBar";
+import Select from "react-select";
+import Loading from "../../../components/loading";
+import BACKEND_URL from "../../../global";
 
 var fields = [
-  // {
-  //   dataField: "id",
-  //   text: "ID",
-  // },
   {
-    dataField: "email",
-    text: "Email",
-  },
-  {
-    dataField: "user_type",
-    text: "User Type",
-  },
-  {
-    dataField: "is_active",
-    text: "Is Active",
-  },
-  {
-    dataField: "created_at",
-    text: "Create At",
+    dataField: "vendor_title",
+    text: "Vendor",
   },
 ];
 
@@ -33,12 +20,15 @@ function UserDetails() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const [loading, setLoading] = useState("false");
+
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [userPermission, setUserPermission] = useState([]);
+  const [accountManagerVendors, setAccountManagerVendors] = useState([]);
 
   useEffect(() => {
     setEmail(location.state.email);
@@ -48,6 +38,118 @@ function UserDetails() {
     setUsername(location.state.username);
     setUserPermission(location.state.userPermissions);
   }, []);
+
+  //Issue Type
+
+  const [selectedVendors, setSelectedVendors] = useState([]);
+  const [vendors, setVendors] = useState([]);
+
+  let vendorsList = [];
+
+  async function getAllvendors() {
+    setLoading(true);
+    var token = localStorage.getItem("token");
+
+    let res = await fetch(BACKEND_URL + "ticket_system/all_vendors_user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    let vendors = await res.json();
+
+    vendors.forEach((vendor) => {
+      vendorsList.push({
+        label: vendor.vendor_title,
+        value: vendor.vendor_title,
+      });
+    });
+
+    setVendors(vendorsList);
+
+    getAllVendorsForCurrentAccountManager();
+
+    setLoading(false);
+  }
+
+  function assignUserToSelectedVendors() {
+    var token = localStorage.getItem("token");
+
+    console.log(location.state.id);
+
+    let selectVendorsList = [];
+
+    console.log(selectedVendors);
+
+    // get selected vendors as value
+    selectedVendors.forEach((vendor) => {
+      selectVendorsList.push(vendor.value);
+    });
+
+    fetch(BACKEND_URL + `account_manager/assign_vendors_am`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        account_manager_id: location.state.id,
+        vendors: selectVendorsList,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        alert("Error In assign vendors😕");
+        setLoading(false);
+      });
+  }
+
+  function getAllVendorsForCurrentAccountManager() {
+    var token = localStorage.getItem("token");
+
+    // console.log(location.state.id);
+
+    if (location.state.id === "" || location.state.id === null) {
+      return;
+    }
+
+    fetch(
+      BACKEND_URL +
+        `account_manager/get_vendors_of_am?am_id=${location.state.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setAccountManagerVendors(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        // alert("Error In getting Account Manager Vendors😕");
+        setLoading(false);
+      });
+  }
+
+  useEffect(() => {
+    getAllvendors();
+    getAllVendorsForCurrentAccountManager();
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -139,22 +241,41 @@ function UserDetails() {
           />
         </div>
 
-        <div className="container text-dark">
-          User Permissions
-          <ul>
-            {userPermission.map((item) => (
-              <li key={location.state.id}>{item.name}</li>
-            ))}
-          </ul>
+        {/* vendors */}
+        <div className="container border-bottom border-light border-3 text-dark   m-1 p-2">
+          <p className="text-dark">Vendors</p>
+          <Select
+            options={vendors}
+            onChange={(opt) => setSelectedVendors(opt)}
+            isMulti
+          />
         </div>
 
         <div className="container m-1 p-1 text-center">
-          <button className="btn btn-danger m-1" onClick={deacitveUser}>
-            Deacitve User
+          <button
+            className="btn btn-success m-1"
+            onClick={assignUserToSelectedVendors}
+          >
+            Assign Vendors
           </button>
-          <button className="btn btn-danger m-1" onClick={deleteUser}>
-            Delete User
-          </button>
+        </div>
+
+        <div className="container  border border-1 rounded bg-primary text-white">
+          <b> User Permissions</b>
+          <ul>
+            {userPermission.map((item) => (
+              <li key={location.state.id + 1}>{item.name}</li>
+            ))}
+          </ul>
+        </div>
+        <hr />
+        <div className="container text-dark border border-1 rounded bg-primary text-white">
+          <b> Current Vendors</b>
+          <ul>
+            {accountManagerVendors.map((vendor) => (
+              <li key={vendor.id}>{vendor.vendor_title}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </>

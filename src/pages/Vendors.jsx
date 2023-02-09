@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import supabase from "../supabase";
 import Loading from "../components/loading";
 import NavBar from "../components/navBar";
+import BACKEND_URL from "../global";
 
 // Fields to show in the table, and what object properties in the data they bind to
 const fields = [
@@ -35,16 +36,13 @@ function Vendors() {
     setLoading(true);
     var token = localStorage.getItem("token");
 
-    let res = await fetch(
-      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/account_manager/get_vendor_am",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    let res = await fetch(BACKEND_URL + "account_manager/get_vendor_am", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     let vendors = await res.json();
     setVendors(vendors);

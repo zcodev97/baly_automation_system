@@ -5,6 +5,7 @@ import Loading from "../../../components/loading";
 import supabase from "../../../supabase";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../../components/navBar";
+import BACKEND_URL from "../../../global";
 
 function NewTicketPage() {
   const navigate = useNavigate();
@@ -43,16 +44,13 @@ function NewTicketPage() {
 
     var token = localStorage.getItem("token");
 
-    let res = await fetch(
-      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/all_vendors_user",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    let res = await fetch(BACKEND_URL + "ticket_system/all_vendors_user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     let vendors = await res.json();
 
@@ -85,16 +83,13 @@ function NewTicketPage() {
 
     var token = localStorage.getItem("token");
 
-    let res = await fetch(
-      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/all_issue_types",
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    let res = await fetch(BACKEND_URL + "ticket_system/all_issue_types", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     let issueTypes = await res.json();
 
@@ -151,26 +146,23 @@ function NewTicketPage() {
   async function addNewTicket() {
     var token = localStorage.getItem("token");
 
-    fetch(
-      "http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/create_ticket",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+    fetch(BACKEND_URL + "ticket_system/create_ticket", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
 
-        body: JSON.stringify({
-          user_assign_to: selectedAccountManager,
-          issue_type: selectedIssueType,
-          vendor: selectedVendor,
-          order_id: orderId,
-          description: description,
-          comment: "",
-          priority: priority,
-        }),
-      }
-    )
+      body: JSON.stringify({
+        user_assign_to: selectedAccountManager,
+        issue_type: selectedIssueType,
+        vendor: selectedVendor,
+        order_id: orderId,
+        description: description,
+        comment: "",
+        priority: priority,
+      }),
+    })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../../../components/navBar";
 import { useState } from "react";
 import { useEffect } from "react";
+import BACKEND_URL from "../../../global";
 
 function getDate() {
   return new Date().toLocaleString();
@@ -32,16 +33,13 @@ function TicketDetails() {
   async function updateTicket() {
     var token = localStorage.getItem("token");
 
-    fetch(
-      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/resolve_ticket?ticket_id=${ticketId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    fetch(BACKEND_URL + `ticket_system/resolve_ticket?ticket_id=${ticketId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -68,7 +66,8 @@ function TicketDetails() {
     var token = localStorage.getItem("token");
 
     fetch(
-      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/add_comment_ticket?ticket_id=${ticketId}&comment=${commentMessage}`,
+      BACKEND_URL +
+        `ticket_system/add_comment_ticket?ticket_id=${ticketId}&comment=${commentMessage}`,
       {
         method: "PUT",
         headers: {
@@ -94,7 +93,7 @@ function TicketDetails() {
     var token = localStorage.getItem("token");
 
     fetch(
-      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/ticket_system/get_comments_ticket?ticket_id=${ticketId}`,
+      BACKEND_URL + `ticket_system/get_comments_ticket?ticket_id=${ticketId}`,
       {
         method: "GET",
         headers: {
