@@ -47,150 +47,70 @@ function NavBar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-sm bg-dark p-2   ">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-primary p-2">
         <div className="container-fluid">
-          <ul className="navbar-nav">
-            {/* Divider */}
-            <Divider />
-
-            <li className="nav-item ">
-              <Link
-                // onClick={selectedButtonColor}
-                className="text-dark bg-white p-2 rounded"
-                to="/"
-                style={{ textDecoration: "none", display: "block" }}
-              >
-                <b> Home 🏠 </b>
-              </Link>
-            </li>
-            <Divider />
-
-            <li className="nav-item ">
-              <Link
-                className="text-dark bg-white p-2 rounded"
-                to="/tickets"
-                style={{ textDecoration: "none", display: "block" }}
-              >
-                <b> Tickets 🎟️ </b>
-              </Link>
-            </li>
-            {/* 
-            <Divider />
-            <li className="nav-item ">
-              <Link
-                className="text-dark bg-white p-2 rounded"
-                to="/newticket"
-                style={{ textDecoration: "none", display: "block" }}
-              >
-                <b> New Ticket ➕📃</b>
-              </Link>
-            </li> */}
-
-            <Divider />
-            <li className="nav-item ">
-              <Link
-                className="text-dark bg-white p-2 rounded"
-                to="/users"
+          <a className="navbar-brand" href="#">
+            BALY
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <Link className="nav-link text-light" to="/">
+                  Home 🏠
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light" to="/tickets">
+                  Tickets 🎟️
+                </Link>
+              </li>
+              <li
+                className="nav-item"
                 style={{
-                  textDecoration: "none",
-                  display:
-                    user_type === "3" || user_type === "2" ? "none" : "block",
-                }}
-              >
-                <b>Users 👥</b>
-              </Link>
-            </li>
-
-            {/* <Divider />
-            <li className="nav-item ">
-              <Link
-                className="text-dark bg-white p-2 rounded"
-                to="/adduser"
-                style={{
-                  textDecoration: "none",
-                  display:
-                    user_type === "3" || user_type === "2" ? "none" : "block",
-                }}
-              >
-                <b> Add User ➕👤</b>
-              </Link>
-            </li> */}
-
-            <Divider />
-            <li className="nav-item ">
-              <Link
-                className="text-dark bg-white p-2 rounded"
-                to="/vendors"
-                style={{
-                  textDecoration: "none",
-                  display:
-                    user_type === "3" || user_type === "2" ? "none" : "block",
-                }}
-              >
-                <b> Vendors 🛍️</b>
-              </Link>
-            </li>
-
-            {/* <Divider />
-            <li className="nav-item ">
-              <Link
-                className="text-dark bg-white p-2 rounded"
-                to="/reports"
-                style={{
-                  textDecoration: "none",
-                  display:
-                    user_type === "3" || user_type === "2" ? "none" : "block",
-                }}
-              >
-                <b> Reports 📄 </b>
-              </Link>
-            </li> */}
-
-            <Divider />
-            <li className="nav-item ">
-              <Link
-                className="text-light bg-primary p-2 rounded"
-                style={{
-                  textDecoration: "none",
                   display: "block",
                 }}
               >
-                <b> 👤 {localStorage.getItem("username")}</b>
-              </Link>
-            </li>
-            {/* <Divider />
-            <li className="nav-item ">
-              <Link
-                className="text-dark bg-dark p-2 rounded border-light border-3"
+                <Link className="nav-link text-light" to="/users">
+                  Users 👥
+                </Link>
+              </li>
+              <li
+                className="nav-item"
                 style={{
-                  textDecoration: "none",
                   display: "block",
                 }}
               >
-                <b className="bg-dark text-light border rounded-pill p-1 ">
-                  {" "}
-                  {user_type === "3"
-                    ? "CC"
-                    : user_type === "2"
-                    ? "Account Manager"
-                    : "Admin"}{" "}
-                </b>
-              </Link>
-            </li> */}
-
-            <Divider />
-
-            <li className="nav-item ">
-              <Link
-                className="text-white bg-danger p-2 rounded"
-                to="/login"
-                style={{ textDecoration: "none", display: "block" }}
-                onClick={handleLogout}
-              >
-                <b> Logout ➡️</b>
-              </Link>
-            </li>
-          </ul>
+                <Link className="nav-link text-light" to="/vendors">
+                  Vendors 🛍️
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link text-light rounded p-2" to="#">
+                  👤<b> {localStorage.getItem("username")}</b>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  className="nav-link text-light rounded p-2"
+                  to="/login"
+                  onClick={handleLogout}
+                >
+                  <b> Logout</b> ➡️
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
 

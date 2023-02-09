@@ -144,12 +144,12 @@ function HomePage() {
           <button className="btn btn-dark border-light border-1 m-1">
             <b> Cancellation ❌</b>
           </button>
-          <button className="btn btn-dark border-light border-1 m-1">
+          {/* <button className="btn btn-dark border-light border-1 m-1">
             <b> Commission 💵</b>
-          </button>
-          <button className="btn btn-dark border-light border-1 m-1">
+          </button> */}
+          {/* <button className="btn btn-dark border-light border-1 m-1">
             <b> Voucher Usage 🔃</b>
-          </button>
+          </button> */}
           <button
             className="btn btn-dark border-light border-1 m-1"
             onClick={GetNEwCustomersReport}

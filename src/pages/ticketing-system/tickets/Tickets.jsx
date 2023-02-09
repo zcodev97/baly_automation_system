@@ -305,7 +305,7 @@ function Tickets() {
       </div> */}
 
       <BootstrapTable
-        // className="table-responsive"
+        className="table-style"
         bordered={false}
         hover={true}
         keyField="id"
@@ -313,7 +313,14 @@ function Tickets() {
         data={tickets}
         pagination={pagination}
         filter={filterFactory()}
-        rowStyle={rowStyle}
+        // rowStyle={rowStyle}
+        style={{
+          borderCollapse: "collapse",
+          tableLayout: "fixed",
+          width: "100%",
+          overflowX: "auto",
+          minWidth: "fit-content",
+        }}
         rowEvents={rowEvents}
       />
 
