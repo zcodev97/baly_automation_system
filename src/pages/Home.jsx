@@ -28,6 +28,9 @@ function HomePage() {
   function GetHourlyReport() {
     navigate("/get_hourly_report");
   }
+  function GetVendorKPIReport() {
+    navigate("/get_vendor_kpi_report");
+  }
 
   function getAllVendorsForCurrentAccountManager() {
     var token = localStorage.getItem("token");
@@ -138,7 +141,10 @@ function HomePage() {
           >
             <b> Hourly Report ⌛</b>
           </button>
-          <button className="btn btn-dark border-light border-1 m-1">
+          <button
+            className="btn btn-dark border-light border-1 m-1"
+            onClick={GetVendorKPIReport}
+          >
             <b> Vendor KPIs 🍽️</b>
           </button>
           <button className="btn btn-dark border-light border-1 m-1">

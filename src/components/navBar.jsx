@@ -102,11 +102,11 @@ function NavBar() {
               </li>
               <li className="nav-item">
                 <Link
-                  className="nav-link text-light rounded p-2"
+                  className="nav-link text-warning rounded p-2"
                   to="/login"
                   onClick={handleLogout}
                 >
-                  <b> Logout</b> ➡️
+                  Logout ➡️
                 </Link>
               </li>
             </ul>
