@@ -189,7 +189,7 @@ function GetNewCustomersReportPage() {
     <>
       <NavBar />
       {/* first date */}
-      <div className="container border border-2    mt-2 mb-2 w-50 rounded">
+      <div className=" container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
         <div className="row text-center bg-light ">
           <div className="col-md-6">
             <div className="container p-2  m-1">
@@ -218,7 +218,7 @@ function GetNewCustomersReportPage() {
         </div>
       </div>
       {/* second date */}
-      <div className="container border border-2    mt-2 mb-2 w-50 rounded">
+      <div className="container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
         <div className="row text-center bg-light ">
           <div className="col-md-6">
             <div className="container p-2  m-1">

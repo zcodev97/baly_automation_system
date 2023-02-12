@@ -30,8 +30,9 @@ function VendorKPIReport() {
   const [minValues, setMinValues] = useState([]);
   const [maxValues, setMaxValues] = useState([]);
 
-  const colorScale = (sh, si, header) => {
-    console.log(si);
+  const colorScale = (sh, si, header, index) => {
+    console.log("index");
+    console.log(index);
     let returnedValue = Object.values(header);
 
     returnedValue.pop();
@@ -45,6 +46,11 @@ function VendorKPIReport() {
     const cappedPercentage = Math.min(1, Math.max(0, percentage));
     const red = Math.round(255 * cappedPercentage);
     const green = Math.round(255 * (1 - cappedPercentage));
+
+    if (si === 4) {
+      sh.toLocaleString("en-US", { style: "currency", currency: "USD" });
+    }
+
     return {
       backgroundColor: `rgb(${red}, ${green}, 0)`,
     };
@@ -92,13 +98,19 @@ function VendorKPIReport() {
       .slice(0, 10);
 
     fetch(
-      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_vendor_kpi_report?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}&mode=0`,
+      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_vendor_kpi_report`,
       {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          start_date: formattedFirstDateStart,
+          end_date: formattedFirstDateEnd,
+          mode: 0,
+          vendors: [],
+        }),
       }
     )
       .then((response) => response.json())
@@ -132,7 +144,7 @@ function VendorKPIReport() {
         setLoading(false);
       })
       .catch((error) => {
-        alert("Error In Adding new Comment 😕");
+        alert(error);
         setLoading(false);
       });
   }
@@ -264,9 +276,9 @@ function VendorKPIReport() {
                             <td
                               key={si}
                               style={
-                                si === 12
+                                si === Object.values(header).length - 1
                                   ? { fontWeight: "bold" }
-                                  : colorScale(sh, si, header)
+                                  : colorScale(sh, si, header, index)
                               }
                             >
                               {sh}

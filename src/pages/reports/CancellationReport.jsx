@@ -189,20 +189,22 @@ function CancellationReport() {
         </div>
       </div>
 
-      <div className="row">
-        <div className="col-md-6">
-          <div
-            className="container btn btn-success"
-            onClick={() => {
-              JSONToExcel(data, "ExampleFile");
-            }}
-          >
-            <b> Export Excel</b>
+      <div className="container text-center w-50">
+        <div className="row ">
+          <div className="col-md-6">
+            <div
+              className="container btn btn-success"
+              onClick={() => {
+                JSONToExcel(data, "ExampleFile");
+              }}
+            >
+              <b> Export Excel</b>
+            </div>
           </div>
-        </div>
-        <div className="col-md-6">
-          <div className="container btn btn-danger" onClick={exportToPDF}>
-            <b> Export PDF</b>
+          <div className="col-md-6">
+            <div className="container btn btn-danger" onClick={exportToPDF}>
+              <b> Export PDF</b>
+            </div>
           </div>
         </div>
       </div>

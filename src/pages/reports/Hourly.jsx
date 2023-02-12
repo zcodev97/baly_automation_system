@@ -145,7 +145,7 @@ function HourlyReportPage() {
   return (
     <>
       <NavBar />
-      <div className="container     mt-2 mb-2 w-50">
+      <div className="container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
         <div className="row text-center bg-light ">
           <div className="col-md-6">
             <div className="container p-2  m-1">
@@ -195,20 +195,22 @@ function HourlyReportPage() {
           filter={filterFactory()}
           rowStyle={rowStyle}
         />
-        <div className="row">
-          <div className="col-md-6">
-            <div
-              className="container btn btn-success"
-              onClick={() => {
-                JSONToExcel(data, "ExampleFile");
-              }}
-            >
-              <b> Export Excel</b>
+        <div className="container">
+          <div className="row ">
+            <div className="col-md-6">
+              <div
+                className="container btn btn-success"
+                onClick={() => {
+                  JSONToExcel(data, "ExampleFile");
+                }}
+              >
+                <b> Export Excel</b>
+              </div>
             </div>
-          </div>
-          <div className="col-md-6">
-            <div className="container btn btn-danger" onClick={exportToPDF}>
-              <b> Export PDF</b>
+            <div className="col-md-6">
+              <div className="container btn btn-danger" onClick={exportToPDF}>
+                <b> Export PDF</b>
+              </div>
             </div>
           </div>
         </div>
