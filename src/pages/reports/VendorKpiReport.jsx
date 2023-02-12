@@ -20,7 +20,6 @@ import moment from "moment";
 import DateTimePicker from "react-datetime-picker";
 import { Table, Container } from "react-bootstrap";
 import { position } from "@chakra-ui/react";
-
 function VendorKPIReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
@@ -31,8 +30,8 @@ function VendorKPIReport() {
   const [maxValues, setMaxValues] = useState([]);
 
   const colorScale = (sh, si, header, index) => {
-    console.log("index");
-    console.log(index);
+    // console.log(si);
+
     let returnedValue = Object.values(header);
 
     returnedValue.pop();
@@ -47,6 +46,8 @@ function VendorKPIReport() {
     const red = Math.round(255 * cappedPercentage);
     const green = Math.round(255 * (1 - cappedPercentage));
 
+    sh = sh.toFixed(2);
+
     if (si === 4) {
       sh.toLocaleString("en-US", { style: "currency", currency: "USD" });
     }
@@ -58,33 +59,34 @@ function VendorKPIReport() {
 
   //convert json to excel
   const JSONToExcel = (jsonData, fileName) => {
-    // const worksheet = XLSX.utils.json_to_sheet(jsonData);
-    // const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
-    // XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    if (reportData.length === 0) {
+      alert("Please Select Date and press Get Report 😁");
+      return;
+    }
 
-    alert("coming...");
+    const values = Object.values(reportData).map((header) =>
+      Object.values(header)
+    );
+    const headers = Object.keys(reportData);
+
+    let mergedObj = Object.assign({}, headers, values);
+
+    const lastValues = Object.values(mergedObj).map((header) =>
+      Object.values(header)
+    );
+
+    let titles = Object.keys(reportData).map((header, index) => header);
+
+    for (let i = 0; i < lastValues.length; i++) {
+      lastValues[i].unshift(titles[i]);
+    }
+
+    console.log(lastValues);
+
+    const worksheet = XLSX.utils.json_to_sheet(lastValues);
+    const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+    XLSX.writeFile(workbook, `${fileName}.xlsx`);
   };
-
-  function exportToPDF() {
-    // const pdf = new jsPDF();
-
-    // const body = reportData.map(function (json) {
-    //   return [
-    //     json.hour,
-    //     json.gross_orders,
-    //     json.net_orders,
-    //     json.cancelled_orders,
-    //   ];
-    // });
-
-    // pdf.autoTable({
-    //   // head: [head],
-    //   body: [...body],
-    // });
-
-    // pdf.save("table.pdf");
-    alert("coming...");
-  }
 
   async function getReport() {
     setLoading(true);
@@ -192,30 +194,22 @@ function VendorKPIReport() {
 
       <div className="container text-center w-50">
         <div className="row mt-2 mb-2">
-          <div className="col-md-4">
+          <div className="col-md-6">
             <div
               className="container btn btn-light text-primary border border-2 border-secondary"
               onClick={getReport}
             >
-              <b> Get Report</b>
+              <b> Get Report ✅</b>
             </div>
           </div>
-          <div className="col-md-4">
+          <div className="col-md-6">
             <div
               className="container btn btn-light text-success border border-2 border-secondary"
               onClick={() => {
                 JSONToExcel(reportData, "ExampleFile");
               }}
             >
-              <b> Export Excel</b>
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div
-              className="container btn btn-light text-danger border border-2 border-secondary"
-              onClick={exportToPDF}
-            >
-              <b> Export PDF</b>
+              <b> Export Excel ⬇️</b>
             </div>
           </div>
         </div>
@@ -223,7 +217,7 @@ function VendorKPIReport() {
 
       <div className="row">
         <div className="col-md-3 p-0 m-0">
-          <table className="table   table-bordered">
+          <table className="table   table-bordered table-hover table-dark">
             <tbody className="text-center">
               {/* show only one column with all headers from the returned object */}
               {reportData.length === 0
@@ -245,24 +239,28 @@ function VendorKPIReport() {
         </div>
         <div className="col-md-9 p-0 m-0">
           <div className="table-responsive">
-            <table className="table   table-bordered">
+            <table className="table   table-bordered table-hover table-dark">
               <thead>
                 <tr className="text-center ">
                   {/* view all of the selected days from the returned object by iterating throw it  */}
-                  {reportData.length === 0
-                    ? "Please Select Start and End Date and Press Get Report 😁"
-                    : Object.values(reportData.Date).map((header, index) => [
-                        <th
-                          key={index}
-                          style={{
-                            minWidth: 200,
-                            width: 200,
-                            textAlign: "center",
-                          }}
-                        >
-                          {header}
-                        </th>,
-                      ])}
+                  {reportData.length === 0 ? (
+                    <th>
+                      Please Select Start and End Date and Press Get Report 😁
+                    </th>
+                  ) : (
+                    Object.values(reportData.Date).map((header, index) => [
+                      <th
+                        key={index}
+                        style={{
+                          minWidth: 200,
+                          width: 200,
+                          textAlign: "center",
+                        }}
+                      >
+                        {header}
+                      </th>,
+                    ])
+                  )}
                 </tr>
               </thead>
               <tbody className="text-center">
@@ -281,7 +279,45 @@ function VendorKPIReport() {
                                   : colorScale(sh, si, header, index)
                               }
                             >
-                              {sh}
+                              {index === 3
+                                ? sh.toFixed(2) + " %"
+                                : index === 4
+                                ? sh.toFixed(2) + " %"
+                                : index === 6
+                                ? sh.toFixed(2) + " $"
+                                : index === 7
+                                ? sh.toFixed(2) + " $"
+                                : index === 8
+                                ? sh.toFixed(2) + " $"
+                                : index === 10
+                                ? sh.toFixed(2) + " %"
+                                : index === 11
+                                ? sh.toFixed(2) + " $"
+                                : index === 12
+                                ? sh.toFixed(2) + " %"
+                                : index === 13
+                                ? sh.toFixed(2) + " $"
+                                : index === 14
+                                ? sh.toFixed(2) + " $"
+                                : index === 15
+                                ? sh.toFixed(2) + " %"
+                                : index === 17
+                                ? sh.toFixed(2) + " %"
+                                : index === 19
+                                ? sh.toFixed(2) + " %"
+                                : index === 20
+                                ? sh.toFixed(2) + " $"
+                                : index === 21
+                                ? sh.toFixed(2) + " $"
+                                : index === 22
+                                ? sh.toFixed(2) + " %"
+                                : index === 23
+                                ? sh.toFixed(2) + ""
+                                : index === 26
+                                ? sh.toFixed(2) + " %"
+                                : index === 30
+                                ? sh.toFixed(5) + " %"
+                                : sh.toFixed(5)}
                             </td>,
                           ])}
                         </tr>,

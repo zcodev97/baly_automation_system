@@ -11,7 +11,7 @@ function HomePage() {
   const [grossClassName, setGrossClassName] = useState("");
 
   const containerClassNameGauge =
-    "container p-1 text-center border border-light border-2 rounded";
+    "container p-1 text-center border border-primary border-2 rounded";
 
   const [net, setNet] = useState(0);
   const [gross, setGross] = useState(0);
@@ -72,7 +72,7 @@ function HomePage() {
   return (
     <>
       <NavBar />
-      <div className="container-fluid text-white text-center bg-dark p-2">
+      <div className="container-fluid text-dark text-center bg-light p-2">
         <div className="row mt-2 p-2">
           <div className="col-md-3">
             <div className={containerClassNameGauge}>
@@ -133,22 +133,22 @@ function HomePage() {
         {/*  */}
 
         <hr className="mt-5" />
-        <div className="container mt-5 bg-dark p-1 border-1">
-          <h3>Reports</h3>
+        <div className="container mt-5 bg-primary rounded-pill p-1 border-1">
+          <h3 className="text-white">Reports</h3>
           <button
-            className="btn btn-dark border-light border-1 m-1"
+            className="btn btn-primary border-light border-1 m-1"
             onClick={GetHourlyReport}
           >
             <b> Hourly Report ⌛</b>
           </button>
           <button
-            className="btn btn-dark border-light border-1 m-1"
+            className="btn btn-primary border-light border-1 m-1"
             onClick={GetVendorKPIReport}
           >
             <b> Vendor KPIs 🍽️</b>
           </button>
           <button
-            className="btn btn-dark border-light border-1 m-1"
+            className="btn btn-primary border-light border-1 m-1"
             onClick={() => {
               navigate("/cancellation_report");
             }}
@@ -162,7 +162,7 @@ function HomePage() {
             <b> Voucher Usage 🔃</b>
           </button> */}
           <button
-            className="btn btn-dark border-light border-1 m-1"
+            className="btn btn-primary border-light border-1 m-1"
             onClick={GetNEwCustomersReport}
           >
             <b> Get New Customers 🧑‍🤝‍🧑</b>

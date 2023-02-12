@@ -47,7 +47,7 @@ function NavBar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-sm navbar-dark bg-light border-primary border border-4 rounded p-2">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-light  border-bottom border-primary border-2 rounded p-2">
         <div className="container-fluid">
           <a className="navbar-brand text-primary" href="#">
             BALY
