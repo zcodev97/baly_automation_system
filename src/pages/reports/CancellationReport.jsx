@@ -34,27 +34,20 @@ function CancellationReport() {
   };
 
   function exportToPDF() {
-    const pdf = new jsPDF();
+    alert("coming... 😁");
 
-    const head = fields.map(function (json) {
-      return [json.text];
-    });
+    // const pdf = new jsPDF();
 
-    const body = data.map(function (json) {
-      return [
-        json.hour,
-        json.gross_orders,
-        json.net_orders,
-        json.cancelled_orders,
-      ];
-    });
+    // const head = Object.keys(data[0]).map((k) => [k]);
 
-    pdf.autoTable({
-      head: [head],
-      body: [...body],
-    });
+    // const body = Object.values(data[0]).map((k) => k);
 
-    pdf.save("table.pdf");
+    // pdf.autoTable({
+    //   head: [head],
+    //   body: [...body],
+    // });
+
+    // pdf.save("table.pdf");
   }
 
   async function getReport() {
@@ -68,6 +61,13 @@ function CancellationReport() {
       .toISOString()
       .slice(0, 10);
 
+    if (formattedFirstDateStart === formattedFirstDateEnd) {
+      alert("Please Select Correct Date");
+      setLoading(false);
+
+      return;
+    }
+
     fetch(
       `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_cancellation_report?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}`,
       {
@@ -80,6 +80,7 @@ function CancellationReport() {
     )
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         setData(data);
         setLoading(false);
       })
@@ -116,7 +117,7 @@ function CancellationReport() {
   return (
     <>
       <NavBar />
-      <div className="container     mt-2 mb-2 w-50">
+      <div className="container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
         <div className="row text-center bg-light ">
           <div className="col-md-6">
             <div className="container p-2  m-1">
@@ -147,10 +148,10 @@ function CancellationReport() {
 
       <div className="container text-center ">
         <button
-          className="btn btn-primary border border-2 p-2"
+          className="btn btn-light text-primary border border-3 rounded border-secondary p-2 m-2"
           onClick={getReport}
         >
-          Get Report
+          <b> Get Report </b>
         </button>
       </div>
       <div className="table-responsive">
@@ -160,7 +161,7 @@ function CancellationReport() {
               <tr className="text-center">
                 {/* view all of the selected days from the returned object by iterating throw it  */}
                 {data.length === 0
-                  ? "empty"
+                  ? ""
                   : Object.keys(data[0]).map((header, index) => [
                       <th
                         key={index}
@@ -178,7 +179,7 @@ function CancellationReport() {
             <tbody className="text-center">
               <tr>
                 {data.length === 0
-                  ? "empty"
+                  ? "Please Select Start and End Date and Press Get Report 😁"
                   : Object.values(data[0]).map((header, index) => [
                       <td key={header}>{header}</td>,
                     ])}

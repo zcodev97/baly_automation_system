@@ -30,11 +30,21 @@ function VendorKPIReport() {
   const [minValues, setMinValues] = useState([]);
   const [maxValues, setMaxValues] = useState([]);
 
-  const colorScale = (sh, si) => {
+  const colorScale = (sh, si, header) => {
     console.log(si);
-    const percentage = (sh - maxValues[si]) / (minValues[si] - maxValues[si]);
-    const red = Math.round(255 * percentage);
-    const green = Math.round(255 * (1 - percentage));
+    let returnedValue = Object.values(header);
+
+    returnedValue.pop();
+
+    let sortedValues = returnedValue.sort((a, b) => a - b);
+
+    var minValue = Math.min(...sortedValues);
+    var maxValue = Math.max(...sortedValues);
+
+    const percentage = (sh - maxValue) / (minValue - maxValue);
+    const cappedPercentage = Math.min(1, Math.max(0, percentage));
+    const red = Math.round(255 * cappedPercentage);
+    const green = Math.round(255 * (1 - cappedPercentage));
     return {
       backgroundColor: `rgb(${red}, ${green}, 0)`,
     };
@@ -139,7 +149,7 @@ function VendorKPIReport() {
     <>
       <NavBar />
 
-      <div className="container border  rounded p-2 mt-2 mb-2 w-50">
+      <div className="container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
         <div className="row text-center bg-light ">
           <div className="col-md-6">
             <div className="container p-2  m-1">
@@ -202,10 +212,10 @@ function VendorKPIReport() {
       <div className="row">
         <div className="col-md-3 p-0 m-0">
           <table className="table   table-bordered">
-            <tbody>
+            <tbody className="text-center">
               {/* show only one column with all headers from the returned object */}
               {reportData.length === 0
-                ? "empty"
+                ? ""
                 : Object.keys(reportData).map((header, index) => (
                     <tr
                       key={index}
@@ -225,10 +235,10 @@ function VendorKPIReport() {
           <div className="table-responsive">
             <table className="table   table-bordered">
               <thead>
-                <tr>
+                <tr className="text-center ">
                   {/* view all of the selected days from the returned object by iterating throw it  */}
                   {reportData.length === 0
-                    ? "empty"
+                    ? "Please Select Start and End Date and Press Get Report 😁"
                     : Object.values(reportData.Date).map((header, index) => [
                         <th
                           key={index}
@@ -245,13 +255,20 @@ function VendorKPIReport() {
               </thead>
               <tbody className="text-center">
                 {reportData.length === 0
-                  ? "empty"
+                  ? ""
                   : Object.values(reportData)
                       .slice(1)
                       .map((header, index) => [
                         <tr key={header}>
                           {Object.values(header).map((sh, si) => [
-                            <td key={si} style={colorScale(sh, si)}>
+                            <td
+                              key={si}
+                              style={
+                                si === 12
+                                  ? { fontWeight: "bold" }
+                                  : colorScale(sh, si, header)
+                              }
+                            >
                               {sh}
                             </td>,
                           ])}

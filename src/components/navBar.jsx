@@ -47,9 +47,9 @@ function NavBar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-sm navbar-dark bg-primary p-2">
+      <nav className="navbar navbar-expand-sm navbar-dark bg-light border-primary border border-4 rounded p-2">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
+          <a className="navbar-brand text-primary" href="#">
             BALY
           </a>
           <button
@@ -64,14 +64,14 @@ function NavBar() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav">
+            <ul className="navbar-nav ">
               <li className="nav-item">
-                <Link className="nav-link text-light" to="/">
+                <Link className="nav-link text-primary" to="/">
                   Home 🏠
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light" to="/tickets">
+                <Link className="nav-link text-primary" to="/tickets">
                   Tickets 🎟️
                 </Link>
               </li>
@@ -81,7 +81,7 @@ function NavBar() {
                   display: "block",
                 }}
               >
-                <Link className="nav-link text-light" to="/users">
+                <Link className="nav-link text-primary" to="/users">
                   Users 👥
                 </Link>
               </li>
@@ -91,18 +91,18 @@ function NavBar() {
                   display: "block",
                 }}
               >
-                <Link className="nav-link text-light" to="/vendors">
+                <Link className="nav-link text-primary" to="/vendors">
                   Vendors 🛍️
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link text-light rounded p-2" to="#">
+                <Link className="nav-link text-primary rounded p-2" to="#">
                   👤<b> {localStorage.getItem("username")}</b>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link
-                  className="nav-link text-warning rounded p-2"
+                  className="nav-link text-danger rounded p-2"
                   to="/login"
                   onClick={handleLogout}
                 >

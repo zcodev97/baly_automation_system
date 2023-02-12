@@ -36,7 +36,7 @@ function App() {
 
     var token = localStorage.getItem("token");
 
-    console.log(token === null);
+    // console.log(token === null);
 
     if (token === null || token === "") {
       setLoggedIn(false);
@@ -44,7 +44,6 @@ function App() {
       setLoading(false);
 
       alert("You Must Login");
-      // navigate("/login");
 
       return;
     }
@@ -59,7 +58,6 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         setcurrentUsername(data.id);
-        // navigate("/home");
         setLoggedIn(true);
       })
       .catch((error) => {
