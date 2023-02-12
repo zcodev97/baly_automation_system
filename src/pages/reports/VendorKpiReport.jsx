@@ -27,35 +27,47 @@ function VendorKPIReport() {
   const [reportData, setReportData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [minValues, setMinValues] = useState([]);
+  const [maxValues, setMaxValues] = useState([]);
+
+  const colorScale = (sh, si) => {
+    console.log(si);
+    const percentage = (sh - maxValues[si]) / (minValues[si] - maxValues[si]);
+    const red = Math.round(255 * percentage);
+    const green = Math.round(255 * (1 - percentage));
+    return {
+      backgroundColor: `rgb(${red}, ${green}, 0)`,
+    };
+  };
+
   //convert json to excel
   const JSONToExcel = (jsonData, fileName) => {
-    const worksheet = XLSX.utils.json_to_sheet(jsonData);
-    const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
-    XLSX.writeFile(workbook, `${fileName}.xlsx`);
+    // const worksheet = XLSX.utils.json_to_sheet(jsonData);
+    // const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+    // XLSX.writeFile(workbook, `${fileName}.xlsx`);
+
+    alert("coming...");
   };
 
   function exportToPDF() {
-    const pdf = new jsPDF();
+    // const pdf = new jsPDF();
 
-    // const head = fields.map(function (json) {
-    //   return [json.text];
+    // const body = reportData.map(function (json) {
+    //   return [
+    //     json.hour,
+    //     json.gross_orders,
+    //     json.net_orders,
+    //     json.cancelled_orders,
+    //   ];
     // });
 
-    const body = reportData.map(function (json) {
-      return [
-        json.hour,
-        json.gross_orders,
-        json.net_orders,
-        json.cancelled_orders,
-      ];
-    });
+    // pdf.autoTable({
+    //   // head: [head],
+    //   body: [...body],
+    // });
 
-    pdf.autoTable({
-      // head: [head],
-      body: [...body],
-    });
-
-    pdf.save("table.pdf");
+    // pdf.save("table.pdf");
+    alert("coming...");
   }
 
   async function getReport() {
@@ -70,7 +82,7 @@ function VendorKPIReport() {
       .slice(0, 10);
 
     fetch(
-      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_vendor_kpi_report?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}`,
+      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_vendor_kpi_report?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}&mode=0`,
       {
         method: "GET",
         headers: {
@@ -81,20 +93,31 @@ function VendorKPIReport() {
     )
       .then((response) => response.json())
       .then((data) => {
-        // data.forEach(function (jsonObject) {
-        //   if (jsonObject.hour >= 0 && jsonObject.hour < 12) {
-        //     jsonObject.hour = jsonObject.hour + "  " + "AM";
-        //   } else {
-        //     jsonObject.hour = jsonObject.hour + "  " + "PM";
-        //   }
-        // });'
-
-        // var ds = data;
-        // console.log(ds);
-
         setReportData(data);
 
         console.log(reportData);
+
+        // Find the minimum and maximum values in the table
+
+        const values = Object.values(reportData)
+          .slice(1)
+          .map((header) => Object.values(header));
+
+        let rawData = values.map((arr) => arr.slice(0, arr.length - 1));
+
+        let maxValues = [];
+        let minValues = [];
+
+        for (var i = 0; i < rawData.length; i++) {
+          var minValue = Math.min(...rawData[i]);
+          var maxValue = Math.max(...rawData[i]);
+
+          minValues.push(minValue);
+          maxValues.push(maxValue);
+        }
+
+        setMinValues(minValues);
+        setMaxValues(maxValues);
 
         setLoading(false);
       })
@@ -108,40 +131,6 @@ function VendorKPIReport() {
 
   let tableRows = [];
 
-  function getReportRows() {
-    // let firstKey = 0;
-    // let secondKey = 0;
-
-    console.log(reportData.length);
-
-    let reportDataEntries = Object.entries(reportData);
-
-    let mappedEntriesReportData = reportDataEntries.map(([key, value]) => [
-      key,
-      value,
-    ]);
-
-    // console.log(mappedEntriesReportData);
-
-    // for (let index = -1; index < mappedEntriesReportData[0].length; index++) {
-    //   const element = array[index];
-
-    //   console.log();
-    // }
-
-    // for (const [key, value] of Object.entries(reportData)) {
-    //   for (const [subKey, subValue] of Object.entries(value)) {
-    //     firstKey++;
-    //     secondKey++;
-    //     tableRows.push(<td key={secondKey}>{ subValue}</td>);
-    //   }
-    // }
-
-    // // console.log(tableRows);
-
-    // setRows(tableRows);
-  }
-
   if (loading) {
     return <Loading />;
   }
@@ -149,10 +138,6 @@ function VendorKPIReport() {
   return (
     <>
       <NavBar />
-
-      <div className="container" onClick={getReportRows}>
-        sss {reportData.length}
-      </div>
 
       <div className="container border  rounded p-2 mt-2 mb-2 w-50">
         <div className="row text-center bg-light ">
@@ -184,10 +169,10 @@ function VendorKPIReport() {
       </div>
 
       <div className="container text-center w-50">
-        <div className="row ">
+        <div className="row mt-2 mb-2">
           <div className="col-md-4">
             <div
-              className="container btn btn-primary border border-2 p-2"
+              className="container btn btn-light text-primary border border-2 border-secondary"
               onClick={getReport}
             >
               <b> Get Report</b>
@@ -195,7 +180,7 @@ function VendorKPIReport() {
           </div>
           <div className="col-md-4">
             <div
-              className="container btn btn-success "
+              className="container btn btn-light text-success border border-2 border-secondary"
               onClick={() => {
                 JSONToExcel(reportData, "ExampleFile");
               }}
@@ -204,7 +189,10 @@ function VendorKPIReport() {
             </div>
           </div>
           <div className="col-md-4">
-            <div className="container btn btn-danger" onClick={exportToPDF}>
+            <div
+              className="container btn btn-light text-danger border border-2 border-secondary"
+              onClick={exportToPDF}
+            >
               <b> Export PDF</b>
             </div>
           </div>
@@ -212,30 +200,28 @@ function VendorKPIReport() {
       </div>
 
       <div className="row">
-        <div className="col-md-2">
-          <Container>
-            <Table className="table-fixed">
-              <tbody>
-                {/* show only one column with all headers from the returned object */}
-                {reportData.length === 0
-                  ? "empty"
-                  : Object.keys(reportData).map((header, index) => (
-                      <tr
-                        key={index}
-                        style={{
-                          minWidth: 100,
-                          width: 100,
-                          textAlign: "center",
-                        }}
-                      >
-                        <td> {header} </td>
-                      </tr>
-                    ))}
-              </tbody>
-            </Table>
-          </Container>
+        <div className="col-md-3 p-0 m-0">
+          <table className="table   table-bordered">
+            <tbody>
+              {/* show only one column with all headers from the returned object */}
+              {reportData.length === 0
+                ? "empty"
+                : Object.keys(reportData).map((header, index) => (
+                    <tr
+                      key={index}
+                      style={{
+                        minWidth: 400,
+                        width: 400,
+                        textAlign: "center",
+                      }}
+                    >
+                      <th> {header} </th>
+                    </tr>
+                  ))}
+            </tbody>
+          </table>
         </div>
-        <div className="col-md-10">
+        <div className="col-md-9 p-0 m-0">
           <div className="table-responsive">
             <table className="table   table-bordered">
               <thead>
@@ -257,7 +243,7 @@ function VendorKPIReport() {
                       ])}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="text-center">
                 {reportData.length === 0
                   ? "empty"
                   : Object.values(reportData)
@@ -265,7 +251,9 @@ function VendorKPIReport() {
                       .map((header, index) => [
                         <tr key={header}>
                           {Object.values(header).map((sh, si) => [
-                            <td> {sh} </td>,
+                            <td key={si} style={colorScale(sh, si)}>
+                              {sh}
+                            </td>,
                           ])}
                         </tr>,
                       ])}

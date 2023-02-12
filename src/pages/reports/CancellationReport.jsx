@@ -19,7 +19,7 @@ import * as Icon from "react-bootstrap-icons";
 import moment from "moment";
 import DateTimePicker from "react-datetime-picker";
 
-function HourlyReportPage() {
+function CancellationReport() {
   const [loading, setLoading] = useState(false);
 
   const [startFirstDate, setStartFirstDate] = useState(new Date());
@@ -69,7 +69,7 @@ function HourlyReportPage() {
       .slice(0, 10);
 
     fetch(
-      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_hourly_report?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}`,
+      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_cancellation_report?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}`,
       {
         method: "GET",
         headers: {
@@ -80,18 +80,11 @@ function HourlyReportPage() {
     )
       .then((response) => response.json())
       .then((data) => {
-        // data.forEach(function (jsonObject) {
-        //   if (jsonObject.hour >= 0 && jsonObject.hour < 12) {
-        //     jsonObject.hour = jsonObject.hour + "  " + "AM";
-        //   } else {
-        //     jsonObject.hour = jsonObject.hour + "  " + "PM";
-        //   }
-        // });
         setData(data);
         setLoading(false);
       })
       .catch((error) => {
-        alert("Error In Adding new Comment 😕");
+        alert(error);
         setLoading(false);
       });
   }
@@ -107,36 +100,14 @@ function HourlyReportPage() {
     alwaysShowAllBtns: false,
   });
 
-  const fields = [
-    {
-      dataField: "hour",
-      text: "Hour",
-      showTitle: false,
-    },
-    {
-      dataField: "gross_orders",
-      text: "Gross Orders",
-    },
-    {
-      dataField: "net_orders",
-      text: "Net Orders",
-    },
-    {
-      dataField: "cancelled_orders",
-      text: "Cancelled Orders",
-    },
-  ];
-
-  const rowStyle = (row, rowIndex) => {
-    // if(row.created_at){
-    //     return row.created_at.toLocaleDateString()
-    // }
-    if (row.hour >= 0 && row.hour < 12) {
-      return { color: "white", background: "#40916c", fontWeight: "bold" };
-    } else {
-      return { color: "black", background: "#40916c", fontWeight: "bold" };
-    }
-  };
+  const fields =
+    data.length === 0
+      ? []
+      : Object.keys(data[0]).map((k) => ({
+          dataField: k,
+          text: k,
+          showTitle: false,
+        }));
 
   if (loading) {
     return <Loading />;
@@ -182,34 +153,55 @@ function HourlyReportPage() {
           Get Report
         </button>
       </div>
-      <div className="container w-50 mt-4 ">
-        <BootstrapTable
-          // className="table-responsive"
-          bordered={true}
-          bootstrap4
-          hover={true}
-          keyField="id"
-          columns={fields}
-          data={data}
-          //   pagination={pagination}
-          filter={filterFactory()}
-          rowStyle={rowStyle}
-        />
-        <div className="row">
-          <div className="col-md-6">
-            <div
-              className="container btn btn-success"
-              onClick={() => {
-                JSONToExcel(data, "ExampleFile");
-              }}
-            >
-              <b> Export Excel</b>
-            </div>
+      <div className="table-responsive">
+        <div className="table-responsive">
+          <table className="table   table-bordered">
+            <thead>
+              <tr className="text-center">
+                {/* view all of the selected days from the returned object by iterating throw it  */}
+                {data.length === 0
+                  ? "empty"
+                  : Object.keys(data[0]).map((header, index) => [
+                      <th
+                        key={index}
+                        style={{
+                          minWidth: 200,
+                          width: 200,
+                          textAlign: "center",
+                        }}
+                      >
+                        {header}
+                      </th>,
+                    ])}
+              </tr>
+            </thead>
+            <tbody className="text-center">
+              <tr>
+                {data.length === 0
+                  ? "empty"
+                  : Object.values(data[0]).map((header, index) => [
+                      <td key={header}>{header}</td>,
+                    ])}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-md-6">
+          <div
+            className="container btn btn-success"
+            onClick={() => {
+              JSONToExcel(data, "ExampleFile");
+            }}
+          >
+            <b> Export Excel</b>
           </div>
-          <div className="col-md-6">
-            <div className="container btn btn-danger" onClick={exportToPDF}>
-              <b> Export PDF</b>
-            </div>
+        </div>
+        <div className="col-md-6">
+          <div className="container btn btn-danger" onClick={exportToPDF}>
+            <b> Export PDF</b>
           </div>
         </div>
       </div>
@@ -217,4 +209,4 @@ function HourlyReportPage() {
   );
 }
 
-export default HourlyReportPage;
+export default CancellationReport;

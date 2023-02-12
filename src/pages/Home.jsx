@@ -147,7 +147,12 @@ function HomePage() {
           >
             <b> Vendor KPIs 🍽️</b>
           </button>
-          <button className="btn btn-dark border-light border-1 m-1">
+          <button
+            className="btn btn-dark border-light border-1 m-1"
+            onClick={() => {
+              navigate("/cancellation_report");
+            }}
+          >
             <b> Cancellation ❌</b>
           </button>
           {/* <button className="btn btn-dark border-light border-1 m-1">

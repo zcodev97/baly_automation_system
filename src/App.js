@@ -23,6 +23,7 @@ import GetNewCustomersReportPage from "./pages/reports/GetNewCustomers";
 import HourlyReportPage from "./pages/reports/Hourly";
 import BACKEND_URL from "./global";
 import VendorKPIReport from "./pages/reports/VendorKpiReport";
+import CancellationReport from "./pages/reports/CancellationReport";
 
 function App() {
   const [savedUser, setSavedUser] = useState([]);
@@ -115,6 +116,10 @@ function App() {
               element={<GetNewCustomersReportPage />}
             />
             <Route path="/get_hourly_report" element={<HourlyReportPage />} />
+            <Route
+              path="/cancellation_report"
+              element={<CancellationReport />}
+            />
             <Route
               path="/get_vendor_kpi_report"
               element={<VendorKPIReport />}
