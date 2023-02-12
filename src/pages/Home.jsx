@@ -72,7 +72,12 @@ function HomePage() {
   return (
     <>
       <NavBar />
-      <div className="container-fluid text-dark text-center bg-light p-2">
+      <div className="container-fluid text-light text-center bg-dark p-2 rounded mt-4">
+        <div className="container text-center text-light">
+          <h4>
+            <b> Dashboard</b>
+          </h4>
+        </div>
         <div className="row mt-2 p-2">
           <div className="col-md-3">
             <div className={containerClassNameGauge}>
@@ -133,22 +138,22 @@ function HomePage() {
         {/*  */}
 
         <hr className="mt-5" />
-        <div className="container mt-5 bg-primary rounded-pill p-1 border-1">
-          <h3 className="text-white">Reports</h3>
+        <div className="container mt-5 bg-light p-1 border border-primary border-1 rounded ">
+          <h3 className="text-primary">Reports</h3>
           <button
-            className="btn btn-primary border-light border-1 m-1"
+            className="btn btn-light  border border-primary border-3 m-1"
             onClick={GetHourlyReport}
           >
             <b> Hourly Report ⌛</b>
           </button>
           <button
-            className="btn btn-primary border-light border-1 m-1"
+            className="btn btn-light  border border-primary border-3 m-1"
             onClick={GetVendorKPIReport}
           >
             <b> Vendor KPIs 🍽️</b>
           </button>
           <button
-            className="btn btn-primary border-light border-1 m-1"
+            className="btn btn-light border border-primary border-3 m-1"
             onClick={() => {
               navigate("/cancellation_report");
             }}
@@ -162,7 +167,7 @@ function HomePage() {
             <b> Voucher Usage 🔃</b>
           </button> */}
           <button
-            className="btn btn-primary border-light border-1 m-1"
+            className="btn btn-light border border-primary border-3 m-1"
             onClick={GetNEwCustomersReport}
           >
             <b> Get New Customers 🧑‍🤝‍🧑</b>

@@ -49,8 +49,8 @@ function NavBar() {
     <>
       <nav className="navbar navbar-expand-sm navbar-dark bg-light  border-bottom border-primary border-2 rounded p-2">
         <div className="container-fluid">
-          <a className="navbar-brand text-primary" href="#">
-            BALY
+          <a className="navbar-brand text-primary border border-3 border-primary rounded p-2">
+            <b> BALY </b>
           </a>
           <button
             className="navbar-toggler"

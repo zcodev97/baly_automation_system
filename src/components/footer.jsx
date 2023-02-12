@@ -7,7 +7,7 @@ function Footer() {
         {/* Copyright */}
         <div className="text-center p-3">
           {" "}
-          <b>© 2022 Copyright: By Baly BI Team </b>
+          <b>© 2023 Copyright: By Baly BI Team </b>
         </div>
         {/* Copyright */}
       </footer>

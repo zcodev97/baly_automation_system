@@ -317,7 +317,7 @@ function VendorKPIReport() {
                                 ? sh.toFixed(2) + " %"
                                 : index === 30
                                 ? sh.toFixed(5) + " %"
-                                : sh.toFixed(5)}
+                                : sh.toFixed(2)}
                             </td>,
                           ])}
                         </tr>,
