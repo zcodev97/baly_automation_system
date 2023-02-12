@@ -215,12 +215,8 @@ function VendorKPIReport() {
         <div className="col-md-2">
           <Container>
             <Table className="table-fixed">
-              <thead>
-                <tr className="text-center">
-                  <th>#</th>
-                </tr>
-              </thead>
               <tbody>
+                {/* show only one column with all headers from the returned object */}
                 {reportData.length === 0
                   ? "empty"
                   : Object.keys(reportData).map((header, index) => (
@@ -244,28 +240,35 @@ function VendorKPIReport() {
             <table className="table   table-bordered">
               <thead>
                 <tr>
+                  {/* view all of the selected days from the returned object by iterating throw it  */}
                   {reportData.length === 0
                     ? "empty"
-                    : Object.keys(reportData).map((header, index) => (
+                    : Object.values(reportData.Date).map((header, index) => [
                         <th
                           key={index}
                           style={{
-                            minWidth: 100,
-                            width: 100,
+                            minWidth: 200,
+                            width: 200,
                             textAlign: "center",
                           }}
                         >
                           {header}
-                        </th>
-                      ))}
+                        </th>,
+                      ])}
                 </tr>
               </thead>
               <tbody>
                 {reportData.length === 0
                   ? "empty"
-                  : Object.entries(reportData).map((x, y) => {
-                      <tr> {x}</tr>;
-                    })}
+                  : Object.values(reportData)
+                      .slice(1)
+                      .map((header, index) => [
+                        <tr key={header}>
+                          {Object.values(header).map((sh, si) => [
+                            <td> {sh} </td>,
+                          ])}
+                        </tr>,
+                      ])}
               </tbody>
             </table>
           </div>
