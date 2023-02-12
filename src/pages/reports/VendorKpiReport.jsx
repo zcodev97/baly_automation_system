@@ -1,33 +1,29 @@
 // for excel and pdf
 import * as XLSX from "xlsx";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
 
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
-import React, { useEffect, useState } from "react";
-import NoDataView from "../../components/noData";
+import React, { useState } from "react";
 import Loading from "../../components/loading";
-import { Navbar } from "react-bootstrap";
 import NavBar from "../../components/navBar";
-import * as Icon from "react-bootstrap-icons";
-import moment from "moment";
 import DateTimePicker from "react-datetime-picker";
-import { Table, Container } from "react-bootstrap";
-import { position } from "@chakra-ui/react";
+import Select from "react-select";
 function VendorKPIReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
   const [reportData, setReportData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [minValues, setMinValues] = useState([]);
-  const [maxValues, setMaxValues] = useState([]);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const modes = [
+    { value: 0, label: 0 },
+    { value: 1, label: 1 },
+    { value: 2, label: 2 },
+    { value: 3, label: 3 },
+    { value: 4, label: 4 },
+    { value: 5, label: 5 },
+  ];
 
   const colorScale = (sh, si, header, index) => {
     // console.log(si);
@@ -119,30 +115,6 @@ function VendorKPIReport() {
       .then((data) => {
         setReportData(data);
 
-        console.log(reportData);
-
-        // Find the minimum and maximum values in the table
-
-        const values = Object.values(reportData)
-          .slice(1)
-          .map((header) => Object.values(header));
-
-        let rawData = values.map((arr) => arr.slice(0, arr.length - 1));
-
-        let maxValues = [];
-        let minValues = [];
-
-        for (var i = 0; i < rawData.length; i++) {
-          var minValue = Math.min(...rawData[i]);
-          var maxValue = Math.max(...rawData[i]);
-
-          minValues.push(minValue);
-          maxValues.push(maxValue);
-        }
-
-        setMinValues(minValues);
-        setMaxValues(maxValues);
-
         setLoading(false);
       })
       .catch((error) => {
@@ -165,7 +137,7 @@ function VendorKPIReport() {
 
       <div className="container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
         <div className="row text-center bg-light ">
-          <div className="col-md-6">
+          <div className="col-md-4">
             <div className="container p-2  m-1">
               Start Date{"  "}
               <DateTimePicker
@@ -177,7 +149,7 @@ function VendorKPIReport() {
               />
             </div>
           </div>
-          <div className="col-md-6">
+          <div className="col-md-4">
             <div className="container p-2  m-1">
               End Date{"  "}
               <DateTimePicker
@@ -186,6 +158,16 @@ function VendorKPIReport() {
                 format={"y-MM-dd"}
                 onChange={setEndFirstDate}
                 value={endFirstDate}
+              />
+            </div>
+          </div>
+          <div className="col-md-4">
+            <div className="container p-2  m-1">
+              <Select
+                defaultValue={selectedOption}
+                onChange={setSelectedOption}
+                options={modes}
+                placeholder={"select mode (default is 0 )"}
               />
             </div>
           </div>
