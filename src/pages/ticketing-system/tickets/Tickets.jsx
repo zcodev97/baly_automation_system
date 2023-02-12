@@ -4,6 +4,8 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
+import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import NoDataView from "../../../components/noData";
@@ -304,26 +306,29 @@ function Tickets() {
         </div>
       </div> */}
 
-      <BootstrapTable
-        className="table-style"
-        bordered={false}
-        hover={true}
-        keyField="id"
-        columns={fields}
-        data={tickets}
-        pagination={pagination}
-        filter={filterFactory()}
-        // rowStyle={rowStyle}
-        style={{
-          borderCollapse: "collapse",
-          tableLayout: "fixed",
-          width: "100%",
-          overflowX: "auto",
-          minWidth: "fit-content",
-        }}
-        rowEvents={rowEvents}
-      />
-
+      <div className="container-fluid">
+        <div className="table-responsive">
+          <BootstrapTable
+            bordered={false}
+            hover={true}
+            keyField="id"
+            columns={fields}
+            data={tickets}
+            pagination={pagination}
+            filter={filterFactory()}
+            responsive
+            // rowStyle={rowStyle}
+            // style={{
+            //   borderCollapse: "collapse",
+            //   tableLayout: "fixed",
+            //   width: "100%",
+            //   overflowX: "auto",
+            //   minWidth: "fit-content",
+            // }}
+            rowEvents={rowEvents}
+          />
+        </div>
+      </div>
       <div className="container-fluid  text-start ">
         <b
           className="btn btn-success border w-10 text-center border-3 mt-2 mb-2"

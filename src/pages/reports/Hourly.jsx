@@ -146,7 +146,6 @@ function HourlyReportPage() {
   return (
     <>
       <NavBar />
-      {/* first date */}
       <div className="container     mt-2 mb-2 w-50">
         <div className="row text-center bg-light ">
           <div className="col-md-6">

@@ -24,7 +24,7 @@ import { position } from "@chakra-ui/react";
 function VendorKPIReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
-  const [data, setData] = useState([]);
+  const [reportData, setReportData] = useState([]);
   const [loading, setLoading] = useState(false);
 
   //convert json to excel
@@ -41,7 +41,7 @@ function VendorKPIReport() {
     //   return [json.text];
     // });
 
-    const body = data.map(function (json) {
+    const body = reportData.map(function (json) {
       return [
         json.hour,
         json.gross_orders,
@@ -87,16 +87,59 @@ function VendorKPIReport() {
         //   } else {
         //     jsonObject.hour = jsonObject.hour + "  " + "PM";
         //   }
-        // });
-        setData(data);
+        // });'
 
-        console.log(data);
+        // var ds = data;
+        // console.log(ds);
+
+        setReportData(data);
+
+        console.log(reportData);
+
         setLoading(false);
       })
       .catch((error) => {
         alert("Error In Adding new Comment 😕");
         setLoading(false);
       });
+  }
+
+  const [rows, setRows] = useState([]);
+
+  let tableRows = [];
+
+  function getReportRows() {
+    // let firstKey = 0;
+    // let secondKey = 0;
+
+    console.log(reportData.length);
+
+    let reportDataEntries = Object.entries(reportData);
+
+    let mappedEntriesReportData = reportDataEntries.map(([key, value]) => [
+      key,
+      value,
+    ]);
+
+    // console.log(mappedEntriesReportData);
+
+    // for (let index = -1; index < mappedEntriesReportData[0].length; index++) {
+    //   const element = array[index];
+
+    //   console.log();
+    // }
+
+    // for (const [key, value] of Object.entries(reportData)) {
+    //   for (const [subKey, subValue] of Object.entries(value)) {
+    //     firstKey++;
+    //     secondKey++;
+    //     tableRows.push(<td key={secondKey}>{ subValue}</td>);
+    //   }
+    // }
+
+    // // console.log(tableRows);
+
+    // setRows(tableRows);
   }
 
   if (loading) {
@@ -106,6 +149,10 @@ function VendorKPIReport() {
   return (
     <>
       <NavBar />
+
+      <div className="container" onClick={getReportRows}>
+        sss {reportData.length}
+      </div>
 
       <div className="container border  rounded p-2 mt-2 mb-2 w-50">
         <div className="row text-center bg-light ">
@@ -136,28 +183,30 @@ function VendorKPIReport() {
         </div>
       </div>
 
-      <div className="row text-center">
-        <div className="col-md-4">
-          <div
-            className="container btn btn-primary border border-2 p-2"
-            onClick={getReport}
-          >
-            <b> Get Report</b>
+      <div className="container text-center w-50">
+        <div className="row ">
+          <div className="col-md-4">
+            <div
+              className="container btn btn-primary border border-2 p-2"
+              onClick={getReport}
+            >
+              <b> Get Report</b>
+            </div>
           </div>
-        </div>
-        <div className="col-md-4">
-          <div
-            className="container btn btn-success"
-            onClick={() => {
-              JSONToExcel(data, "ExampleFile");
-            }}
-          >
-            <b> Export Excel</b>
+          <div className="col-md-4">
+            <div
+              className="container btn btn-success "
+              onClick={() => {
+                JSONToExcel(reportData, "ExampleFile");
+              }}
+            >
+              <b> Export Excel</b>
+            </div>
           </div>
-        </div>
-        <div className="col-md-4">
-          <div className="container btn btn-danger" onClick={exportToPDF}>
-            <b> Export PDF</b>
+          <div className="col-md-4">
+            <div className="container btn btn-danger" onClick={exportToPDF}>
+              <b> Export PDF</b>
+            </div>
           </div>
         </div>
       </div>
@@ -167,37 +216,59 @@ function VendorKPIReport() {
           <Container>
             <Table className="table-fixed">
               <thead>
-                <tr>
-                  <th>Fixed Column</th>
+                <tr className="text-center">
+                  <th>#</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Row 1</td>
-                </tr>
+                {reportData.length === 0
+                  ? "empty"
+                  : Object.keys(reportData).map((header, index) => (
+                      <tr
+                        key={index}
+                        style={{
+                          minWidth: 100,
+                          width: 100,
+                          textAlign: "center",
+                        }}
+                      >
+                        <td> {header} </td>
+                      </tr>
+                    ))}
               </tbody>
             </Table>
           </Container>
         </div>
         <div className="col-md-10">
-          <Container>
-            <Table responsive="xl" className="table-fixed table-responsive">
+          <div className="table-responsive">
+            <table className="table   table-bordered">
               <thead>
                 <tr>
-                  <th>Column 1</th>
-                  <th>Column 2</th>
-                  <th>Column 3</th>
+                  {reportData.length === 0
+                    ? "empty"
+                    : Object.keys(reportData).map((header, index) => (
+                        <th
+                          key={index}
+                          style={{
+                            minWidth: 100,
+                            width: 100,
+                            textAlign: "center",
+                          }}
+                        >
+                          {header}
+                        </th>
+                      ))}
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Row 1 Column 1</td>
-                  <td>Row 1 Column 2</td>
-                  <td>Row 1 Column 3</td>
-                </tr>
+                {reportData.length === 0
+                  ? "empty"
+                  : Object.entries(reportData).map((x, y) => {
+                      <tr> {x}</tr>;
+                    })}
               </tbody>
-            </Table>
-          </Container>
+            </table>
+          </div>
         </div>
       </div>
     </>
