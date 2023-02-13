@@ -111,7 +111,10 @@ function VendorKPIReport() {
         body: JSON.stringify({
           start_date: formattedFirstDateStart,
           end_date: formattedFirstDateEnd,
-          mode: selectedMode.value,
+          mode:
+            selectedMode === null || selectedMode === undefined
+              ? 0
+              : selectedMode,
           vendors: [],
         }),
       }
@@ -119,6 +122,8 @@ function VendorKPIReport() {
       .then((response) => response.json())
       .then((data) => {
         setReportData(data);
+
+        console.log(data);
 
         setLoading(false);
       })
@@ -209,11 +214,9 @@ function VendorKPIReport() {
             <div className="row">
               <div className="col-md-6">
                 <div className="container border-bottom border-light border-3  p-2">
-                  <b className="text-dark">Mode (default is 0 )</b>
-
                   <Select
                     defaultValue={selectedMode}
-                    onChange={setSelectedMode}
+                    onChange={(opt) => setSelectedMode(opt.value)}
                     options={modes}
                     placeholder={"select mode.."}
                   />
@@ -221,11 +224,11 @@ function VendorKPIReport() {
               </div>
               <div className="col-md-6">
                 <div className="container border-bottom border-light border-3  p-2">
-                  <b className="text-dark">Vendors</b>
                   <Select
                     options={vendorsDropDownMenu}
                     onChange={(opt) => setSelectedVendors(opt)}
                     isMulti
+                    placeholder={"vendors.."}
                   />
                 </div>
               </div>
@@ -234,7 +237,7 @@ function VendorKPIReport() {
 
           <div className="col-md-4">
             <div className="row mt-2 mb-2">
-              <div className="col-md-6">
+              <div className="col-md-6 text-center">
                 <div
                   className="container btn btn-light text-primary border border-2 border-secondary"
                   onClick={getReport}
@@ -242,7 +245,7 @@ function VendorKPIReport() {
                   <b> Get Report ✅</b>
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-md-6 text-center">
                 <div
                   className="container btn btn-light text-success border border-2 border-secondary"
                   onClick={() => {
@@ -284,22 +287,24 @@ function VendorKPIReport() {
               <thead>
                 <tr className="text-center ">
                   {reportData.length === 0 ? (
-                    <th>
+                    <th className="text-start ">
                       Please Select Start and End Date and Press Get Report 😁
                     </th>
                   ) : (
-                    Object.values(reportData.Date).map((header, index) => [
-                      <th
-                        key={index}
-                        style={{
-                          minWidth: 200,
-                          width: 200,
-                          textAlign: "center",
-                        }}
-                      >
-                        {header}
-                      </th>,
-                    ])
+                    Object.values(Object.values(reportData)[0]).map(
+                      (header, index) => [
+                        <th
+                          key={index}
+                          style={{
+                            minWidth: 200,
+                            width: 200,
+                            textAlign: "center",
+                          }}
+                        >
+                          {header}
+                        </th>,
+                      ]
+                    )
                   )}
                 </tr>
               </thead>
