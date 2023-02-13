@@ -18,16 +18,16 @@ function VendorKPIReport() {
   const [selectedMode, setSelectedMode] = useState(null);
 
   const modes = [
-    { value: 0, label: 0 },
-    { value: 1, label: 1 },
-    { value: 2, label: 2 },
-    { value: 3, label: 3 },
-    { value: 4, label: 4 },
-    { value: 5, label: 5 },
-    { value: 6, label: 6 },
-    { value: 7, label: 7 },
-    { value: 8, label: 8 },
-    { value: 9, label: 9 },
+    { value: 0, label: "Date" },
+    { value: 1, label: "Hour" },
+    { value: 2, label: "Month" },
+    { value: 3, label: "Year-Month" },
+    { value: 4, label: "Week" },
+    { value: 5, label: "Month-Week" },
+    { value: 6, label: "Week-day" },
+    { value: 7, label: "Year" },
+    { value: 8, label: "Year-week" },
+    { value: 9, label: "Area" },
   ];
 
   const colorScale = (sh, si, header, index) => {
@@ -114,7 +114,7 @@ function VendorKPIReport() {
           mode:
             selectedMode === null || selectedMode === undefined
               ? 0
-              : selectedMode,
+              : selectedMode.value,
           vendors: [],
         }),
       }
@@ -177,7 +177,6 @@ function VendorKPIReport() {
   return (
     <>
       <NavBar />
-
       <div className="container-fluid border border-4 border-dark  rounded mt-2 mb-2">
         <div className="row">
           <div className="col-md-4">
@@ -216,7 +215,7 @@ function VendorKPIReport() {
                 <div className="container border-bottom border-light border-3  p-2">
                   <Select
                     defaultValue={selectedMode}
-                    onChange={(opt) => setSelectedMode(opt.value)}
+                    onChange={(opt) => setSelectedMode(opt)}
                     options={modes}
                     placeholder={"select mode.."}
                   />

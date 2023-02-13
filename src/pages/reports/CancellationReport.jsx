@@ -117,10 +117,10 @@ function CancellationReport() {
   return (
     <>
       <NavBar />
-      <div className="container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
+      <div className="container border border-4 border-dark  rounded p-2 mt-5 mb-2">
         <div className="row text-center bg-light ">
-          <div className="col-md-6">
-            <div className="container p-2  m-1">
+          <div className="col-md-3">
+            <div className="container p-2 ">
               Start Date{"  "}
               <DateTimePicker
                 key={1}
@@ -131,8 +131,8 @@ function CancellationReport() {
               />
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="container p-2  m-1">
+          <div className="col-md-3">
+            <div className="container p-2">
               End Date{"  "}
               <DateTimePicker
                 key={2}
@@ -143,20 +143,39 @@ function CancellationReport() {
               />
             </div>
           </div>
+
+          {/* <div className="col-md-2">
+            <div
+              className="container btn btn-light border border-danger text-danger"
+              onClick={exportToPDF}
+            >
+              <b> Export PDF</b>
+            </div>
+          </div> */}
+          <div className="col-md-3">
+            <div
+              className="container btn btn-light border border-primary text-primary"
+              onClick={getReport}
+            >
+              <b> Get Report </b>
+            </div>
+          </div>
+          <div className="col-md-3">
+            <div
+              className="container btn btn-light border border-success text-success"
+              onClick={() => {
+                JSONToExcel(data, "ExampleFile");
+              }}
+            >
+              <b> Export Excel</b>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div className="container text-center ">
-        <button
-          className="btn btn-light text-primary border border-3 rounded border-secondary p-2 m-2"
-          onClick={getReport}
-        >
-          <b> Get Report </b>
-        </button>
-      </div>
       <div className="table-responsive">
         <div className="table-responsive">
-          <table className="table   table-bordered">
+          <table className="table   table-bordered table-dark table-hover">
             <thead>
               <tr className="text-center">
                 {/* view all of the selected days from the returned object by iterating throw it  */}
@@ -178,34 +197,19 @@ function CancellationReport() {
             </thead>
             <tbody className="text-center">
               <tr>
-                {data.length === 0
-                  ? "Please Select Start and End Date and Press Get Report 😁"
-                  : Object.values(data[0]).map((header, index) => [
-                      <td key={header}>{header}</td>,
-                    ])}
+                {data.length === 0 ? (
+                  <p className="text-light">
+                    {" "}
+                    Please Select Start and End Date and Press Get Report 😁
+                  </p>
+                ) : (
+                  Object.values(data[0]).map((header, index) => [
+                    <td key={header}>{header}</td>,
+                  ])
+                )}
               </tr>
             </tbody>
           </table>
-        </div>
-      </div>
-
-      <div className="container text-center w-50">
-        <div className="row ">
-          <div className="col-md-6">
-            <div
-              className="container btn btn-success"
-              onClick={() => {
-                JSONToExcel(data, "ExampleFile");
-              }}
-            >
-              <b> Export Excel</b>
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="container btn btn-danger" onClick={exportToPDF}>
-              <b> Export PDF</b>
-            </div>
-          </div>
         </div>
       </div>
     </>

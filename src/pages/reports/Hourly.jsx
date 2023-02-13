@@ -127,16 +127,16 @@ function HourlyReportPage() {
     },
   ];
 
-  const rowStyle = (row, rowIndex) => {
-    // if(row.created_at){
-    //     return row.created_at.toLocaleDateString()
-    // }
-    if (row.hour >= 0 && row.hour < 12) {
-      return { color: "white", background: "#40916c", fontWeight: "bold" };
-    } else {
-      return { color: "black", background: "#40916c", fontWeight: "bold" };
-    }
-  };
+  // const rowStyle = (row, rowIndex) => {
+  //   // if(row.created_at){
+  //   //     return row.created_at.toLocaleDateString()
+  //   // }
+  //   if (row.hour >= 0 && row.hour < 12) {
+  //     return { color: "white", background: "#40916c", fontWeight: "bold" };
+  //   } else {
+  //     return { color: "black", background: "#40916c", fontWeight: "bold" };
+  //   }
+  // };
 
   if (loading) {
     return <Loading />;
@@ -145,10 +145,11 @@ function HourlyReportPage() {
   return (
     <>
       <NavBar />
-      <div className="container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
-        <div className="row text-center bg-light ">
-          <div className="col-md-6">
-            <div className="container p-2  m-1">
+
+      <div className="container border border-2 border-dark  rounded p-2 mt-2 mb-2 ">
+        <div className="row">
+          <div className="col-md-3">
+            <div className="container p-2 ">
               Start Date{"  "}
               <DateTimePicker
                 key={1}
@@ -159,8 +160,8 @@ function HourlyReportPage() {
               />
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="container p-2  m-1">
+          <div className="col-md-3">
+            <div className="container p-2 ">
               End Date{"  "}
               <DateTimePicker
                 key={2}
@@ -171,16 +172,30 @@ function HourlyReportPage() {
               />
             </div>
           </div>
+          <div className="col-md-2">
+            <div
+              className="container btn btn-light border border-2 border-primary text-primary"
+              onClick={getReport}
+            >
+              <b> Get Report</b>
+            </div>
+          </div>
+          <div className="col-md-2">
+            <div
+              className="container btn btn-success"
+              onClick={() => {
+                JSONToExcel(data, "ExampleFile");
+              }}
+            >
+              <b> Export Excel</b>
+            </div>
+          </div>
+          <div className="col-md-2">
+            <div className="container btn btn-danger" onClick={exportToPDF}>
+              <b> Export PDF</b>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div className="container text-center ">
-        <button
-          className="btn btn-primary border border-2 p-2"
-          onClick={getReport}
-        >
-          Get Report
-        </button>
       </div>
       <div className="container w-50 mt-4 ">
         <BootstrapTable
@@ -193,27 +208,8 @@ function HourlyReportPage() {
           data={data}
           //   pagination={pagination}
           filter={filterFactory()}
-          rowStyle={rowStyle}
+          // rowStyle={rowStyle}
         />
-        <div className="container">
-          <div className="row ">
-            <div className="col-md-6">
-              <div
-                className="container btn btn-success"
-                onClick={() => {
-                  JSONToExcel(data, "ExampleFile");
-                }}
-              >
-                <b> Export Excel</b>
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="container btn btn-danger" onClick={exportToPDF}>
-                <b> Export PDF</b>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </>
   );
