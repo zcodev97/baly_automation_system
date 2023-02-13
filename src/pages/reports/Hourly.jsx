@@ -145,7 +145,9 @@ function HourlyReportPage() {
   return (
     <>
       <NavBar />
-
+      <div className="container p-2 mt-2 border border-2 rounded ">
+        <h3 className="text-center"> Hourly Report</h3>
+      </div>
       <div className="container border border-2 border-dark  rounded p-2 mt-2 mb-2 ">
         <div className="row">
           <div className="col-md-3">
