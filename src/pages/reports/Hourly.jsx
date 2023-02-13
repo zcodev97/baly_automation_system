@@ -80,13 +80,7 @@ function HourlyReportPage() {
     )
       .then((response) => response.json())
       .then((data) => {
-        // data.forEach(function (jsonObject) {
-        //   if (jsonObject.hour >= 0 && jsonObject.hour < 12) {
-        //     jsonObject.hour = jsonObject.hour + "  " + "AM";
-        //   } else {
-        //     jsonObject.hour = jsonObject.hour + "  " + "PM";
-        //   }
-        // });
+        console.log(data);
         setData(data);
         setLoading(false);
       })
@@ -145,8 +139,10 @@ function HourlyReportPage() {
   return (
     <>
       <NavBar />
-      <div className="container p-2 mt-2 border border-2 rounded ">
-        <h3 className="text-center"> Hourly Report</h3>
+      <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
+        <h3 className="text-center">
+          <b>Hourly Report </b>
+        </h3>
       </div>
       <div className="container border border-2 border-dark  rounded p-2 mt-2 mb-2 ">
         <div className="row">
@@ -199,8 +195,8 @@ function HourlyReportPage() {
           </div>
         </div>
       </div>
-      <div className="container w-50 mt-4 ">
-        <BootstrapTable
+      <div className="container mt-4 ">
+        {/* <BootstrapTable
           // className="table-responsive"
           bordered={true}
           bootstrap4
@@ -211,7 +207,50 @@ function HourlyReportPage() {
           //   pagination={pagination}
           filter={filterFactory()}
           // rowStyle={rowStyle}
-        />
+        /> */}
+
+        <div className="table-responsive">
+          <div className="table-responsive">
+            <table className="table   table-bordered table-dark table-hover">
+              <thead>
+                <tr className="text-center">
+                  {/* view all of the selected days from the returned object by iterating throw it  */}
+                  {data.length === 0
+                    ? ""
+                    : Object.keys(Object.values(data)[0]).map(
+                        (header, index) => (
+                          <th
+                            key={index}
+                            style={{
+                              minWidth: 200,
+                              width: 200,
+                              textAlign: "center",
+                            }}
+                          >
+                            {header}
+                          </th>
+                        )
+                      )}
+                </tr>
+              </thead>
+              <tbody className="text-center">
+                {data.length === 0 ? (
+                  <p className="text-light">
+                    Please Select Start and End Date and Press Get Report 😁
+                  </p>
+                ) : (
+                  Object.values(data).map((header, index) => (
+                    <tr>
+                      {Object.values(header).map((sh, si) => (
+                        <td key={si}>{sh}</td>
+                      ))}{" "}
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </>
   );

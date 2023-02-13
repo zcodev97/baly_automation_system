@@ -67,12 +67,12 @@ function NavBar() {
             <ul className="navbar-nav ">
               <li className="nav-item">
                 <Link className="nav-link text-primary" to="/home ">
-                  Home 🏠
+                  <h5> Home 🏠</h5>
                 </Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link text-primary" to="/tickets">
-                  Tickets 🎟️
+                  <h5> Tickets 🎟️</h5>
                 </Link>
               </li>
               <li
@@ -82,7 +82,7 @@ function NavBar() {
                 }}
               >
                 <Link className="nav-link text-primary" to="/users">
-                  Users 👥
+                  <h5> Users 👥</h5>
                 </Link>
               </li>
               <li
@@ -92,7 +92,7 @@ function NavBar() {
                 }}
               >
                 <Link className="nav-link text-primary" to="/vendors">
-                  Vendors 🛍️
+                  <h5> Vendors 🛍️</h5>
                 </Link>
               </li>
               <li className="nav-item">
@@ -102,11 +102,11 @@ function NavBar() {
               </li>
               <li className="nav-item">
                 <Link
-                  className="nav-link text-danger rounded p-2"
+                  className="nav-link text-danger rounded p-2 border border-danger"
                   to="/login"
                   onClick={handleLogout}
                 >
-                  Logout ➡️
+                  ➡️
                 </Link>
               </li>
             </ul>

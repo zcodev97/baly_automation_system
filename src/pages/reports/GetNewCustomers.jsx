@@ -188,8 +188,11 @@ function GetNewCustomersReportPage() {
   return (
     <>
       <NavBar />
-      <div className="container p-2 mt-2 border border-2 rounded ">
-        <h3 className="text-center"> New Customers Report</h3>
+      <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
+        <h3 className="text-center">
+          {" "}
+          <b> New Customers Report</b>
+        </h3>
       </div>
       {/* first date */}
       <div className=" container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">

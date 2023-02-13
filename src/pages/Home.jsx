@@ -139,7 +139,9 @@ function HomePage() {
 
         <hr className="mt-5" />
         <div className="container mt-5 bg-light p-1 border border-primary border-1 rounded ">
-          <h3 className="text-primary">Reports</h3>
+          <h3 className="text-primary">
+            <b> Reports</b>
+          </h3>
           <button
             className="btn btn-light  border border-primary border-3 m-1"
             onClick={GetHourlyReport}

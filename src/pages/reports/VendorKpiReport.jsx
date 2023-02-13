@@ -178,7 +178,10 @@ function VendorKPIReport() {
     <>
       <NavBar />
       <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded ">
-        <h3 className="text-center"> Vendor KPI Report</h3>
+        <h3 className="text-center">
+          {" "}
+          <b> Vendor KPI Report </b>
+        </h3>
       </div>
       <div className="container-fluid border border-4 border-dark  rounded mt-2 mb-2">
         <div className="row">

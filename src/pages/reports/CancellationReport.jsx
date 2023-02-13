@@ -117,8 +117,10 @@ function CancellationReport() {
   return (
     <>
       <NavBar />
-      <div className="container p-2 mt-2 border border-2 rounded ">
-        <h3 className="text-center"> Cancellation Report</h3>
+      <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
+        <h3 className="text-center">
+          <b> Cancellation Report</b>{" "}
+        </h3>
       </div>
       <div className="container border border-4 border-dark  rounded p-2 mt-5 mb-2">
         <div className="row text-center bg-light ">
