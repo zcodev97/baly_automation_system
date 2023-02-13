@@ -83,7 +83,12 @@ function App() {
       <div className="container-fluid bg-light" style={{ height: "100vh" }}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={loggedIn ? <HomePage /> : <Login />} />
+            <Route
+              path="/"
+              element={
+                loading ? <Loading /> : loggedIn ? <HomePage /> : <Login />
+              }
+            />
 
             <Route path="/home" element={<HomePage />} />
 

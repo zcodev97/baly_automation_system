@@ -3,18 +3,19 @@ import * as XLSX from "xlsx";
 
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Loading from "../../components/loading";
 import NavBar from "../../components/navBar";
 import DateTimePicker from "react-datetime-picker";
 import Select from "react-select";
+import BACKEND_URL from "../../global";
 function VendorKPIReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
   const [reportData, setReportData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedMode, setSelectedMode] = useState(null);
 
   const modes = [
     { value: 0, label: 0 },
@@ -23,6 +24,10 @@ function VendorKPIReport() {
     { value: 3, label: 3 },
     { value: 4, label: 4 },
     { value: 5, label: 5 },
+    { value: 6, label: 6 },
+    { value: 7, label: 7 },
+    { value: 8, label: 8 },
+    { value: 9, label: 9 },
   ];
 
   const colorScale = (sh, si, header, index) => {
@@ -106,7 +111,7 @@ function VendorKPIReport() {
         body: JSON.stringify({
           start_date: formattedFirstDateStart,
           end_date: formattedFirstDateEnd,
-          mode: 0,
+          mode: selectedMode.value,
           vendors: [],
         }),
       }
@@ -123,9 +128,42 @@ function VendorKPIReport() {
       });
   }
 
-  const [rows, setRows] = useState([]);
+  const [selectedVendors, setSelectedVendors] = useState([]);
 
-  let tableRows = [];
+  const [vendorsDropDownMenu, setVendorsDropDownMenu] = useState([]);
+  const [vendors, setVendors] = useState([]);
+
+  let dropVendors = [];
+
+  async function loadVendors() {
+    setLoading(true);
+
+    var token = localStorage.getItem("token");
+
+    let res = await fetch(BACKEND_URL + "ticket_system/all_vendors_user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    let vendors = await res.json();
+
+    setVendors(vendors);
+    vendors.forEach((vendor) => {
+      dropVendors.push({
+        label: vendor.vendor_title,
+        value: vendor.vendor_title,
+      });
+    });
+    setVendorsDropDownMenu(dropVendors);
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadVendors();
+  }, []);
 
   if (loading) {
     return <Loading />;
@@ -135,63 +173,85 @@ function VendorKPIReport() {
     <>
       <NavBar />
 
-      <div className="container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
-        <div className="row text-center bg-light ">
+      <div className="container-fluid border border-4 border-dark  rounded mt-2 mb-2">
+        <div className="row">
           <div className="col-md-4">
-            <div className="container p-2  m-1">
-              Start Date{"  "}
-              <DateTimePicker
-                key={1}
-                clearIcon={null}
-                format={"y-MM-dd"}
-                onChange={setStartFirstDate}
-                value={startFirstDate}
-              />
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="container p-2  m-1">
-              End Date{"  "}
-              <DateTimePicker
-                key={2}
-                clearIcon={null}
-                format={"y-MM-dd"}
-                onChange={setEndFirstDate}
-                value={endFirstDate}
-              />
-            </div>
-          </div>
-          <div className="col-md-4">
-            <div className="container p-2  m-1">
-              <Select
-                defaultValue={selectedOption}
-                onChange={setSelectedOption}
-                options={modes}
-                placeholder={"select mode (default is 0 )"}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+            <div className="row bg-light">
+              <div className="col-md-6">
+                <div className="container p-2  m-1">
+                  <b className="text-dark "> Start Date{"  "}</b>
 
-      <div className="container text-center w-50">
-        <div className="row mt-2 mb-2">
-          <div className="col-md-6">
-            <div
-              className="container btn btn-light text-primary border border-2 border-secondary"
-              onClick={getReport}
-            >
-              <b> Get Report ✅</b>
+                  <DateTimePicker
+                    key={1}
+                    clearIcon={null}
+                    format={"y-MM-dd"}
+                    onChange={setStartFirstDate}
+                    value={startFirstDate}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="container p-2  m-1">
+                  <b className="text-dark"> End Date{"  "}</b>
+                  <DateTimePicker
+                    key={2}
+                    clearIcon={null}
+                    format={"y-MM-dd"}
+                    onChange={setEndFirstDate}
+                    value={endFirstDate}
+                  />
+                </div>
+              </div>
             </div>
           </div>
-          <div className="col-md-6">
-            <div
-              className="container btn btn-light text-success border border-2 border-secondary"
-              onClick={() => {
-                JSONToExcel(reportData, "ExampleFile");
-              }}
-            >
-              <b> Export Excel ⬇️</b>
+
+          <div className="col-md-4">
+            <div className="row">
+              <div className="col-md-6">
+                <div className="container border-bottom border-light border-3  p-2">
+                  <b className="text-dark">Mode (default is 0 )</b>
+
+                  <Select
+                    defaultValue={selectedMode}
+                    onChange={setSelectedMode}
+                    options={modes}
+                    placeholder={"select mode.."}
+                  />
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div className="container border-bottom border-light border-3  p-2">
+                  <b className="text-dark">Vendors</b>
+                  <Select
+                    options={vendorsDropDownMenu}
+                    onChange={(opt) => setSelectedVendors(opt)}
+                    isMulti
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="col-md-4">
+            <div className="row mt-2 mb-2">
+              <div className="col-md-6">
+                <div
+                  className="container btn btn-light text-primary border border-2 border-secondary"
+                  onClick={getReport}
+                >
+                  <b> Get Report ✅</b>
+                </div>
+              </div>
+              <div className="col-md-6">
+                <div
+                  className="container btn btn-light text-success border border-2 border-secondary"
+                  onClick={() => {
+                    JSONToExcel(reportData, "ExampleFile");
+                  }}
+                >
+                  <b> Export Excel ⬇️</b>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -199,9 +259,8 @@ function VendorKPIReport() {
 
       <div className="row">
         <div className="col-md-3 p-0 m-0">
-          <table className="table   table-bordered table-hover table-dark">
+          <table className="table table-sm  table-bordered table-hover table-dark">
             <tbody className="text-center">
-              {/* show only one column with all headers from the returned object */}
               {reportData.length === 0
                 ? ""
                 : Object.keys(reportData).map((header, index) => (
@@ -221,10 +280,9 @@ function VendorKPIReport() {
         </div>
         <div className="col-md-9 p-0 m-0">
           <div className="table-responsive">
-            <table className="table   table-bordered table-hover table-dark">
+            <table className="table  table-sm table-bordered table-hover table-dark">
               <thead>
                 <tr className="text-center ">
-                  {/* view all of the selected days from the returned object by iterating throw it  */}
                   {reportData.length === 0 ? (
                     <th>
                       Please Select Start and End Date and Press Get Report 😁
