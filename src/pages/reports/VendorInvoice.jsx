@@ -54,7 +54,7 @@ function VendorInvoiceReport() {
   }
 
   function exportToPDF() {
-    const pdf = new jsPDF();
+    const pdf = new jsPDF("landscape");
 
     pdf.addFileToVFS("Amiri-Regular.ttf", AmiriRegular);
     pdf.addFont("/Amiri-Regular.ttf", "Amiri", "normal");
@@ -68,13 +68,63 @@ function VendorInvoiceReport() {
     pdf.autoTable({
       head: [["Vendor payment", "Total:", "256,000"]],
       body: [["Hermoonis Piri", "Final", "207,100", "Date", "1-15/1/2023"]],
-      widths: [[100, 75, 75, 75, 75]],
-      columns: [
-        { width: "auto" },
-        { width: "auto" },
-        { width: "auto" },
-        { width: "auto" },
-        { width: "auto" },
+    });
+    pdf.autoTable({
+      head: [
+        [
+          "created_at",
+          "name",
+          "commission",
+          "title",
+          "sub_total",
+          "sub_total_discount",
+          "raw_value",
+          "baly_share",
+          "vendor_share",
+          "baly_commmission",
+          "final_payment",
+        ],
+      ],
+      body: [
+        [
+          "2023-01-01",
+          "Hussam Bilal",
+          "20",
+          "Hermoonis Piri",
+          "5500",
+          "0",
+          "5500",
+          "0",
+          "0",
+          "1100",
+          "4400",
+        ],
+        [
+          "2023-01-02",
+          "Hussam Bilal",
+          "20",
+          "Hermoonis Piri",
+          "5500",
+          "0",
+          "5500",
+          "0",
+          "0",
+          "1100",
+          "5000",
+        ],
+        [
+          "2023-01-03",
+          "Hussam Bilal",
+          "20",
+          "Hermoonis Piri",
+          "5500",
+          "0",
+          "5500",
+          "0",
+          "0",
+          "1100",
+          "9500",
+        ],
       ],
     });
 
@@ -202,7 +252,7 @@ function VendorInvoiceReport() {
               {data.length === 0
                 ? ""
                 : Object.values(data)
-                    .slice(1)
+                    .slice(0, 3)
                     .map((header, index) => [
                       <tr key={header}>
                         {Object.values(header).map((sh, si) => [

@@ -115,7 +115,7 @@ function VendorKPIReport() {
             selectedMode === null || selectedMode === undefined
               ? 0
               : selectedMode.value,
-          vendors: [],
+          vendors: Object.values(selectedVendors).map((h, i) => h.value),
         }),
       }
     )
@@ -145,7 +145,7 @@ function VendorKPIReport() {
 
     var token = localStorage.getItem("token");
 
-    let res = await fetch(BACKEND_URL + "ticket_system/all_vendors_user", {
+    let res = await fetch(BACKEND_URL + "reports/get_vendor_id", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -159,7 +159,7 @@ function VendorKPIReport() {
     vendors.forEach((vendor) => {
       dropVendors.push({
         label: vendor.vendor_title,
-        value: vendor.vendor_title,
+        value: vendor.vendor_id,
       });
     });
     setVendorsDropDownMenu(dropVendors);
