@@ -211,7 +211,7 @@ function HourlyReportPage() {
 
         <div className="table-responsive">
           <div className="table-responsive">
-            <table className="table   table-bordered table-dark table-hover">
+            <table className="table table-sm   table-bordered table-dark table-hover">
               <thead>
                 <tr className="text-center">
                   {/* view all of the selected days from the returned object by iterating throw it  */}

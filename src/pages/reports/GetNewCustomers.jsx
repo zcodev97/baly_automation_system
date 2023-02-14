@@ -195,59 +195,63 @@ function GetNewCustomersReportPage() {
         </h3>
       </div>
       {/* first date */}
-      <div className=" container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
+      <div className=" container   rounded p-2 mt-2 mb-2">
         <div className="row text-center bg-light ">
-          <div className="col-md-6">
-            <div className="container p-2  m-1">
-              <b> First Week : </b> Start Date{"  "}
-              <DateTimePicker
-                key={1}
-                clearIcon={null}
-                format={"y-MM-dd"}
-                onChange={setStartFirstDate}
-                value={startFirstDate}
-              />
+          <div className="col-md-6 p-3  ">
+            <div className="container ">
+              <b>First Period </b>
+            </div>
+            <div className="row">
+              <div className="col-md-6">
+                Start{" "}
+                <DateTimePicker
+                  key={1}
+                  clearIcon={null}
+                  format={"y-MM-dd"}
+                  onChange={setStartFirstDate}
+                  value={startFirstDate}
+                />
+              </div>
+              <div className="col-md-6">
+                End{"  "}
+                <DateTimePicker
+                  key={2}
+                  clearIcon={null}
+                  format={"y-MM-dd"}
+                  onChange={setEndFirstDate}
+                  value={endFirstDate}
+                />
+              </div>
             </div>
           </div>
-          <div className="col-md-6">
-            <div className="container p-2  m-1">
-              End Date{"  "}
-              <DateTimePicker
-                key={2}
-                clearIcon={null}
-                format={"y-MM-dd"}
-                onChange={setEndFirstDate}
-                value={endFirstDate}
-              />
+
+          <div className="col-md-6 p-3 ">
+            <div className="container">
+              <b>Second Period </b>
             </div>
-          </div>
-        </div>
-      </div>
-      {/* second date */}
-      <div className="container border border-4 border-dark  rounded p-2 mt-2 mb-2 w-50">
-        <div className="row text-center bg-light ">
-          <div className="col-md-6">
-            <div className="container p-2  m-1">
-              <b>Second Week : </b>Start Date {"  "}
-              <DateTimePicker
-                key={3}
-                clearIcon={null}
-                format={"y-MM-dd"}
-                onChange={setStartSecondDate}
-                value={startSecondDate}
-              />
-            </div>
-          </div>
-          <div className="col-md-6">
-            <div className="container p-2  m-1">
-              End Date {"  "}
-              <DateTimePicker
-                key={4}
-                clearIcon={null}
-                format={"y-MM-dd"}
-                onChange={setEndSecondDate}
-                value={endSecondDate}
-              />
+            <div className="row">
+              <div className="col-md-6">
+                Start{"  "}
+                <DateTimePicker
+                  key={3}
+                  clearIcon={null}
+                  format={"y-MM-dd"}
+                  onChange={setStartSecondDate}
+                  value={startSecondDate}
+                />
+              </div>
+              <div className="col-md-6">
+                <div className="container">
+                  End {"  "}
+                  <DateTimePicker
+                    key={4}
+                    clearIcon={null}
+                    format={"y-MM-dd"}
+                    onChange={setEndSecondDate}
+                    value={endSecondDate}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -144,6 +144,14 @@ function HomePage() {
           </h3>
           <button
             className="btn btn-light  border border-primary border-3 m-1"
+            onClick={() => {
+              navigate("/vendor_invoice");
+            }}
+          >
+            <b> Vendor Invoice 📰</b>
+          </button>
+          <button
+            className="btn btn-light  border border-primary border-3 m-1"
             onClick={GetHourlyReport}
           >
             <b> Hourly Report ⌛</b>
@@ -152,7 +160,7 @@ function HomePage() {
             className="btn btn-light  border border-primary border-3 m-1"
             onClick={GetVendorKPIReport}
           >
-            <b> Vendor KPIs 🍽️</b>
+            <b> KPIs & Units Economics Report 🍽️</b>
           </button>
           <button
             className="btn btn-light border border-primary border-3 m-1"

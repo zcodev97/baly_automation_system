@@ -180,7 +180,7 @@ function VendorKPIReport() {
       <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded ">
         <h3 className="text-center">
           {" "}
-          <b> Vendor KPI Report </b>
+          <b> KPIs & Units Economics Report </b>
         </h3>
       </div>
       <div className="container-fluid border border-4 border-dark  rounded mt-2 mb-2">
@@ -334,21 +334,39 @@ function VendorKPIReport() {
                                 : index === 4
                                 ? sh.toFixed(2) + " %"
                                 : index === 6
-                                ? sh.toFixed(2) + " $"
+                                ? sh.toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                  })
                                 : index === 7
-                                ? sh.toFixed(2) + " $"
+                                ? sh.toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                  })
                                 : index === 8
-                                ? sh.toFixed(2) + " $"
+                                ? sh.toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                  })
                                 : index === 10
                                 ? sh.toFixed(2) + " %"
                                 : index === 11
-                                ? sh.toFixed(2) + " $"
+                                ? sh.toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                  })
                                 : index === 12
                                 ? sh.toFixed(2) + " %"
                                 : index === 13
-                                ? sh.toFixed(2) + " $"
+                                ? sh.toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                  })
                                 : index === 14
-                                ? sh.toFixed(2) + " $"
+                                ? sh.toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                  })
                                 : index === 15
                                 ? sh.toFixed(2) + " %"
                                 : index === 17
@@ -356,9 +374,15 @@ function VendorKPIReport() {
                                 : index === 19
                                 ? sh.toFixed(2) + " %"
                                 : index === 20
-                                ? sh.toFixed(2) + " $"
+                                ? sh.toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                  })
                                 : index === 21
-                                ? sh.toFixed(2) + " $"
+                                ? sh.toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                  })
                                 : index === 22
                                 ? sh.toFixed(2) + " %"
                                 : index === 23
