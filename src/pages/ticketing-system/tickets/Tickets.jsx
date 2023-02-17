@@ -107,8 +107,6 @@ function Tickets() {
     let ticketJsonData = await res.json();
     setTickets(ticketJsonData);
     setLoading(false);
-
-    console.log(ticketJsonData);
   }
 
   const dateFormatter = (cell) => {

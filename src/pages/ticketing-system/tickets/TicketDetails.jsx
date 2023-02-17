@@ -104,7 +104,6 @@ function TicketDetails() {
     )
       .then((response) => response.json())
       .then((data) => {
-        setComments([]);
         setComments(data);
       })
       .catch((error) => {
@@ -126,6 +125,8 @@ function TicketDetails() {
     setPriority(location.state.priority);
     setStatus(location.state.status);
     setComments(location.state.comments);
+
+    console.log();
   }, []);
 
   return (
@@ -138,13 +139,26 @@ function TicketDetails() {
             {/*  Vendor */}
             {widgetView("Vendor", vendor)}
             {/*   Created At */}
-            {widgetView("Created At", created)}
+            {widgetView(
+              "Created At",
+              new Date(created).toLocaleDateString() +
+                " " +
+                new Date(created).toLocaleTimeString()
+            )}
             {/*   createdBy */}
             {widgetView("Created By", createdBy)}
           </div>
           <div className="col-md-4">
             {/*   resolveAt */}
-            {widgetView("resolveAt", resolveAt)}
+            {widgetView(
+              "resolveAt",
+
+              new Date(resolveAt) < new Date()
+                ? ""
+                : new Date(resolveAt).toLocaleDateString() +
+                    " " +
+                    new Date(resolveAt).toLocaleTimeString()
+            )}
             {/*   resolveBy */}
             {widgetView("resolveBy", resolveBy)}
             {/*   orderId */}
@@ -187,28 +201,33 @@ function TicketDetails() {
           </div>
         </div>
       </div>
-      <div className="container w-50  bg-light text-center rounded">
-        <b> Comments :</b>
+      <div className="container-fluid bg-light rounded">
+        <div className="container text-start bg-dark text-light rounded">
+          Comments :
+        </div>
 
-        <div className="container text-center p-2 mt-2">
+        <div className="container w-50 text-center p-2 mt-2">
           <div className="text-dark">
-            {comments.length > 0
-              ? comments.map((item) => (
-                  <li
-                    key={Math.floor(Math.random() * 10000)}
-                    className="list-group-item   border border-2 p-2 m-1 rounded"
-                  >
-                    [ <b> Date : </b>
-                    {new Date(item.created).toLocaleDateString()} {"   "}
-                    <b>Time : </b>:{" "}
-                    {new Date(item.created).toLocaleTimeString()} ] {"  "}
-                    <b>
-                      {" "}
-                      {item.comment_by.username} : {item.content}
-                    </b>
-                  </li>
-                ))
-              : "No Comments"}
+            {comments.slice(1).length !== 0 ? (
+              comments.slice(1).map((item) => (
+                <li
+                  key={Math.floor(Math.random() * 10000)}
+                  className="list-group-item   border border-2 p-2 m-1 rounded"
+                >
+                  [ <b> Date : </b>
+                  {new Date(item.created).toLocaleDateString()} {"   "}
+                  <b>Time : </b>: {new Date(item.created).toLocaleTimeString()}{" "}
+                  ] {"  "}
+                  <b>
+                    {item.comment_by.username} : {item.content}
+                  </b>
+                </li>
+              ))
+            ) : (
+              <div className="container bg-primary rounded text-light">
+                No Comments
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -247,101 +266,5 @@ function widgetView(title, value) {
     </>
   );
 }
-
-// {
-//   "id": "fff0466d-8149-4acb-b6c2-c75ff6ada27a",
-//   "created": "2023-01-22T10:59:42.079Z",
-//   "resolve_at": "2023-01-22T10:59:39Z",
-//   "resolve_by": "asd",
-//   "created_by": "asd",
-//   "assign_to": "mohammadk",
-//   "status": "Resolve",
-//   "issue_type": null,
-//   "vendor": "asd",
-//   "order_id": 2,
-//   "description": "adas",
-//   "priority": "Urgent",
-//   "comment_ticket": [
-//     {
-//       "content": "test",
-//       "created": "2023-01-22T11:24:38.938Z",
-//       "comment_by": {
-//         "id": "47a2631d-6d01-4680-b4d4-738b70200b23",
-//         "username": "mohammadk",
-//         "first_name": "",
-//         "last_name": "",
-//         "email": "mohammad.kareem@baly.iq",
-//         "phone_number": "123",
-//         "user_permissions": []
-//       }
-//     },
-//     {
-//       "content": "test",
-//       "created": "2023-01-22T11:24:48.475Z",
-//       "comment_by": {
-//         "id": "47a2631d-6d01-4680-b4d4-738b70200b23",
-//         "username": "mohammadk",
-//         "first_name": "",
-//         "last_name": "",
-//         "email": "mohammad.kareem@baly.iq",
-//         "phone_number": "123",
-//         "user_permissions": []
-//       }
-//     }
-//   ]
-// },
-
-const fields = [
-  // {
-  //   dataField: "ticket_id",
-  //   text: "ID",
-  // },
-  {
-    dataField: "vendor",
-    text: "Vendor",
-  },
-  {
-    dataField: "created_by",
-    text: "Created By",
-  },
-  {
-    dataField: "issue_type",
-    text: "Issue Type",
-  },
-  {
-    dataField: "order_id",
-    text: "Order ID",
-  },
-  {
-    dataField: "description",
-    text: "Description",
-  },
-  {
-    dataField: "assign_to",
-    text: "Assign To",
-  },
-
-  {
-    dataField: "priority",
-    text: "Priority",
-  },
-
-  {
-    dataField: "status",
-    text: "Status",
-  },
-  {
-    dataField: "created_at",
-    text: "Created At",
-  },
-  {
-    dataField: "resolved_at",
-    text: "Resolved At",
-  },
-  {
-    dataField: "resolved_by",
-    text: "Resolved By",
-  },
-];
 
 export default TicketDetails;
