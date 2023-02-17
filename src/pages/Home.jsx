@@ -96,13 +96,19 @@ function HomePage() {
           <div className="col-md-3">
             <div className={containerClassNameGauge}>
               <h3>DF</h3>
-              <div className={grossClassName}> {Math.round(df) + " $"} </div>
+              <div className={grossClassName}>
+                {" "}
+                {Math.round(df).toLocaleString() + " $"}{" "}
+              </div>
             </div>
           </div>
           <div className="col-md-3">
             <div className={containerClassNameGauge}>
               <h3>NMV</h3>
-              <div className={grossClassName}> {Math.round(nmv) + " $"} </div>
+              <div className={grossClassName}>
+                {" "}
+                {Math.round(nmv).toLocaleString() + " $"}{" "}
+              </div>
             </div>
           </div>
         </div>

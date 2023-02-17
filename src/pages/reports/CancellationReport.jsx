@@ -190,8 +190,8 @@ function CancellationReport() {
                       <th
                         key={index}
                         style={{
-                          minWidth: 200,
-                          width: 200,
+                          minWidth: 100,
+                          width: 100,
                           textAlign: "center",
                         }}
                       >

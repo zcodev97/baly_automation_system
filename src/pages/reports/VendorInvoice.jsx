@@ -96,7 +96,9 @@ function VendorInvoiceReport() {
       },
     });
 
-    pdf.save("table.pdf");
+    pdf.save(
+      `Invoice - ${selectedVendor.label} - from ${formattedFirstDateStart}- to ${formattedFirstDateEnd}.pdf`
+    );
   }
 
   async function getReport() {
@@ -244,8 +246,8 @@ function VendorInvoiceReport() {
             className="container-fluid"
             style={{ height: 500, overflow: "auto" }}
           >
-            <table className="table    table-bordered table-hover ">
-              <thead className={data.length === 0 ? "" : "sticky-top"}>
+            <table className="table  table-sm   table-bordered table-hover ">
+              <thead>
                 <tr className="text-center  bg-dark text-light ">
                   {data.length === 0 ? (
                     <th className="text-start ">

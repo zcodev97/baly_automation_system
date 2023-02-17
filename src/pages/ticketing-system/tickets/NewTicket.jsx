@@ -22,17 +22,6 @@ function NewTicketPage() {
 
   const [selectedVendor, setSelectedVendor] = useState("");
 
-  //this function is used to control the auto assignement of the vendor to specific account manager
-  async function autoAssignAccountManager(selectedVendor) {
-    setSelectedVendor(selectedVendor);
-
-    let accountManager = accountMangersArray.find(function (element) {
-      return element.key === selectedVendor;
-    });
-
-    setSelectedAccountManager(accountManager.value);
-  }
-
   let dropVendors = [];
 
   let accountManagers = [];
@@ -44,7 +33,7 @@ function NewTicketPage() {
 
     var token = localStorage.getItem("token");
 
-    let res = await fetch(BACKEND_URL + "ticket_system/all_vendors_user", {
+    let res = await fetch(BACKEND_URL + "account_manager/get_vendor_am", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -60,9 +49,13 @@ function NewTicketPage() {
         label: vendor.vendor_title,
         value: vendor.vendor_title,
       });
+
+      // i did this here that the returned value will be an array of two elements
+      // first element the id of account manager
+      // second one is the username of the account manager
       accountManagers.push({
         key: vendor.vendor_title,
-        value: vendor.username,
+        value: [vendor.account_manager_id, vendor.account_manager_username],
       });
     });
     setAccountManagerArray(accountManagers);
@@ -122,7 +115,22 @@ function NewTicketPage() {
   }
 
   //assign to
-  const [selectedAccountManager, setSelectedAccountManager] = useState(null);
+  const [selectedAccountManagerId, setSelectedAccountManagerId] = useState("");
+
+  const [accountManagerTitle, setAccountManagerTitle] = useState("");
+
+  //this function is used to control the auto assignement of the vendor to specific account manager
+  async function autoAssignAccountManager(selectedVendor) {
+    setSelectedVendor(selectedVendor);
+
+    let accountManagerObject = accountMangersArray.find((accountManagerId) => {
+      return accountManagerId.key === selectedVendor;
+    });
+
+    setAccountManagerTitle(accountManagerObject.value[1]); // set the title of the account manager
+
+    setSelectedAccountManagerId(accountManagerObject.value[0]); // set the id of the account manager
+  }
 
   //priority
   const [priority, setPriority] = useState([]);
@@ -139,10 +147,6 @@ function NewTicketPage() {
     // loadAllAccountManagers();
   }, []);
 
-  function getDate() {
-    return new Date();
-  }
-
   async function addNewTicket() {
     var token = localStorage.getItem("token");
 
@@ -154,7 +158,7 @@ function NewTicketPage() {
       },
 
       body: JSON.stringify({
-        user_assign_to: selectedAccountManager,
+        user_assign_to: selectedAccountManagerId,
         issue_type: selectedIssueType,
         vendor: selectedVendor,
         order_id: orderId,
@@ -170,6 +174,7 @@ function NewTicketPage() {
         navigate("/tickets");
       })
       .catch((error) => {
+        console.log(error);
         alert("Error In Adding new ticket 😕");
       });
   }
@@ -237,8 +242,8 @@ function NewTicketPage() {
         <div className="container border-bottom border-light border-3   m-1 p-2">
           <p className="text-white">Account Manager</p>
 
-          <div className="container text-center text-dark bg-light  ">
-            {selectedAccountManager}
+          <div className="container text-center text-dark bg-light rounded  ">
+            {accountManagerTitle}
           </div>
         </div>
 

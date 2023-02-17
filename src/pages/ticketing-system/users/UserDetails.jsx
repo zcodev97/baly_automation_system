@@ -75,6 +75,8 @@ function UserDetails() {
   }
 
   function assignUserToSelectedVendors() {
+    setLoading(true);
+
     var token = localStorage.getItem("token");
 
     console.log(location.state.id);
@@ -102,6 +104,9 @@ function UserDetails() {
       .then((response) => response.json())
       .then((data) => {
         // console.log(data);
+
+        getAllvendors();
+        getAllVendorsForCurrentAccountManager();
         setLoading(false);
       })
       .catch((error) => {
@@ -260,22 +265,32 @@ function UserDetails() {
           </button>
         </div>
 
-        <div className="container  border border-1 rounded bg-primary text-white">
-          <b> User Permissions</b>
-          <ul>
-            {userPermission.map((item) => (
-              <li key={location.state.id + 1}>{item.name}</li>
-            ))}
-          </ul>
+        <div className="container border border-1 p-4 rounded bg-dark text-light">
+          <div className="container p-1 m-1">
+            <h5 className="p-2 mt-3 mb-3">User Permissions </h5>
+          </div>
+          {userPermission.length === 0
+            ? "No Permission !"
+            : userPermission.map((item) => (
+                <div
+                  className="container m-1 p-1 border rounded"
+                  key={location.state.id + 1}
+                >
+                  <b> {item.name} </b>
+                </div>
+              ))}
         </div>
         <hr />
-        <div className="container text-dark border border-1 rounded bg-primary text-white">
-          <b> Current Vendors</b>
-          <ul>
-            {accountManagerVendors.map((vendor) => (
-              <li key={vendor.id}>{vendor.vendor_title}</li>
-            ))}
-          </ul>
+        <div className="container border border-1 p-4 rounded bg-dark text-light">
+          <div className="container p-1 m-1">
+            <h5 className="p-2 mt-3 mb-3"> Current Vendors </h5>
+          </div>
+
+          {accountManagerVendors.map((vendor, index) => (
+            <div className="container m-1 p-1 border rounded" key={vendor.id}>
+              {++index} {" - "} {vendor.vendor_title}
+            </div>
+          ))}
         </div>
       </div>
     </>
