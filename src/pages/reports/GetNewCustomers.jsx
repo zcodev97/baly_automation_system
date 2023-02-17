@@ -109,7 +109,7 @@ function GetNewCustomersReportPage() {
   const fields = [
     {
       dataField: "week",
-      text: "Week",
+      text: "Period",
       showTitle: false,
     },
     {
@@ -168,6 +168,10 @@ function GetNewCustomersReportPage() {
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+
+        data[0].week = "period 1";
+        data[1].week = "period 2";
+
         setData(data);
         setLoading(false);
       })
@@ -275,7 +279,6 @@ function GetNewCustomersReportPage() {
           keyField="id"
           columns={fields}
           data={data}
-          //   pagination={pagination}
           filter={filterFactory()}
           rowStyle={rowStyle}
         />

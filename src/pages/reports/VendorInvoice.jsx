@@ -1,12 +1,12 @@
 import jsPDF from "jspdf";
 import NavBar from "../../components/navBar";
-import AmiriRegular from "./Amiri-Regular.ttf";
 import DateTimePicker from "react-datetime-picker";
 import { useState } from "react";
 import Select from "react-select";
 import BACKEND_URL from "../../global";
 import { useEffect } from "react";
 import Loading from "../../components/loading";
+import font from "./Amiri-Regular-normal";
 
 function VendorInvoiceReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
@@ -14,6 +14,90 @@ function VendorInvoiceReport() {
   const [data, setData] = useState([]);
 
   const [loading, setLoading] = useState(false);
+
+  function exportToPDF() {
+    const pdf = new jsPDF("landscape");
+
+    let formattedFirstDateStart = new Date(startFirstDate)
+      .toISOString()
+      .slice(0, 10);
+    let formattedFirstDateEnd = new Date(endFirstDate)
+      .toISOString()
+      .slice(0, 10);
+
+    var callAddFont = function () {
+      this.addFileToVFS("Amiri-Regular-normal.ttf", font);
+      this.addFont("Amiri-Regular-normal.ttf", "Amiri-Regular", "normal");
+    };
+    jsPDF.API.events.push(["addFonts", callAddFont]);
+
+    pdf.setFont("Amiri-Regular", "normal");
+
+    pdf.autoTable({
+      head: [["WWW.BALY.IQ", "BALY FOOD"]],
+    });
+
+    pdf.autoTable({
+      head: [["Vendor payment", "   ", "   "]],
+      body: [
+        [
+          "  ",
+          "Total:",
+          data[data.length - 1].raw_value_total.toLocaleString(),
+        ],
+
+        ["   ", "Final", data[data.length - 1].to_be_paid.toLocaleString()],
+
+        ["   ", "Start", formattedFirstDateStart],
+
+        ["   ", "End", formattedFirstDateEnd],
+      ],
+      styles: {
+        fontSize: 12,
+        fontStyle: "bold",
+      },
+    });
+    pdf.autoTable({
+      head: [[" ", selectedVendor.label, " "]],
+      body: [[" ", " ", " "]],
+      styles: {
+        font: "Amiri-Regular",
+        fontSize: 16,
+        fontStyle: "bold",
+      },
+    });
+
+    pdf.autoTable({
+      head: [
+        Object.keys(Object.values(data)[0]).map((header, index) => header),
+      ],
+      body: Object.values(data).map((header, index) =>
+        Object.values(header).map((sh, si) => sh)
+      ),
+      styles: {
+        font: "Amiri-Regular",
+        fontSize: 10,
+        fontStyle: "bold",
+      },
+      headStyles: {
+        fontStyle: "bold",
+      },
+
+      didParseCell: function (data) {
+        if (data.row.index === 0) {
+          // Set style for header cells
+
+          data.cell.styles.halign = "center"; // Text alignment for header cells
+        } else {
+          // Set style for data cells
+
+          data.cell.styles.halign = "center"; // Text alignment for data cells
+        }
+      },
+    });
+
+    pdf.save("table.pdf");
+  }
 
   async function getReport() {
     setLoading(true);
@@ -32,7 +116,7 @@ function VendorInvoiceReport() {
     }
 
     fetch(
-      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_vendor_invoice?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}&vendor_id=${selectedVendor}`,
+      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_vendor_invoice?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}&vendor_id=${selectedVendor.value}`,
       {
         method: "GET",
         headers: {
@@ -51,84 +135,6 @@ function VendorInvoiceReport() {
         alert("Error In Adding new Comment 😕");
         setLoading(false);
       });
-  }
-
-  function exportToPDF() {
-    const pdf = new jsPDF("landscape");
-
-    pdf.addFileToVFS("Amiri-Regular.ttf", AmiriRegular);
-    pdf.addFont("/Amiri-Regular.ttf", "Amiri", "normal");
-    pdf.setFont("Amiri");
-
-    pdf.autoTable({
-      head: [["WWW.BALY.IQ", "BALY FOOD"]],
-      body: [],
-    });
-
-    pdf.autoTable({
-      head: [["Vendor payment", "Total:", "256,000"]],
-      body: [["Hermoonis Piri", "Final", "207,100", "Date", "1-15/1/2023"]],
-    });
-    pdf.autoTable({
-      head: [
-        [
-          "created_at",
-          "name",
-          "commission",
-          "title",
-          "sub_total",
-          "sub_total_discount",
-          "raw_value",
-          "baly_share",
-          "vendor_share",
-          "baly_commmission",
-          "final_payment",
-        ],
-      ],
-      body: [
-        [
-          "2023-01-01",
-          "Hussam Bilal",
-          "20",
-          "Hermoonis Piri",
-          "5500",
-          "0",
-          "5500",
-          "0",
-          "0",
-          "1100",
-          "4400",
-        ],
-        [
-          "2023-01-02",
-          "Hussam Bilal",
-          "20",
-          "Hermoonis Piri",
-          "5500",
-          "0",
-          "5500",
-          "0",
-          "0",
-          "1100",
-          "5000",
-        ],
-        [
-          "2023-01-03",
-          "Hussam Bilal",
-          "20",
-          "Hermoonis Piri",
-          "5500",
-          "0",
-          "5500",
-          "0",
-          "0",
-          "1100",
-          "9500",
-        ],
-      ],
-    });
-
-    pdf.save("table.pdf");
   }
 
   const [selectedVendor, setSelectedVendor] = useState(null);
@@ -174,15 +180,15 @@ function VendorInvoiceReport() {
   return (
     <>
       <NavBar />
-      <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded ">
+      <div className="container-fluid p-2 mt-2   border-2 border-bottom border-primary text-dark rounded ">
         <h3 className="text-center" id="test">
           <b> Vendor Invoice </b>
         </h3>
         <div className="container border  rounded p-4 mt-2 mb-2 ">
           <div className="row">
-            <div className="col-md-3">
+            <div className="col-md-2">
               <div className="container   ">
-                Start Date{"  "}
+                Start
                 <DateTimePicker
                   key={1}
                   clearIcon={null}
@@ -192,9 +198,9 @@ function VendorInvoiceReport() {
                 />
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-2">
               <div className="container   ">
-                End Date{"  "}
+                End
                 <DateTimePicker
                   key={2}
                   clearIcon={null}
@@ -204,16 +210,16 @@ function VendorInvoiceReport() {
                 />
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-4">
               <div className="container border-bottom border-light border-3  ">
                 <Select
                   options={vendorsDropDownMenu}
-                  onChange={(opt) => setSelectedVendor(opt.value)}
+                  onChange={(opt) => setSelectedVendor(opt)}
                   placeholder={"vendors.."}
                 />
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-2">
               <div
                 className="container btn btn-light border border-2 border-primary text-primary"
                 onClick={getReport}
@@ -221,55 +227,67 @@ function VendorInvoiceReport() {
                 <b> Get Report</b>
               </div>
             </div>
+            <div className="col-md-2">
+              <div className="container text-center">
+                <div
+                  className="btn btn-light border-danger border-2 text-danger  text-center"
+                  onClick={exportToPDF}
+                >
+                  Invoice PDF
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-
         <div className="table-responsive">
-          <table className="table  table-sm table-bordered table-hover table-dark">
-            <thead>
-              <tr className="text-center ">
-                {data.length === 0 ? (
-                  <th className="text-start ">
-                    Please Select Start and End Date and Press Get Report 😁
-                  </th>
-                ) : (
-                  Object.keys(Object.values(data)[0]).map((header, index) => [
-                    <th
-                      key={index}
-                      style={{
-                        minWidth: 200,
-                        width: 200,
-                        textAlign: "center",
-                      }}
-                    >
-                      {header}
-                    </th>,
-                  ])
-                )}
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              {data.length === 0
-                ? ""
-                : Object.values(data)
-                    .slice(0, 3)
-                    .map((header, index) => [
+          <div
+            className="container-fluid"
+            style={{ height: 500, overflow: "auto" }}
+          >
+            <table className="table    table-bordered table-hover ">
+              <thead className={data.length === 0 ? "" : "sticky-top"}>
+                <tr className="text-center  bg-dark text-light ">
+                  {data.length === 0 ? (
+                    <th className="text-start ">
+                      Please Select Start and End Date and Press Get Report 😁
+                    </th>
+                  ) : (
+                    Object.keys(Object.values(data)[0]).map((header, index) => [
+                      <th
+                        key={index}
+                        style={{
+                          minWidth: 100,
+                          width: 100,
+                          textAlign: "center",
+                        }}
+                      >
+                        {header}
+                      </th>,
+                    ])
+                  )}
+                </tr>
+              </thead>
+              <tbody className="text-center">
+                {data.length === 0
+                  ? ""
+                  : Object.values(data).map((header, index) => [
                       <tr key={header}>
                         {Object.values(header).map((sh, si) => [
-                          <td key={si}>{sh}</td>,
+                          <td
+                            key={si}
+                            className={
+                              index === data.length - 1
+                                ? "bg-dark text-light"
+                                : "text-dark"
+                            }
+                          >
+                            {sh}
+                          </td>,
                         ])}
                       </tr>,
                     ])}
-            </tbody>
-          </table>
-        </div>
-
-        <div className="container text-center">
-          <div
-            className="btn btn-light border-success text-priamry  text-center"
-            onClick={exportToPDF}
-          >
-            Get Invoice
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
