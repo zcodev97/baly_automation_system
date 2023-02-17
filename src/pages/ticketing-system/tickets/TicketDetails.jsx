@@ -202,32 +202,35 @@ function TicketDetails() {
         </div>
       </div>
       <div className="container-fluid bg-light rounded">
-        <div className="container text-start bg-dark text-light rounded">
-          Comments :
-        </div>
+        <div className="container p-2 text-start bg-dark text-light rounded">
+          <h5> Comments : </h5>
 
-        <div className="container w-50 text-center p-2 mt-2">
-          <div className="text-dark">
-            {comments.slice(1).length !== 0 ? (
-              comments.slice(1).map((item) => (
-                <li
-                  key={Math.floor(Math.random() * 10000)}
-                  className="list-group-item   border border-2 p-2 m-1 rounded"
-                >
-                  [ <b> Date : </b>
-                  {new Date(item.created).toLocaleDateString()} {"   "}
-                  <b>Time : </b>: {new Date(item.created).toLocaleTimeString()}{" "}
-                  ] {"  "}
-                  <b>
-                    {item.comment_by.username} : {item.content}
-                  </b>
-                </li>
-              ))
-            ) : (
-              <div className="container bg-primary rounded text-light">
-                No Comments
-              </div>
-            )}
+          <div className="container  text-center bg-light rounded p-2 mt-2">
+            <div className="text-dark">
+              {comments.slice(1).length !== 0 ? (
+                comments.slice(1).map((item) => (
+                  <>
+                    <li
+                      key={Math.floor(Math.random() * 10000)}
+                      className="list-group-item   border border-2 p-2 m-1 rounded"
+                    >
+                      [ <b> Date : </b>
+                      {new Date(item.created).toLocaleDateString()} {"   "}
+                      <b>Time : </b>:{" "}
+                      {new Date(item.created).toLocaleTimeString()} ] {"  "}
+                      <b>
+                        {item.comment_by.username} : {item.content}
+                      </b>
+                    </li>
+                    <hr />
+                  </>
+                ))
+              ) : (
+                <div className="container bg-primary rounded text-light">
+                  No Comments
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

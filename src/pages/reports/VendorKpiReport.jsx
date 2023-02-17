@@ -230,6 +230,7 @@ function VendorKPIReport() {
               <div className="col-md-6">
                 <div className="container border-bottom border-light border-3  p-2">
                   <Select
+                    defaultValue={selectedVendors}
                     options={vendorsDropDownMenu}
                     onChange={(opt) => setSelectedVendors(opt)}
                     isMulti

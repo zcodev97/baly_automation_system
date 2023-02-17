@@ -182,6 +182,7 @@ function VendorInvoiceReport() {
   return (
     <>
       <NavBar />
+
       <div className="container-fluid p-2 mt-2   border-2 border-bottom border-primary text-dark rounded ">
         <h3 className="text-center" id="test">
           <b> Vendor Invoice </b>
@@ -215,6 +216,7 @@ function VendorInvoiceReport() {
             <div className="col-md-4">
               <div className="container border-bottom border-light border-3  ">
                 <Select
+                  defaultValue={selectedVendor}
                   options={vendorsDropDownMenu}
                   onChange={(opt) => setSelectedVendor(opt)}
                   placeholder={"vendors.."}
@@ -232,15 +234,16 @@ function VendorInvoiceReport() {
             <div className="col-md-2">
               <div className="container text-center">
                 <div
-                  className="btn btn-light border-danger border-2 text-danger  text-center"
+                  className="container btn border border-2  border-danger text-danger  text-center"
                   onClick={exportToPDF}
                 >
-                  Invoice PDF
+                  <b> Export Invoice 📁 </b>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         <div className="table-responsive">
           <div
             className="container-fluid"
