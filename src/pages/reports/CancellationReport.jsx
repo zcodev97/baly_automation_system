@@ -61,13 +61,6 @@ function CancellationReport() {
       .toISOString()
       .slice(0, 10);
 
-    if (formattedFirstDateStart === formattedFirstDateEnd) {
-      alert("Please Select Correct Date");
-      setLoading(false);
-
-      return;
-    }
-
     fetch(
       `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_cancellation_report?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}`,
       {
