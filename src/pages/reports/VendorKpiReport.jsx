@@ -13,10 +13,12 @@ function VendorKPIReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
 
-  const [startSecondDate, setStartecondDate] = useState(new Date());
-  const [endSecondDate, setEndecondDate] = useState(new Date());
+  const [startSecondDate, setStartSecondDate] = useState(new Date());
+  const [endSecondDate, setEndSecondDate] = useState(new Date());
   const [reportData, setReportData] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const [iscompareReport, setIsCompareReport] = useState(false);
 
   const [selectedMode, setSelectedMode] = useState(null);
 
@@ -102,6 +104,45 @@ function VendorKPIReport() {
     let formattedFirstDateEnd = new Date(endFirstDate)
       .toISOString()
       .slice(0, 10);
+    let formattedStartSecondDate = new Date(startSecondDate)
+      .toISOString()
+      .slice(0, 10);
+    let formattedEndSecondDate = new Date(endSecondDate)
+      .toISOString()
+      .slice(0, 10);
+
+    if (iscompareReport) {
+      fetch(
+        `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_vendor_kpi_comapare`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            start_date_first: formattedFirstDateStart,
+            end_date_first: formattedFirstDateEnd,
+            start_date_second: formattedStartSecondDate,
+            end_date_second: formattedEndSecondDate,
+            vendors: Object.values(selectedVendors).map((h, i) => h.value),
+            zones: [],
+          }),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          setReportData(data);
+
+          console.log(data);
+
+          setLoading(false);
+        })
+        .catch((error) => {
+          alert(error);
+          setLoading(false);
+        });
+    }
 
     fetch(
       `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_vendor_kpi_report`,
@@ -181,18 +222,31 @@ function VendorKPIReport() {
     <>
       <NavBar />
       <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded ">
-        <h3 className="text-center">
-          {" "}
-          <b> KPIs & Units Economics Report </b>
-        </h3>
+        <div className="row d-flex justify-content-center align-items-center">
+          <div className="col-md-10">
+            <h3 className="text-center">
+              <b> KPIs & Units Economics Report </b>
+            </h3>
+          </div>
+          <div className="col-md-2">
+            <div
+              className="container btn btn-light border border-danger border-3 "
+              onClick={() => {
+                setIsCompareReport(!iscompareReport);
+              }}
+            >
+              {iscompareReport ? "Disable" : "Enable "} Compare Report
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="container-fluid border border-4 border-dark  rounded mt-2 mb-2">
-        <div className="row">
+      <div className="container-fluid border border-3 rounded mt-2 mb-2">
+        <div className="row d-flex justify-content-center align-items-center">
           <div className="col-md-4">
-            <div className="row bg-light">
+            <div className="row bg-light d-flex justify-content-center align-items-center">
               <div className="col-md-6">
-                <div className="container p-2  m-1">
-                  <b className="text-dark "> Start Date{"  "}</b>
+                <div className="container">
+                  <b className="text-dark "> Start {"  "}</b>
 
                   <DateTimePicker
                     key={1}
@@ -202,10 +256,25 @@ function VendorKPIReport() {
                     value={startFirstDate}
                   />
                 </div>
+                {iscompareReport ? (
+                  <div className="container ">
+                    <b className="text-dark "> Second Start Date{"  "}</b>
+
+                    <DateTimePicker
+                      key={1}
+                      clearIcon={null}
+                      format={"y-MM-dd"}
+                      onChange={setStartSecondDate}
+                      value={startFirstDate}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="col-md-6">
-                <div className="container p-2  m-1">
-                  <b className="text-dark"> End Date{"  "}</b>
+                <div className="container ">
+                  <b className="text-dark"> End {"  "}</b>
                   <DateTimePicker
                     key={2}
                     clearIcon={null}
@@ -214,24 +283,39 @@ function VendorKPIReport() {
                     value={endFirstDate}
                   />
                 </div>
+                {iscompareReport ? (
+                  <div className="container  ">
+                    <b className="text-dark"> End Second Date{"  "}</b>
+                    <DateTimePicker
+                      key={2}
+                      clearIcon={null}
+                      format={"y-MM-dd"}
+                      onChange={setEndSecondDate}
+                      value={endFirstDate}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </div>
 
-          <div className="col-md-4">
-            <div className="row">
+          <div className="col-md-4 ">
+            <div className="row d-flex justify-content-center align-items-center">
               <div className="col-md-6">
-                <div className="container border-bottom border-light border-3  p-2">
+                <div className="container border-bottom border-light border-3  ">
                   <Select
                     defaultValue={selectedMode}
                     onChange={(opt) => setSelectedMode(opt)}
                     options={modes}
                     placeholder={"select mode.."}
+                    isDisabled={iscompareReport ? true : false}
                   />
                 </div>
               </div>
               <div className="col-md-6">
-                <div className="container border-bottom border-light border-3  p-2">
+                <div className="container border-bottom border-light border-3 ">
                   <Select
                     defaultValue={selectedVendors}
                     options={vendorsDropDownMenu}
@@ -244,8 +328,8 @@ function VendorKPIReport() {
             </div>
           </div>
 
-          <div className="col-md-4">
-            <div className="row mt-2 mb-2">
+          <div className="col-md-4 p-2">
+            <div className="row d-flex justify-content-center align-items-center">
               <div className="col-md-6 text-center">
                 <div
                   className="container btn btn-light text-primary border border-2 border-secondary"
