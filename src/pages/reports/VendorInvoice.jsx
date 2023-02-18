@@ -25,11 +25,8 @@ function VendorInvoiceReport() {
       .toISOString()
       .slice(0, 10);
 
-    var callAddFont = function () {
-      this.addFileToVFS("Amiri-Regular-normal.ttf", font);
-      this.addFont("Amiri-Regular-normal.ttf", "Amiri-Regular", "normal");
-    };
-    jsPDF.API.events.push(["addFonts", callAddFont]);
+    pdf.addFileToVFS("Amiri-Regular-normal.ttf", font);
+    pdf.addFont("Amiri-Regular-normal.ttf", "Amiri-Regular", "normal");
 
     pdf.setFont("Amiri-Regular", "normal");
 
@@ -103,6 +100,13 @@ function VendorInvoiceReport() {
 
   async function getReport() {
     setLoading(true);
+
+    if (selectedVendor.length === 0) {
+      alert("Please Select Vendor !");
+      setLoading(false);
+
+      return;
+    }
     var token = localStorage.getItem("token");
 
     let formattedFirstDateStart = new Date(startFirstDate)
@@ -139,7 +143,7 @@ function VendorInvoiceReport() {
       });
   }
 
-  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [selectedVendor, setSelectedVendor] = useState("");
 
   const [vendorsDropDownMenu, setVendorsDropDownMenu] = useState([]);
   const [vendors, setVendors] = useState([]);

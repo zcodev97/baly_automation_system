@@ -179,43 +179,43 @@ function CancellationReport() {
       </div>
 
       <div className="table-responsive">
-        <div className="table-responsive">
-          <table className="table   table-bordered table-dark table-hover">
-            <thead>
-              <tr className="text-center">
-                {/* view all of the selected days from the returned object by iterating throw it  */}
-                {data.length === 0
-                  ? ""
-                  : Object.keys(data[0]).map((header, index) => [
-                      <th
-                        key={index}
-                        style={{
-                          minWidth: 100,
-                          width: 100,
-                          textAlign: "center",
-                        }}
-                      >
-                        {header}
-                      </th>,
-                    ])}
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              <tr>
-                {data.length === 0 ? (
-                  <p className="text-light">
-                    {" "}
-                    Please Select Start and End Date and Press Get Report 😁
-                  </p>
-                ) : (
-                  Object.values(data[0]).map((header, index) => [
-                    <td key={header}>{header}</td>,
-                  ])
-                )}
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <table className="table   table-bordered table-dark table-hover">
+          <thead>
+            <tr className="text-center">
+              {/* view all of the selected days from the returned object by iterating throw it  */}
+              {data.length === 0
+                ? ""
+                : Object.keys(data[0]).map((header, index) => [
+                    <th
+                      key={index}
+                      style={{
+                        minWidth: 100,
+                        width: 100,
+                        textAlign: "center",
+                      }}
+                    >
+                      {header}
+                    </th>,
+                  ])}
+            </tr>
+          </thead>
+          <tbody className="text-center">
+            {data.length === 0 ? (
+              <p className="text-light">
+                {" "}
+                Please Select Start and End Date and Press Get Report 😁
+              </p>
+            ) : (
+              Object.values(data).map((h, i) => [
+                <tr key={i}>
+                  {Object.values(h).map((sh, si) => (
+                    <td key={si}>{sh}</td>
+                  ))}
+                </tr>,
+              ])
+            )}
+          </tbody>
+        </table>
       </div>
     </>
   );

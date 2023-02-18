@@ -12,6 +12,9 @@ import BACKEND_URL from "../../global";
 function VendorKPIReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
+
+  const [startSecondDate, setStartecondDate] = useState(new Date());
+  const [endSecondDate, setEndecondDate] = useState(new Date());
   const [reportData, setReportData] = useState([]);
   const [loading, setLoading] = useState(false);
 

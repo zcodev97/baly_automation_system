@@ -210,46 +210,42 @@ function HourlyReportPage() {
         /> */}
 
         <div className="table-responsive">
-          <div className="table-responsive">
-            <table className="table table-sm   table-bordered table-dark table-hover">
-              <thead>
-                <tr className="text-center">
-                  {/* view all of the selected days from the returned object by iterating throw it  */}
-                  {data.length === 0
-                    ? ""
-                    : Object.keys(Object.values(data)[0]).map(
-                        (header, index) => (
-                          <th
-                            key={index}
-                            style={{
-                              minWidth: 200,
-                              width: 200,
-                              textAlign: "center",
-                            }}
-                          >
-                            {header}
-                          </th>
-                        )
-                      )}
-                </tr>
-              </thead>
-              <tbody className="text-center">
-                {data.length === 0 ? (
-                  <p className="text-dark">
-                    Please Select Start and End Date and Press Get Report 😁
-                  </p>
-                ) : (
-                  Object.values(data).map((header, index) => (
-                    <tr>
-                      {Object.values(header).map((sh, si) => (
-                        <td key={si}>{sh}</td>
-                      ))}{" "}
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+          <table className="table table-sm   table-bordered table-dark table-hover">
+            <thead>
+              <tr className="text-center">
+                {/* view all of the selected days from the returned object by iterating throw it  */}
+                {data.length === 0
+                  ? ""
+                  : Object.keys(Object.values(data)[0]).map((header, index) => (
+                      <th
+                        key={index}
+                        style={{
+                          minWidth: 200,
+                          width: 200,
+                          textAlign: "center",
+                        }}
+                      >
+                        {header}
+                      </th>
+                    ))}
+              </tr>
+            </thead>
+            <tbody className="text-center">
+              {data.length === 0 ? (
+                <p className="text-dark">
+                  Please Select Start and End Date and Press Get Report 😁
+                </p>
+              ) : (
+                Object.values(data).map((header, index) => (
+                  <tr>
+                    {Object.values(header).map((sh, si) => (
+                      <td key={si}>{sh}</td>
+                    ))}{" "}
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </>

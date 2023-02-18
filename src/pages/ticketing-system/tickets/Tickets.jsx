@@ -1,4 +1,3 @@
-import axios from "axios";
 import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import paginationFactory from "react-bootstrap-table2-paginator";
@@ -8,12 +7,8 @@ import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import NoDataView from "../../../components/noData";
-import supabase from "../../../supabase";
 import Loading from "../../../components/loading";
-import { Navbar } from "react-bootstrap";
 import NavBar from "../../../components/navBar";
-import * as Icon from "react-bootstrap-icons";
 import moment from "moment";
 import BACKEND_URL from "../../../global";
 
@@ -23,6 +18,7 @@ function Tickets() {
   const navigate = useNavigate();
 
   const [tickets, setTickets] = useState([]);
+  const [notFilteredTickets, setNotFilteredTickets] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [lowPendingPriorityTickets, setLowPendingPriorityTickets] = useState(0);
@@ -42,26 +38,28 @@ function Tickets() {
     useState(0);
 
   const rowEvents = {
-    onClick: (e, row, rowIndex) => {
-      navigate("/ticket_details", {
-        state: {
-          id: row.id,
-          created_by: row.created_by,
-          vendor: row.vendor,
-          issue_type: row.issue_type,
-          order_id: row.order_id,
-          description: row.description,
-          assign_to: row.assign_to,
-          priority: row.priority,
-          status: row.status,
-          created_at: row.created,
-          resolved_at: row.resolve_at,
-          resolved_by: row.resolve_by,
-          comments: row.comment_ticket,
-        },
-      });
-    },
+    onClick: (e, row, rowIndex) => {},
   };
+
+  function GoToTicketDetails(row) {
+    navigate("/ticket_details", {
+      state: {
+        id: row.id,
+        created_by: row.created_by,
+        vendor: row.vendor,
+        issue_type: row.issue_type,
+        order_id: row.order_id,
+        description: row.description,
+        assign_to: row.assign_to,
+        priority: row.priority,
+        status: row.status,
+        created_at: row.created,
+        resolved_at: row.resolve_at,
+        resolved_by: row.resolve_by,
+        comments: row.comment_ticket,
+      },
+    });
+  }
 
   const pagination = paginationFactory({
     page: 1,
@@ -73,24 +71,6 @@ function Tickets() {
     showTotal: true,
     alwaysShowAllBtns: false,
   });
-
-  const rowStyle = (row, rowIndex) => {
-    // if(row.created_at){
-    //     return row.created_at.toLocaleDateString()
-    // }
-    if (row.status === "resolved") {
-      return { color: "white", background: "#40916c", fontWeight: "bold" };
-    } else if (row.priority === 1) {
-      // #0d6efd
-      return { color: "white", background: "#0d6efd", fontWeight: "bold" };
-    } else if (row.priority === 2) {
-      return { color: "white", background: "#B22222", fontWeight: "bold" };
-    } else if (row.priority === 3) {
-      return { color: "white", background: "#CD5C5C", fontWeight: "bold" };
-    } else if (row.priority === 4) {
-      return { color: "black", background: "#FF8C00", fontWeight: "bold" };
-    }
-  };
 
   async function GetAllTickets() {
     setLoading(true);
@@ -106,6 +86,8 @@ function Tickets() {
 
     let ticketJsonData = await res.json();
     setTickets(ticketJsonData);
+    setNotFilteredTickets(ticketJsonData);
+    console.log(tickets);
     setLoading(false);
   }
 
@@ -149,12 +131,14 @@ function Tickets() {
       text: "Description",
       sort: true,
       filter: textFilter(),
+      showTitle: false,
     },
     {
       dataField: "assign_to",
       text: "Assign To",
       sort: true,
       filter: textFilter(),
+      showTitle: false,
     },
     {
       dataField: "priority",
@@ -197,6 +181,18 @@ function Tickets() {
       filter: textFilter(),
     },
   ];
+
+  function handleOrderIdInput(e) {
+    let filteredTickets = tickets.filter((ticket) =>
+      ticket.order_id.toString().includes(e.target.value.toString())
+    );
+    setTimeout(() => {}, 1000);
+
+    setTickets(filteredTickets);
+    if (e.target.value.length === 0) {
+      setTickets(notFilteredTickets);
+    }
+  }
 
   if (loading) {
     return <Loading />;
@@ -304,39 +300,99 @@ function Tickets() {
         </div>
       </div> */}
 
-      <div className="container-fluid">
-        <div className="table-responsive">
-          <BootstrapTable
-            bordered={false}
-            hover={true}
-            keyField="id"
-            columns={fields}
-            data={tickets}
-            pagination={pagination}
-            filter={filterFactory()}
-            responsive
-            // rowStyle={rowStyle}
-            // style={{
-            //   borderCollapse: "collapse",
-            //   tableLayout: "fixed",
-            //   width: "100%",
-            //   overflowX: "auto",
-            //   minWidth: "fit-content",
-            // }}
-            rowEvents={rowEvents}
-          />
+      <div className="container">
+        <div className="row   d-flex justify-content-center align-items-center">
+          <div className="col-md-6">
+            {/* order ID */}
+            <input
+              className="form-control"
+              id="uname"
+              placeholder="Search Here By Order ID"
+              name="uname"
+              required=""
+              onChange={handleOrderIdInput}
+            />
+          </div>
+          <div className="col-md-4">
+            <div
+              className="btn btn-light border  border-3 border-success text-center"
+              onClick={addTicket}
+            >
+              <b> Add Ticket ➕ </b>
+            </div>
+          </div>
+
+          <div className="col-md-2">
+            {/* order ID */}
+            <div className="container border-bottom   border-3   m-2 p-2">
+              <b> Tickets : {tickets.length} </b>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="container-fluid  text-start ">
-        <b
-          className="btn btn-success border w-10 text-center border-3 mt-2 mb-2"
-          onClick={addTicket}
-        >
-          Add Ticket ➕
-        </b>
+
+      <div className="table-responsive">
+        <table className="table   table-dark  table-striped  table-bordered table-hover">
+          <thead>
+            <tr className="text-center">
+              {/* view all of the selected days from the returned object by iterating throw it  */}
+              {tickets.length === 0
+                ? ""
+                : Object.keys(tickets[0])
+                    .splice(1, 10)
+                    .map((header, index) => (
+                      <th
+                        key={index}
+                        style={{
+                          minWidth: 100,
+                          width: 100,
+                          textAlign: "center",
+                        }}
+                        className={"bg-light text-dark"}
+                      >
+                        <b> {header.toLocaleUpperCase()}</b>
+                      </th>
+                    ))}
+            </tr>
+          </thead>
+          <tbody className="text-center">
+            {tickets.length === 0 ? (
+              <p className="text-dark">
+                Please Select Start and End Date and Press Get Report 😁
+              </p>
+            ) : (
+              Object.values(tickets).map((ticket) => (
+                <tr key={ticket.id} onClick={() => GoToTicketDetails(ticket)}>
+                  {Object.values(ticket)
+                    .splice(1, 10)
+                    .map((cell, index) => (
+                      <td key={index}>
+                        {" "}
+                        {index === 0
+                          ? formatDate(cell)
+                          : index === 1
+                          ? formatDate(cell)
+                          : cell}
+                      </td>
+                    ))}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </>
   );
+
+  function formatDate(cell) {
+    const date = new Date(cell);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate + " " + date.toLocaleTimeString();
+  }
 }
 
 export default Tickets;
