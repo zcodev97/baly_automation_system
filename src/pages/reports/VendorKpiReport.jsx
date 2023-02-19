@@ -66,7 +66,28 @@ function VendorKPIReport() {
   };
 
   //convert json to excel
-  const JSONToExcel = (jsonData, fileName) => {
+  const JSONToExcel = () => {
+    let fileName = "";
+
+    let formattedFirstStartDate = new Date(startFirstDate)
+      .toISOString()
+      .slice(0, 10);
+    let formattedFirstEndDate = new Date(endFirstDate)
+      .toISOString()
+      .slice(0, 10);
+
+    if (iscompareReport) {
+      let formattedSecondStartDate = new Date(startSecondDate)
+        .toISOString()
+        .slice(0, 10);
+      let formattedSecondEndDate = new Date(endSecondDate)
+        .toISOString()
+        .slice(0, 10);
+      fileName = `Vendor_KPI_Report_Compare Period 1 (From - ${formattedFirstStartDate} to - ${formattedFirstEndDate})  to Period 2 (From - ${formattedSecondStartDate} to - ${formattedSecondEndDate})`;
+    } else {
+      fileName = `Vendor_KPI_Report (From - ${formattedFirstStartDate} to - ${formattedFirstEndDate})`;
+    }
+
     if (reportData.length === 0) {
       alert("Please Select Date and press Get Report 😁");
       return;
@@ -169,7 +190,9 @@ function VendorKPIReport() {
       .then((data) => {
         setReportData(data);
 
-        console.log(data);
+        setTimeout(() => {}, 1000);
+
+        console.log(reportData);
 
         setLoading(false);
       })
@@ -244,7 +267,7 @@ function VendorKPIReport() {
       </div>
       <div className="container-fluid border border-3 rounded mt-2 mb-2">
         <div className="row d-flex justify-content-center align-items-center">
-          <div className="col-md-4">
+          <div className="col-md-6">
             <div className="row bg-light d-flex justify-content-center align-items-center">
               <div className="col-md-6">
                 {DatePickerCompo(
@@ -261,7 +284,7 @@ function VendorKPIReport() {
                   : ""}
               </div>
               <div className="col-md-6">
-                {DatePickerCompo("Start Date 1", endFirstDate, setEndFirstDate)}
+                {DatePickerCompo("End Date 1", endFirstDate, setEndFirstDate)}
                 {iscompareReport
                   ? DatePickerCompo(
                       "End Date 2",
@@ -300,7 +323,7 @@ function VendorKPIReport() {
             </div>
           </div>
 
-          <div className="col-md-4 p-2">
+          <div className="col-md-2 p-2">
             <div className="row d-flex justify-content-center align-items-center">
               <div className="col-md-6 text-center">
                 <div
@@ -311,12 +334,14 @@ function VendorKPIReport() {
                 </div>
               </div>
               <div className="col-md-6 text-center">
-                {ExcelExport(
-                  reportData,
-                  "Vendor KPI",
-                  startFirstDate,
-                  endFirstDate
-                )}
+                <div
+                  className="container btn btn-light text-success border border-2 border-secondary"
+                  onClick={() => {
+                    JSONToExcel(reportData);
+                  }}
+                >
+                  <b> Export Excel ⬇️</b>
+                </div>
               </div>
             </div>
           </div>
