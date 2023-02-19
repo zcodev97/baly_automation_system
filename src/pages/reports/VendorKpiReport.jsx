@@ -37,6 +37,18 @@ function VendorKPIReport() {
     { value: 9, label: "Area" },
   ];
 
+  const zones = [
+    { value: "Mansoor", label: "Mansoor" },
+    { value: "Zayoona", label: "Zayoona" },
+    { value: "Karrada", label: "Karrada" },
+    { value: "Ahdamya", label: "Ahdamya" },
+    { value: "Dora", label: "Dora" },
+    { value: "Hay Al-Jameea", label: "Hay Al-Jameea" },
+    { value: "Ameriya", label: "Ameriya" },
+  ];
+
+  const [selectedZones, setSelectedZones] = useState([]);
+
   const colorScale = (sh, si, header, index) => {
     // console.log(si);
 
@@ -149,7 +161,7 @@ function VendorKPIReport() {
             start_date_second: formattedStartSecondDate,
             end_date_second: formattedEndSecondDate,
             vendors: Object.values(selectedVendors).map((h, i) => h.value),
-            zones: [],
+            zones: Object.values(selectedZones).map((h, i) => h.value),
           }),
         }
       )
@@ -248,10 +260,28 @@ function VendorKPIReport() {
       <NavBar />
       <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded ">
         <div className="row d-flex justify-content-center align-items-center">
-          <div className="col-md-10">
+          <div className="col-md-6">
             <h3 className="text-center">
               <b> KPIs & Units Economics Report </b>
             </h3>
+          </div>
+          <div className="col-md-2 text-center">
+            <div
+              className="container btn btn-light text-primary border border-2 border-secondary"
+              onClick={getReport}
+            >
+              <b> Get Report ✅</b>
+            </div>
+          </div>
+          <div className="col-md-2 text-center">
+            <div
+              className="container btn btn-light text-success border border-2 border-secondary"
+              onClick={() => {
+                JSONToExcel(reportData);
+              }}
+            >
+              <b> Export Excel ⬇️</b>
+            </div>
           </div>
           <div className="col-md-2">
             <div
@@ -296,9 +326,9 @@ function VendorKPIReport() {
             </div>
           </div>
 
-          <div className="col-md-4 ">
+          <div className="col-md-6 ">
             <div className="row d-flex justify-content-center align-items-center">
-              <div className="col-md-6">
+              <div className="col-md-4">
                 <div className="container border-bottom border-light border-3  ">
                   <Select
                     defaultValue={selectedMode}
@@ -309,7 +339,19 @@ function VendorKPIReport() {
                   />
                 </div>
               </div>
-              <div className="col-md-6">
+              <div className="col-md-4">
+                <div className="container border-bottom border-light border-3  ">
+                  <Select
+                    defaultValue={selectedZones}
+                    onChange={(opt) => setSelectedZones(opt)}
+                    options={zones}
+                    placeholder={"select zones.."}
+                    isDisabled={iscompareReport ? false : true}
+                    isMulti
+                  />
+                </div>
+              </div>
+              <div className="col-md-4">
                 <div className="container border-bottom border-light border-3 ">
                   <Select
                     defaultValue={selectedVendors}
@@ -318,29 +360,6 @@ function VendorKPIReport() {
                     isMulti
                     placeholder={"vendors.."}
                   />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-md-2 p-2">
-            <div className="row d-flex justify-content-center align-items-center">
-              <div className="col-md-6 text-center">
-                <div
-                  className="container btn btn-light text-primary border border-2 border-secondary"
-                  onClick={getReport}
-                >
-                  <b> Get Report ✅</b>
-                </div>
-              </div>
-              <div className="col-md-6 text-center">
-                <div
-                  className="container btn btn-light text-success border border-2 border-secondary"
-                  onClick={() => {
-                    JSONToExcel(reportData);
-                  }}
-                >
-                  <b> Export Excel ⬇️</b>
                 </div>
               </div>
             </div>

@@ -238,25 +238,57 @@ function Tickets() {
       </div>
 
       <div className="table-responsive">
-        <BootstrapTable
-          bordered={false}
-          hover={true}
-          keyField="id"
-          columns={fields}
-          data={tickets}
-          pagination={pagination}
-          filter={filterFactory()}
-          responsive
-          // rowStyle={rowStyle}
-          // style={{
-          //   borderCollapse: "collapse",
-          //   tableLayout: "fixed",
-          //   width: "100%",
-          //   overflowX: "auto",
-          //   minWidth: "fit-content",
-          // }}
-          rowEvents={rowEvents}
-        />
+        <table className="table   table-dark  table-striped  table-bordered table-hover">
+          <thead>
+            <tr className="text-center">
+              {/* view all of the selected days from the returned object by iterating throw it  */}
+              {tickets.length === 0
+                ? ""
+                : Object.keys(tickets[0])
+                    .splice(1, 10)
+                    .map((header, index) => (
+                      <th
+                        key={index}
+                        style={{
+                          minWidth: 100,
+                          width: 100,
+                          textAlign: "center",
+                        }}
+                        className={"bg-light text-dark"}
+                      >
+                        <b> {header.toLocaleUpperCase()}</b>
+                      </th>
+                    ))}
+            </tr>
+          </thead>
+          <tbody className="text-center">
+            {tickets.length === 0 ? (
+              <p className="text-dark">
+                Please Select Start and End Date and Press Get Report 😁
+              </p>
+            ) : (
+              Object.values(tickets).map((ticket) => (
+                <tr key={ticket.id} onClick={() => GoToTicketDetails(ticket)}>
+                  {Object.values(ticket)
+                    .splice(1, 10)
+                    .map((cell, index) => (
+                      <td key={index}>
+                        {" "}
+                        {index === 0
+                          ? formatDate(cell)
+                          : index === 1
+                          ? new Date(cell).toLocaleDateString() ===
+                            new Date("1970-01-01").toLocaleDateString()
+                            ? ""
+                            : formatDate(cell)
+                          : cell}
+                      </td>
+                    ))}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </>
   );
