@@ -9,6 +9,8 @@ import NavBar from "../../components/navBar";
 import DateTimePicker from "react-datetime-picker";
 import Select from "react-select";
 import BACKEND_URL from "../../global";
+import ExcelExport from "../../components/excelExport";
+import DatePickerCompo from "../../components/datePicker";
 function VendorKPIReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
@@ -245,58 +247,28 @@ function VendorKPIReport() {
           <div className="col-md-4">
             <div className="row bg-light d-flex justify-content-center align-items-center">
               <div className="col-md-6">
-                <div className="container">
-                  <b className="text-dark "> Start {"  "}</b>
-
-                  <DateTimePicker
-                    key={1}
-                    clearIcon={null}
-                    format={"y-MM-dd"}
-                    onChange={setStartFirstDate}
-                    value={startFirstDate}
-                  />
-                </div>
-                {iscompareReport ? (
-                  <div className="container ">
-                    <b className="text-dark "> Second Start Date{"  "}</b>
-
-                    <DateTimePicker
-                      key={1}
-                      clearIcon={null}
-                      format={"y-MM-dd"}
-                      onChange={setStartSecondDate}
-                      value={startFirstDate}
-                    />
-                  </div>
-                ) : (
-                  ""
+                {DatePickerCompo(
+                  "Start Date 1",
+                  startFirstDate,
+                  setStartFirstDate
                 )}
+                {iscompareReport
+                  ? DatePickerCompo(
+                      "Start Date 2",
+                      startSecondDate,
+                      setStartSecondDate
+                    )
+                  : ""}
               </div>
               <div className="col-md-6">
-                <div className="container ">
-                  <b className="text-dark"> End {"  "}</b>
-                  <DateTimePicker
-                    key={2}
-                    clearIcon={null}
-                    format={"y-MM-dd"}
-                    onChange={setEndFirstDate}
-                    value={endFirstDate}
-                  />
-                </div>
-                {iscompareReport ? (
-                  <div className="container  ">
-                    <b className="text-dark"> End Second Date{"  "}</b>
-                    <DateTimePicker
-                      key={2}
-                      clearIcon={null}
-                      format={"y-MM-dd"}
-                      onChange={setEndSecondDate}
-                      value={endFirstDate}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
+                {DatePickerCompo("Start Date 1", endFirstDate, setEndFirstDate)}
+                {iscompareReport
+                  ? DatePickerCompo(
+                      "End Date 2",
+                      endSecondDate,
+                      setEndSecondDate
+                    )
+                  : ""}
               </div>
             </div>
           </div>
@@ -339,14 +311,12 @@ function VendorKPIReport() {
                 </div>
               </div>
               <div className="col-md-6 text-center">
-                <div
-                  className="container btn btn-light text-success border border-2 border-secondary"
-                  onClick={() => {
-                    JSONToExcel(reportData, "ExampleFile");
-                  }}
-                >
-                  <b> Export Excel ⬇️</b>
-                </div>
+                {ExcelExport(
+                  reportData,
+                  "Vendor KPI",
+                  startFirstDate,
+                  endFirstDate
+                )}
               </div>
             </div>
           </div>

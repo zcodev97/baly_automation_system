@@ -1,23 +1,11 @@
-// for excel and pdf
-import * as XLSX from "xlsx";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import React, { useEffect, useState } from "react";
-import NoDataView from "../../components/noData";
 import Loading from "../../components/loading";
-import { Navbar } from "react-bootstrap";
 import NavBar from "../../components/navBar";
-import * as Icon from "react-bootstrap-icons";
-import moment from "moment";
-import DateTimePicker from "react-datetime-picker";
+import DatePickerCompo from "../../components/datePicker";
+import ExcelExport from "../../components/excelExport";
 
 function CancellationReport() {
   const [loading, setLoading] = useState(false);
@@ -25,30 +13,6 @@ function CancellationReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
   const [data, setData] = useState([]);
-
-  //convert json to excel
-  const JSONToExcel = (jsonData, fileName) => {
-    const worksheet = XLSX.utils.json_to_sheet(jsonData);
-    const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
-    XLSX.writeFile(workbook, `${fileName}.xlsx`);
-  };
-
-  function exportToPDF() {
-    alert("coming... 😁");
-
-    // const pdf = new jsPDF();
-
-    // const head = Object.keys(data[0]).map((k) => [k]);
-
-    // const body = Object.values(data[0]).map((k) => k);
-
-    // pdf.autoTable({
-    //   head: [head],
-    //   body: [...body],
-    // });
-
-    // pdf.save("table.pdf");
-  }
 
   async function getReport() {
     setLoading(true);
@@ -118,38 +82,12 @@ function CancellationReport() {
       <div className="container border border-4 border-dark  rounded p-2 mt-5 mb-2">
         <div className="row text-center bg-light ">
           <div className="col-md-3">
-            <div className="container p-2 ">
-              Start Date{"  "}
-              <DateTimePicker
-                key={1}
-                clearIcon={null}
-                format={"y-MM-dd"}
-                onChange={setStartFirstDate}
-                value={startFirstDate}
-              />
-            </div>
+            {DatePickerCompo("Start Date", startFirstDate, setStartFirstDate)}
           </div>
           <div className="col-md-3">
-            <div className="container p-2">
-              End Date{"  "}
-              <DateTimePicker
-                key={2}
-                clearIcon={null}
-                format={"y-MM-dd"}
-                onChange={setEndFirstDate}
-                value={endFirstDate}
-              />
-            </div>
+            {DatePickerCompo("End Date", endFirstDate, setEndFirstDate)}
           </div>
 
-          {/* <div className="col-md-2">
-            <div
-              className="container btn btn-light border border-danger text-danger"
-              onClick={exportToPDF}
-            >
-              <b> Export PDF</b>
-            </div>
-          </div> */}
           <div className="col-md-3">
             <div
               className="container btn btn-light border border-primary text-primary"
@@ -159,14 +97,12 @@ function CancellationReport() {
             </div>
           </div>
           <div className="col-md-3">
-            <div
-              className="container btn btn-light border border-success text-success"
-              onClick={() => {
-                JSONToExcel(data, "ExampleFile");
-              }}
-            >
-              <b> Export Excel</b>
-            </div>
+            {ExcelExport(
+              data,
+              "Cancellation_Report",
+              startFirstDate,
+              endFirstDate
+            )}
           </div>
         </div>
       </div>
@@ -194,7 +130,7 @@ function CancellationReport() {
           </thead>
           <tbody className="text-center">
             {data.length === 0 ? (
-              <p className="text-light">
+              <p className="text-dark">
                 {" "}
                 Please Select Start and End Date and Press Get Report 😁
               </p>
@@ -212,6 +148,23 @@ function CancellationReport() {
       </div>
     </>
   );
+
+  // date selection element
+  // function dateSelectionElement(title, dateValue, setDateValue) {
+  //   return (
+  //     <div className="container p-2">
+  //       {title}
+  //       {"  "}
+  //       <DateTimePicker
+  //         key={2}
+  //         clearIcon={null}
+  //         format={"y-MM-dd"}
+  //         onChange={setDateValue}
+  //         value={dateValue}
+  //       />
+  //     </div>
+  //   );
+  // }
 }
 
 export default CancellationReport;
