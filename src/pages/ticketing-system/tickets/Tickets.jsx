@@ -205,100 +205,6 @@ function Tickets() {
   return (
     <>
       <NavBar />
-      {/* 
-      <div className="d-flex justify-content-center  p-1 bg-dark rounded-bottom ">
-        <div className="col-md-6 center-block ">
-          <div className="container text-center  w-50 bg-dark text-light rounded p-2 ">
-            Total Pending Tickets{" "}
-            <b>
-              {lowPendingPriorityTickets +
-                midPendingPriorityTickets +
-                highPendingPriorityTickets +
-                urgentPendingPriorityTickets}{" "}
-            </b>
-            <div
-              className="progress-bar bg-info rounded text-dark m-1"
-              style={{
-                width: { lowPriorityTickets: lowPendingPriorityTickets } + "%",
-                fontWeight: "bold",
-              }}
-            >
-              Low Priority Pending Tickets {lowPendingPriorityTickets}
-            </div>
-            <div
-              className="progress-bar bg-warning rounded text-dark m-1"
-              style={{
-                width: { midPriorityTickets: midPendingPriorityTickets } + "%",
-              }}
-            >
-              Mid Priority Pending Tickets {midPendingPriorityTickets}
-            </div>
-            <div
-              className="progress-bar bg-danger rounded text-light m-1"
-              style={{
-                width:
-                  { highPriorityTickets: highPendingPriorityTickets } + "%",
-              }}
-            >
-              High Priority Pending Tickets {highPendingPriorityTickets}
-            </div>
-            <div
-              className="progress-bar bg-primary rounded text-light m-1"
-              style={{
-                width:
-                  { urgentPriorityTickets: urgentPendingPriorityTickets } + "%",
-              }}
-            >
-              Urgent Priority Pending Tickets {urgentPendingPriorityTickets}
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6">
-          <div className="container text-center w-50 bg-dark text-light rounded p-2 ">
-            Total Resolved Tickets{" "}
-            <b>
-              {lowResolvedPriorityTickets +
-                midResolvedPriorityTickets +
-                highResolvedPriorityTickets +
-                urgentResolvedPriorityTickets}{" "}
-            </b>
-            <div
-              className="progress-bar bg-info rounded text-dark m-1"
-              style={{
-                width: { lowPriorityTickets: lowResolvedPriorityTickets } + "%",
-                fontWeight: "bold",
-              }}
-            >
-              Low Resolved Priority Tickets {lowResolvedPriorityTickets}
-            </div>
-            <div
-              className="progress-bar bg-warning rounded text-dark m-1"
-              style={{
-                width: { midPriorityTickets: midResolvedPriorityTickets } + "%",
-              }}
-            >
-              Mid Resolved Priority Tickets {midResolvedPriorityTickets}
-            </div>
-            <div
-              className="progress-bar bg-danger rounded text-light m-1"
-              style={{
-                width:
-                  { highPriorityTickets: highResolvedPriorityTickets } + "%",
-              }}
-            >
-              High Resolved Priority Tickets {highResolvedPriorityTickets}
-            </div>
-            <div
-              className="progress-bar bg-primary rounded text-light m-1"
-              style={{
-                width: { urgentResolvedPriorityTickets } + "%",
-              }}
-            >
-              Urgent Resolved Priority Tickets {urgentResolvedPriorityTickets}
-            </div>
-          </div>
-        </div>
-      </div> */}
 
       <div className="container">
         <div className="row   d-flex justify-content-center align-items-center">
@@ -332,54 +238,25 @@ function Tickets() {
       </div>
 
       <div className="table-responsive">
-        <table className="table   table-dark  table-striped  table-bordered table-hover">
-          <thead>
-            <tr className="text-center">
-              {/* view all of the selected days from the returned object by iterating throw it  */}
-              {tickets.length === 0
-                ? ""
-                : Object.keys(tickets[0])
-                    .splice(1, 10)
-                    .map((header, index) => (
-                      <th
-                        key={index}
-                        style={{
-                          minWidth: 100,
-                          width: 100,
-                          textAlign: "center",
-                        }}
-                        className={"bg-light text-dark"}
-                      >
-                        <b> {header.toLocaleUpperCase()}</b>
-                      </th>
-                    ))}
-            </tr>
-          </thead>
-          <tbody className="text-center">
-            {tickets.length === 0 ? (
-              <p className="text-dark">
-                Please Select Start and End Date and Press Get Report 😁
-              </p>
-            ) : (
-              Object.values(tickets).map((ticket) => (
-                <tr key={ticket.id} onClick={() => GoToTicketDetails(ticket)}>
-                  {Object.values(ticket)
-                    .splice(1, 10)
-                    .map((cell, index) => (
-                      <td key={index}>
-                        {" "}
-                        {index === 0
-                          ? formatDate(cell)
-                          : index === 1
-                          ? formatDate(cell)
-                          : cell}
-                      </td>
-                    ))}
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+        <BootstrapTable
+          bordered={false}
+          hover={true}
+          keyField="id"
+          columns={fields}
+          data={tickets}
+          pagination={pagination}
+          filter={filterFactory()}
+          responsive
+          // rowStyle={rowStyle}
+          // style={{
+          //   borderCollapse: "collapse",
+          //   tableLayout: "fixed",
+          //   width: "100%",
+          //   overflowX: "auto",
+          //   minWidth: "fit-content",
+          // }}
+          rowEvents={rowEvents}
+        />
       </div>
     </>
   );

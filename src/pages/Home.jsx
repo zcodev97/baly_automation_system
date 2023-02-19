@@ -62,6 +62,7 @@ function HomePage() {
   }
 
   useEffect(() => {
+    getAllVendorsForCurrentAccountManager();
     setInterval(() => getAllVendorsForCurrentAccountManager(), 10000);
   }, []);
 

@@ -46,13 +46,13 @@ function Login() {
   async function onClickLoginBtn() {
     setLoading(true);
 
-    if (username.length < 6) {
-      alert("Username must be more than 3 Characters");
-    }
+    // if (username.length < 6) {
+    //   alert("Username must be more than 3 Characters");
+    // }
 
-    if (password.length < 6) {
-      alert("Password must be more than 3 Characters");
-    }
+    // if (password.length < 6) {
+    //   alert("Password must be more than 3 Characters");
+    // }
 
     await checkIfUsernameAndPasswordIsCorrect();
 
