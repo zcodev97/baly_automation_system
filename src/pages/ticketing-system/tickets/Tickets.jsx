@@ -76,19 +76,23 @@ function Tickets() {
     setLoading(true);
     var token = localStorage.getItem("token");
 
-    let res = await fetch(BACKEND_URL + "ticket_system/get_all_ticket", {
+    fetch(BACKEND_URL + `ticket_system/get_all_ticket`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    });
-
-    let ticketJsonData = await res.json();
-    setTickets(ticketJsonData);
-    setNotFilteredTickets(ticketJsonData);
-    console.log(tickets);
-    setLoading(false);
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setTickets(data);
+        setNotFilteredTickets(data);
+        console.log(tickets);
+        setLoading(false);
+      })
+      .catch((error) => {
+        alert("Error In getting Comments 😕");
+      });
   }
 
   const dateFormatter = (cell) => {
@@ -186,7 +190,7 @@ function Tickets() {
     let filteredTickets = tickets.filter((ticket) =>
       ticket.order_id.toString().includes(e.target.value.toString())
     );
-    setTimeout(() => {}, 1000);
+    // setTimeout(() => {}, 1000);
 
     setTickets(filteredTickets);
     if (e.target.value.length === 0) {
@@ -242,7 +246,7 @@ function Tickets() {
           <thead>
             <tr className="text-center">
               {/* view all of the selected days from the returned object by iterating throw it  */}
-              {tickets.length === 0
+              {tickets?.length === 0
                 ? ""
                 : Object.keys(tickets[0])
                     .splice(1, 10)
@@ -262,12 +266,12 @@ function Tickets() {
             </tr>
           </thead>
           <tbody className="text-center">
-            {tickets.length === 0 ? (
+            {tickets?.length === 0 ? (
               <p className="text-dark">
                 Please Select Start and End Date and Press Get Report 😁
               </p>
             ) : (
-              Object.values(tickets).map((ticket) => (
+              Object.values(tickets)?.map((ticket) => (
                 <tr key={ticket.id} onClick={() => GoToTicketDetails(ticket)}>
                   {Object.values(ticket)
                     .splice(1, 10)

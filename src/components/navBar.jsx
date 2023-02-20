@@ -19,6 +19,8 @@ function NavBar() {
 
   const [userPermissions, setUserPermissions] = useState([]);
 
+  const [customStyle, setCustomStyle] = useState({});
+
   // "user_permissions": [
   //   {
   //     "name": "am",
@@ -59,34 +61,8 @@ function NavBar() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setUserPermissions(data.user_permissions);
-
-        let isManager = data.user_permissions.find(
-          (x) => x.codename === "manager"
-        );
-
-        if (Object.keys(isManager).length !== 0) {
-          setLoading(false);
-          return;
-        }
-
-        let isAm = data.user_permissions.find((x) => x.codename === "cc");
-
-        if (Object.keys(isAm).length !== 0) {
-          setShowUsers({ display: "none" });
-          setLoading(false);
-          return;
-        }
-        let isCC = data.user_permissions.find((x) => x.codename === "cc");
-
-        if (Object.keys(isCC).length !== 0) {
-          setShowUsers({ display: "none" });
-          setShowHome({ display: "none" });
-          setLoading(false);
-          return;
-        }
-
-        // console.log(userPermissions);
+        // console.log(data);
+        setData(data);
       })
       .catch((error) => {
         alert(error);
@@ -95,7 +71,7 @@ function NavBar() {
   }
 
   useEffect(() => {
-    // checkUserPermissions();
+    checkUserPermissions();
   }, []);
 
   if (loading) {
@@ -126,7 +102,10 @@ function NavBar() {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ">
-              <li className="nav-item" style={showHome}>
+              <li
+                className="nav-item"
+                style={data?.role === "cc" ? { display: "none" } : {}}
+              >
                 <Link className="nav-link text-primary" to="/home ">
                   <h5> Home 🏠</h5>
                 </Link>
@@ -136,12 +115,18 @@ function NavBar() {
                   <h5> Tickets 🎟️</h5>
                 </Link>
               </li>
-              <li className="nav-item" style={showUsers}>
+              <li
+                className="nav-item"
+                style={data?.role === "cc" ? { display: "none" } : {}}
+              >
                 <Link className="nav-link text-primary" to="/users">
                   <h5> Users 👥</h5>
                 </Link>
               </li>
-              <li className="nav-item" style={showVendors}>
+              <li
+                className="nav-item"
+                style={data?.role === "cc" ? { display: "none" } : {}}
+              >
                 <Link className="nav-link text-primary" to="/vendors">
                   <h5> Vendors 🛍️</h5>
                 </Link>
