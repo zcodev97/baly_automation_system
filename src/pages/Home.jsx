@@ -61,6 +61,30 @@ function HomePage() {
       });
   }
 
+  //get saved token and send it to backend to check its permissions
+  async function checkUserPermissions() {
+    setLoading(true);
+    await fetch(BACKEND_URL + "auth", {
+      method: "GET",
+      headers: {
+        accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log(data);
+        console.log(data.token.access_token);
+        localStorage.setItem("token", data.token.access_token);
+        localStorage.setItem("email", data.account.email);
+        localStorage.setItem("username", data.account.username);
+        navigate("/home", { replace: true });
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    setLoading(false);
+  }
   useEffect(() => {
     getAllVendorsForCurrentAccountManager();
     setInterval(() => getAllVendorsForCurrentAccountManager(), 10000);
