@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import Loading from "./loading";
 import { useNavigate } from "react-router-dom";
+import BACKEND_URL from "../global";
 
 // db password Qymbg5QhNbAzRn!
 
@@ -10,31 +11,91 @@ function NavBar() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const [showHome, setShowHome] = useState({ display: "block" });
+  const [showTickets, setShowTickets] = useState({ display: "block" });
+  const [showVendors, setShowVendors] = useState({ display: "block" });
+  const [showUsers, setShowUsers] = useState({ display: "block" });
+  const [data, setData] = useState();
 
-  const [currentUsername, setCurrentUsername] = useState("");
+  const [userPermissions, setUserPermissions] = useState([]);
 
-  var user_type = localStorage.getItem("user_type") ?? "";
-  var savedUsername = localStorage.getItem("username") ?? "";
-  var username = savedUsername.replaceAll('"', "");
-
-  function getUserType() {
-    setCurrentUsername(username);
-    if (username.length > 0) {
-      return;
-    }
-  }
+  // "user_permissions": [
+  //   {
+  //     "name": "am",
+  //     "codename": "am"
+  //   },
+  //   {
+  //     "name": "cc",
+  //     "codename": "cc"
+  //   },
+  //   {
+  //     "name": "manager",
+  //     "codename": "manager"
+  //   }
+  // ]
 
   async function handleLogout() {
     setLoading(true);
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("username");
 
     setLoading(false);
     // console.log(showNavBar);
     navigate("/login", { replace: true });
   }
 
+  //get saved token and send it to backend to check its permissions
+  async function checkUserPermissions() {
+    var token = localStorage.getItem("token");
+
+    setLoading(true);
+    await fetch(BACKEND_URL + "auth", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setUserPermissions(data.user_permissions);
+
+        let isManager = data.user_permissions.find(
+          (x) => x.codename === "manager"
+        );
+
+        if (Object.keys(isManager).length !== 0) {
+          setLoading(false);
+          return;
+        }
+
+        let isAm = data.user_permissions.find((x) => x.codename === "cc");
+
+        if (Object.keys(isAm).length !== 0) {
+          setShowUsers({ display: "none" });
+          setLoading(false);
+          return;
+        }
+        let isCC = data.user_permissions.find((x) => x.codename === "cc");
+
+        if (Object.keys(isCC).length !== 0) {
+          setShowUsers({ display: "none" });
+          setShowHome({ display: "none" });
+          setLoading(false);
+          return;
+        }
+
+        // console.log(userPermissions);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    setLoading(false);
+  }
+
   useEffect(() => {
-    getUserType();
+    // checkUserPermissions();
   }, []);
 
   if (loading) {
@@ -65,32 +126,22 @@ function NavBar() {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ">
-              <li className="nav-item">
+              <li className="nav-item" style={showHome}>
                 <Link className="nav-link text-primary" to="/home ">
                   <h5> Home 🏠</h5>
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item" style={showTickets}>
                 <Link className="nav-link text-primary" to="/tickets">
                   <h5> Tickets 🎟️</h5>
                 </Link>
               </li>
-              <li
-                className="nav-item"
-                style={{
-                  display: "block",
-                }}
-              >
+              <li className="nav-item" style={showUsers}>
                 <Link className="nav-link text-primary" to="/users">
                   <h5> Users 👥</h5>
                 </Link>
               </li>
-              <li
-                className="nav-item"
-                style={{
-                  display: "block",
-                }}
-              >
+              <li className="nav-item" style={showVendors}>
                 <Link className="nav-link text-primary" to="/vendors">
                   <h5> Vendors 🛍️</h5>
                 </Link>

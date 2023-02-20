@@ -83,7 +83,7 @@ function Users() {
           firstName: row.first_name,
           lastName: row.last_name,
           phoneNumber: row.phone_number,
-          userPermissions: row.user_permissions,
+          role: row.role,
         },
       });
     },

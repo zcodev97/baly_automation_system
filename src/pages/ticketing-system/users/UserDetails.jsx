@@ -27,7 +27,7 @@ function UserDetails() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [userPermission, setUserPermission] = useState([]);
+  const [userPermission, setUserPermission] = useState("");
   const [accountManagerVendors, setAccountManagerVendors] = useState([]);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ function UserDetails() {
     setLastName(location.state.lastName);
     setPhoneNumber(location.state.phoneNumber);
     setUsername(location.state.username);
-    setUserPermission(location.state.userPermissions);
+    setUserPermission(location.state.role);
   }, []);
 
   //Issue Type
@@ -278,16 +278,9 @@ function UserDetails() {
               <div className="container p-1 m-1">
                 <h5 className="p-2">User Permissions </h5>
               </div>
-              {userPermission.length === 0
-                ? "No Permission !"
-                : userPermission.map((item) => (
-                    <div
-                      className="container m-1 p-1 border rounded"
-                      key={location.state.id + 1}
-                    >
-                      <b> {item.name} </b>
-                    </div>
-                  ))}
+              <div className="container text-light p-2">
+                {userPermission === null ? "No Permission !" : userPermission}{" "}
+              </div>
             </div>
             <hr />
             <div className="container border border-1  rounded bg-dark text-light">

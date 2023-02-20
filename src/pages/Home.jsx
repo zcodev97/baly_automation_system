@@ -11,7 +11,9 @@ function HomePage() {
   const [grossClassName, setGrossClassName] = useState("");
 
   const containerClassNameGauge =
-    "container p-1 text-center border border-primary border-2 rounded";
+    "container p-1 text-center text-light border border-primary border-3 rounded";
+
+  const cardStyle = { backgroundColor: "#003366" };
 
   const [net, setNet] = useState(0);
   const [gross, setGross] = useState(0);
@@ -21,6 +23,45 @@ function HomePage() {
   const [signup, setSignUp] = useState(0);
   const [newUser, setNewUser] = useState(0);
   const [blockedUser, setBlockedUser] = useState(0);
+
+  const [data, setData] = useState([
+    {
+      date: "today",
+      net: 0,
+      ff: 0,
+      gross: 0,
+      cancel: 0,
+      NMV: 0,
+      DF: 0,
+      signups: 0,
+      new_user: 0,
+      blocked_user: 0,
+    },
+    {
+      date: "yesterday",
+      net: 0,
+      ff: 0,
+      gross: 0,
+      cancel: 0,
+      NMV: 0,
+      DF: 0,
+      signups: 0,
+      new_user: 0,
+      blocked_user: 0,
+    },
+    {
+      date: "Diff",
+      net: 0,
+      ff: 0,
+      gross: 0,
+      cancel: 0,
+      NMV: 0,
+      DF: 0,
+      signups: 0,
+      new_user: 0,
+      blocked_user: 0,
+    },
+  ]);
 
   function GetNEwCustomersReport() {
     navigate("/get_new_customers_report");
@@ -32,7 +73,7 @@ function HomePage() {
     navigate("/get_vendor_kpi_report");
   }
 
-  function getAllVendorsForCurrentAccountManager() {
+  async function getAllVendorsForCurrentAccountManager() {
     var token = localStorage.getItem("token");
 
     fetch(BACKEND_URL + `reports/get_realtime_datas`, {
@@ -44,14 +85,7 @@ function HomePage() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setNet(data[0].net);
-        setGross(data[0].gross);
-        setCancel(data[0].cancel);
-        setBlockedUser(data[0].blocked_user);
-        setNewUser(data[0].new_user);
-        setNVM(data[0].NMV);
-        setDF(data[0].DF);
-        setSignUp(data[0].signups);
+        setData(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -61,34 +95,196 @@ function HomePage() {
       });
   }
 
-  //get saved token and send it to backend to check its permissions
-  async function checkUserPermissions() {
-    setLoading(true);
-    await fetch(BACKEND_URL + "auth", {
-      method: "GET",
-      headers: {
-        accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-        console.log(data.token.access_token);
-        localStorage.setItem("token", data.token.access_token);
-        localStorage.setItem("email", data.account.email);
-        localStorage.setItem("username", data.account.username);
-        navigate("/home", { replace: true });
-      })
-      .catch((error) => {
-        alert(error);
-      });
-    setLoading(false);
-  }
   useEffect(() => {
     getAllVendorsForCurrentAccountManager();
     setInterval(() => getAllVendorsForCurrentAccountManager(), 10000);
   }, []);
+
+  function FirstRow() {
+    return (
+      <div className="row mt-1 p-1">
+        <div className="col-md-3 mb-1">
+          <div className={containerClassNameGauge} style={cardStyle}>
+            <h3>Gross</h3>
+            <h4
+              className={
+                Number(data[2].gross) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              Today {data[0].gross}
+            </h4>
+            <h4 className=""> Yesterday {data[1].gross} </h4>
+            <h4
+              className={
+                Number(data[2].gross) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              <b> Diff {Number(data[2].gross).toFixed(2) + " %"} </b>
+            </h4>
+          </div>
+        </div>
+
+        <div className="col-md-3 mb-1">
+          <div className={containerClassNameGauge} style={cardStyle}>
+            <h3>NET</h3>
+            <h4
+              className={
+                Number(data[2].net) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              {data[0].net}
+            </h4>
+            <h4 className=""> Yesterday {data[1].net} </h4>
+            <h4
+              className={
+                Number(data[2].net) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              <b>Diff {Number(data[2].net).toFixed(2) + " %"} </b>
+            </h4>
+          </div>
+        </div>
+
+        <div className="col-md-3 mb-1">
+          <div className={containerClassNameGauge} style={cardStyle}>
+            <h3>DF</h3>
+            <h4
+              className={
+                Number(data[2].DF) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              {Math.round(data[0].DF).toLocaleString() + " $"}
+            </h4>
+            <h4 className="">
+              Yesterday {Math.round(data[1].DF).toLocaleString() + " $"}
+            </h4>
+            <h4
+              className={
+                Number(data[2].DF) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              <b> Diff {Number(data[2].DF).toFixed(2) + " %"}</b>
+            </h4>
+          </div>
+        </div>
+        <div className="col-md-3 mb-1">
+          <div className={containerClassNameGauge} style={cardStyle}>
+            <h3>NMV</h3>
+            <h4
+              className={
+                Number(data[2].NMV) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              {Math.round(data[0].NMV).toLocaleString() + " $"}
+            </h4>
+            <h4 className="">
+              Yesterday {Math.round(data[1].NMV).toLocaleString() + " $"}
+            </h4>
+            <h4
+              className={
+                Number(data[2].NMV) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              <b> Diff {Number(data[2].NMV).toFixed(2) + " %"} </b>
+            </h4>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  function SecondRow() {
+    return (
+      <div className="row mt-1 p-1">
+        <div className="col-md-3 mb-1">
+          <div className={containerClassNameGauge} style={cardStyle}>
+            <h3>Sign Ups</h3>
+            <h4
+              className={
+                Number(data[2].signups) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              {data[0].signups}
+            </h4>
+            <h4 className="">Yesterday {data[1].signups}</h4>
+            <h4
+              className={
+                Number(data[2].signups) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              <b> Diff {Number(data[2].signups).toFixed(2) + " %"} </b>
+            </h4>
+          </div>
+        </div>
+
+        <div className="col-md-3 mb-1">
+          <div className={containerClassNameGauge} style={cardStyle}>
+            <h3>New User</h3>
+            <h4
+              className={
+                Number(data[2].new_user) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              Today {data[0].new_user}
+            </h4>
+            <h4 className="">Yesterday {data[1].new_user}</h4>
+            <h4
+              className={
+                Number(data[2].new_user) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              <b>Diff {Number(data[2].new_user).toFixed(2) + " %"} </b>
+            </h4>
+          </div>
+        </div>
+        <div className="col-md-3 mb-1">
+          <div className={containerClassNameGauge} style={cardStyle}>
+            <h3>Blocked Users</h3>
+            <h4
+              className={
+                Number(data[2].blocked_user) > 0
+                  ? "text-success"
+                  : "text-danger"
+              }
+            >
+              Today {data[0].blocked_user}
+            </h4>
+            <h4 className="">Yesterday {data[1].blocked_user}</h4>
+            <h4
+              className={
+                Number(data[2].blocked_user) > 0
+                  ? "text-success"
+                  : "text-danger"
+              }
+            >
+              <b> Diff {Number(data[2].blocked_user).toFixed(2) + " %"}</b>
+            </h4>
+          </div>
+        </div>
+
+        <div className="col-md-3 mb-1">
+          <div className={containerClassNameGauge} style={cardStyle}>
+            <h3>Cancel</h3>
+            <h4
+              className={
+                Number(data[2].cancel) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              Today {data[0].cancel}
+            </h4>
+            <h4 className="">Yesterday {data[1].cancel}</h4>
+            <h4
+              className={
+                Number(data[2].cancel) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              <b> Diff {Number(data[2].cancel).toFixed(2) + " %"}</b>
+            </h4>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return <Loading />;
@@ -103,72 +299,12 @@ function HomePage() {
             <b> Dashboard</b>
           </h4>
         </div>
-        <div className="row mt-2 p-2">
-          <div className="col-md-3">
-            <div className={containerClassNameGauge}>
-              <h3>Gross</h3>
-              <div className={grossClassName}> {gross} </div>
-            </div>
-          </div>
-
-          <div className="col-md-3">
-            <div className={containerClassNameGauge}>
-              <h3>NET</h3>
-              <div className={grossClassName}> {net} </div>
-            </div>
-          </div>
-
-          <div className="col-md-3">
-            <div className={containerClassNameGauge}>
-              <h3>DF</h3>
-              <div className={grossClassName}>
-                {" "}
-                {Math.round(df).toLocaleString() + " $"}{" "}
-              </div>
-            </div>
-          </div>
-          <div className="col-md-3">
-            <div className={containerClassNameGauge}>
-              <h3>NMV</h3>
-              <div className={grossClassName}>
-                {" "}
-                {Math.round(nmv).toLocaleString() + " $"}{" "}
-              </div>
-            </div>
-          </div>
-        </div>
+        {FirstRow()}
         {/*  */}
-        <div className="row mt-2 p-2">
-          <div className="col-md-3">
-            <div className={containerClassNameGauge}>
-              <h3>Sign Ups</h3>
-              <div className={grossClassName}> {signup} </div>
-            </div>
-          </div>
-
-          <div className="col-md-3">
-            <div className={containerClassNameGauge}>
-              <h3>newUser</h3>
-              <div className={grossClassName}> {newUser} </div>
-            </div>
-          </div>
-          <div className="col-md-3">
-            <div className={containerClassNameGauge}>
-              <h3>Blocked Users</h3>
-              <div className={grossClassName}> {blockedUser} </div>
-            </div>
-          </div>
-
-          <div className="col-md-3">
-            <div className={containerClassNameGauge}>
-              <h3>Cancel</h3>
-              <div className={grossClassName}> {cancel} </div>
-            </div>
-          </div>
-        </div>
+        {SecondRow()}
         {/*  */}
 
-        <hr className="mt-5" />
+        <hr className="mt-2" />
         <div className="container mt-5 bg-light p-1 border border-primary border-1 rounded ">
           <h3 className="text-primary">
             <b> Reports</b>

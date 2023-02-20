@@ -14,7 +14,6 @@ import { Users } from "./pages/ticketing-system/users/Users";
 
 import AddUser from "./pages/ticketing-system/users/AddUser";
 import UserDetails from "./pages/ticketing-system/users/UserDetails";
-import AddVendor from "./pages/AddVendor";
 import ReportView from "./pages/ReportView";
 import ReportsPage from "./pages/Reports";
 import MostSellingItemsPerVendor from "./pages/MostSellingItemsPerVendor";
@@ -58,11 +57,11 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setcurrentUsername(data.id);
+        // setcurrentUsername(data.account.user_permissions);
         setLoggedIn(true);
       })
       .catch((error) => {
-        alert("Username or Password Incorrect 😕");
+        alert(error);
       });
     setLoading(false);
 
@@ -98,8 +97,6 @@ function App() {
             <Route path="/account-managers" element={<Vendors />} />
 
             <Route path="/vendors" element={<Vendors />} />
-
-            <Route path="/addvendor" element={<AddVendor />} />
 
             <Route path="/users" element={<Users />} />
 
