@@ -340,6 +340,18 @@ function VendorKPIReport() {
                 </div>
               </div>
               <div className="col-md-4">
+                <div className="container border-bottom border-light border-3 ">
+                  <Select
+                    defaultValue={selectedVendors}
+                    options={vendorsDropDownMenu}
+                    onChange={(opt) => setSelectedVendors(opt)}
+                    isMulti
+                    placeholder={"vendors.."}
+                    isDisabled={iscompareReport ? true : false}
+                  />
+                </div>
+              </div>
+              <div className="col-md-4">
                 <div className="container border-bottom border-light border-3  ">
                   <Select
                     defaultValue={selectedZones}
@@ -348,17 +360,6 @@ function VendorKPIReport() {
                     placeholder={"select zones.."}
                     isDisabled={iscompareReport ? false : true}
                     isMulti
-                  />
-                </div>
-              </div>
-              <div className="col-md-4">
-                <div className="container border-bottom border-light border-3 ">
-                  <Select
-                    defaultValue={selectedVendors}
-                    options={vendorsDropDownMenu}
-                    onChange={(opt) => setSelectedVendors(opt)}
-                    isMulti
-                    placeholder={"vendors.."}
                   />
                 </div>
               </div>
@@ -395,7 +396,7 @@ function VendorKPIReport() {
                 <tr className="text-center ">
                   {reportData.length === 0 ? (
                     <th className="text-start ">
-                      Please Select Start and End Date and Press Get Report 😁
+                      Please Select Start, End Date and Press Get Report 😁
                     </th>
                   ) : (
                     Object.values(Object.values(reportData)[0]).map(

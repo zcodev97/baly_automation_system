@@ -53,7 +53,7 @@ function NavBar() {
             <b> BALY </b>
           </a>
           <button
-            className="navbar-toggler"
+            className="navbar-toggler bg-dark"
             type="button"
             data-toggle="collapse"
             data-target="#navbarNav"

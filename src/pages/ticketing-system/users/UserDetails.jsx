@@ -160,137 +160,151 @@ function UserDetails() {
     <>
       <NavBar />
 
-      <div className="container w-50 text-center p-2 text-white rounded">
-        {/*  Username */}
-        <div className="container border-bottom border-light border-3   m-1 p-1">
-          <p className="text-dark">
-            <b> Username</b>
-          </p>
-          <input
-            disabled={true}
-            value={username}
-            type="text"
-            className="form-control text-center"
-            id="uname"
-            name="uname"
-            required=""
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
+      <div className="container-fluid text-center p-2 text-white rounded">
+        <div className="row">
+          <div className="col-md-6">
+            {/*  Username */}
+            <div className="container border-bottom border-light border-3   m-1 p-1">
+              <p className="text-dark">
+                <b> Username</b>
+              </p>
+              <input
+                disabled={true}
+                value={username}
+                type="text"
+                className="form-control text-center"
+                id="uname"
+                name="uname"
+                required=""
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </div>
 
-        {/*  Email */}
-        <div className="container border-bottom border-light border-3   m-1 p-1">
-          <p className="text-dark">
-            <b> Email</b>
-          </p>
-          <input
-            disabled={true}
-            value={email}
-            type="text"
-            className="form-control text-center "
-            id="email"
-            name="email"
-            required=""
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+            {/*  Email */}
+            <div className="container border-bottom border-light border-3   m-1 p-1">
+              <p className="text-dark">
+                <b> Email</b>
+              </p>
+              <input
+                disabled={true}
+                value={email}
+                type="text"
+                className="form-control text-center "
+                id="email"
+                name="email"
+                required=""
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
 
-        {/*  firstName */}
-        <div className="container border-bottom border-light border-3   m-1 p-1">
-          <p className="text-dark">
-            <b> First Name</b>
-          </p>
-          <input
-            disabled={true}
-            value={firstName}
-            type="text"
-            className="form-control text-center"
-            id="firstname"
-            name="firstname"
-            required=""
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </div>
+            {/*  firstName */}
+            <div className="container border-bottom border-light border-3   m-1 p-1">
+              <p className="text-dark">
+                <b> First Name</b>
+              </p>
+              <input
+                disabled={true}
+                value={firstName}
+                type="text"
+                className="form-control text-center"
+                id="firstname"
+                name="firstname"
+                required=""
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </div>
 
-        {/*  lastname */}
-        <div className="container border-bottom border-light border-3   m-1 p-1">
-          <p className="text-dark">
-            <b> Last Name</b>
-          </p>
-          <input
-            disabled={true}
-            value={lastName}
-            type="text"
-            className="form-control text-center"
-            id="lastname"
-            name="lastname"
-            required=""
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
+            {/*  lastname */}
+            <div className="container border-bottom border-light border-3   m-1 p-1">
+              <p className="text-dark">
+                <b> Last Name</b>
+              </p>
+              <input
+                disabled={true}
+                value={lastName}
+                type="text"
+                className="form-control text-center"
+                id="lastname"
+                name="lastname"
+                required=""
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
 
-        {/*  phonenumber */}
-        <div className="container border-bottom border-light border-3   m-1 p-1">
-          <p className="text-dark">
-            <b> Phone Number</b>
-          </p>
-          <input
-            disabled={true}
-            value={phoneNumber}
-            type="text"
-            className="form-control text-center"
-            id="phone"
-            name="phone"
-            required=""
-            onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-        </div>
-
-        {/* vendors */}
-        <div className="container border-bottom border-light border-3 text-dark   m-1 p-2">
-          <p className="text-dark">Vendors</p>
-          <Select
-            options={vendors}
-            onChange={(opt) => setSelectedVendors(opt)}
-            isMulti
-          />
-        </div>
-
-        <div className="container m-1 p-1 text-center">
-          <button
-            className="btn btn-success m-1"
-            onClick={assignUserToSelectedVendors}
-          >
-            Assign Vendors
-          </button>
-        </div>
-
-        <div className="container border border-1 p-4 rounded bg-dark text-light">
-          <div className="container p-1 m-1">
-            <h5 className="p-2 mt-3 mb-3">User Permissions </h5>
+            {/*  phonenumber */}
+            <div className="container border-bottom border-light border-3   m-1 p-1">
+              <p className="text-dark">
+                <b> Phone Number</b>
+              </p>
+              <input
+                disabled={true}
+                value={phoneNumber}
+                type="text"
+                className="form-control text-center"
+                id="phone"
+                name="phone"
+                required=""
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </div>
           </div>
-          {userPermission.length === 0
-            ? "No Permission !"
-            : userPermission.map((item) => (
+
+          <div className="col-md-6">
+            <div className="row">
+              <div className="col-md-8">
+                {/* vendors */}
+                <div className="container border-bottom border-light border-3 text-dark   m-1 p-2">
+                  <Select
+                    options={vendors}
+                    placeholder={"select vendors..."}
+                    onChange={(opt) => setSelectedVendors(opt)}
+                    isMulti
+                  />
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="container  p-1 text-center">
+                  <button
+                    className="btn btn-light border border-3 border-success m-1"
+                    onClick={assignUserToSelectedVendors}
+                  >
+                    <b>Assign Vendors </b>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="container border border-1 rounded bg-dark text-light">
+              <div className="container p-1 m-1">
+                <h5 className="p-2">User Permissions </h5>
+              </div>
+              {userPermission.length === 0
+                ? "No Permission !"
+                : userPermission.map((item) => (
+                    <div
+                      className="container m-1 p-1 border rounded"
+                      key={location.state.id + 1}
+                    >
+                      <b> {item.name} </b>
+                    </div>
+                  ))}
+            </div>
+            <hr />
+            <div className="container border border-1  rounded bg-dark text-light">
+              <div className="container p-1 m-1">
+                <h5 className="p-2"> Current Vendors </h5>
+              </div>
+
+              {accountManagerVendors.map((vendor, index) => (
                 <div
                   className="container m-1 p-1 border rounded"
-                  key={location.state.id + 1}
+                  key={vendor.id}
                 >
-                  <b> {item.name} </b>
+                  {++index} {" - "} {vendor.vendor_title}
                 </div>
               ))}
-        </div>
-        <hr />
-        <div className="container border border-1 p-4 rounded bg-dark text-light">
-          <div className="container p-1 m-1">
-            <h5 className="p-2 mt-3 mb-3"> Current Vendors </h5>
-          </div>
-
-          {accountManagerVendors.map((vendor, index) => (
-            <div className="container m-1 p-1 border rounded" key={vendor.id}>
-              {++index} {" - "} {vendor.vendor_title}
             </div>
-          ))}
+          </div>
         </div>
       </div>
     </>

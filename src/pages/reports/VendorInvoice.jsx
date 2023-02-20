@@ -7,6 +7,7 @@ import BACKEND_URL from "../../global";
 import { useEffect } from "react";
 import Loading from "../../components/loading";
 import font from "./Amiri-Regular-normal";
+import SelectCompo from "../../components/selecto";
 
 function VendorInvoiceReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
