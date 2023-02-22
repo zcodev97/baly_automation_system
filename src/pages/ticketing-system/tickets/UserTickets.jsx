@@ -58,6 +58,7 @@ function UserTicketsPage() {
           setLoading(false);
           return;
         }
+
         setTickets(data);
         setNotFilteredTickets(data);
         setLoading(false);
@@ -162,46 +163,46 @@ function UserTicketsPage() {
           </div>
         </div>
 
-        <div className="table-responsive">
-          <table className="table   table-dark  table-striped  table-bordered table-hover">
-            <thead>
-              <tr className="text-center">
-                {Object.values(tickets)
-                  .slice(1)
-                  .map((header, index) =>
-                    Object.keys(header)
-                      .splice(1, 10)
-                      .map((sh, si) => (
-                        <th key={si} className={"bg-light text-dark"}>
-                          <b> {sh.toLocaleUpperCase()}</b>
-                        </th>
-                      ))
-                  )}
-              </tr>
-            </thead>
-            <tbody className="text-center ">
-              {Object.values(tickets).map((ticket) => (
-                <tr key={ticket.id} onClick={() => GoToTicketDetails(ticket)}>
-                  {Object.values(ticket)
+        {tickets.length === 0 ? (
+          "No Tickets"
+        ) : (
+          <div className="table-responsive">
+            <table className="table   table-dark  table-striped  table-bordered table-hover">
+              <thead>
+                <tr className="text-center">
+                  {Object.keys(tickets[0])
                     .splice(1, 10)
-                    .map((cell, index) => (
-                      <td key={index}>
-                        {" "}
-                        {index === 0
-                          ? formatDate(cell)
-                          : index === 1
-                          ? new Date(cell).toLocaleDateString() ===
-                            new Date("1970-01-01").toLocaleDateString()
-                            ? ""
-                            : formatDate(cell)
-                          : cell}
-                      </td>
+                    .map((header, index) => (
+                      <th key={index} className={"bg-light text-dark"}>
+                        <b> {header.toLocaleUpperCase()}</b>
+                      </th>
                     ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="text-center ">
+                {Object.values(tickets).map((ticket) => (
+                  <tr key={ticket.id} onClick={() => GoToTicketDetails(ticket)}>
+                    {Object.values(ticket)
+                      .splice(1, 10)
+                      .map((cell, index) => (
+                        <td key={index}>
+                          {" "}
+                          {index === 0
+                            ? formatDate(cell)
+                            : index === 1
+                            ? new Date(cell).toLocaleDateString() ===
+                              new Date("1970-01-01").toLocaleDateString()
+                              ? ""
+                              : formatDate(cell)
+                            : cell}
+                        </td>
+                      ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </>
     );
   }
