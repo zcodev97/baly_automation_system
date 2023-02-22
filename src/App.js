@@ -24,6 +24,7 @@ import BACKEND_URL from "./global";
 import VendorKPIReport from "./pages/reports/VendorKpiReport";
 import CancellationReport from "./pages/reports/CancellationReport";
 import VendorInvoiceReport from "./pages/reports/VendorInvoice";
+import UserTicketsPage from "./pages/ticketing-system/tickets/UserTickets";
 
 function App() {
   const [savedUser, setSavedUser] = useState([]);
@@ -93,6 +94,8 @@ function App() {
             <Route path="/home" element={<HomePage />} />
 
             <Route path="/tickets" element={<Tickets />} />
+
+            <Route path="/user_tickets" element={<UserTicketsPage />} />
 
             <Route path="/account-managers" element={<Vendors />} />
 

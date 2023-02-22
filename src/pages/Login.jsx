@@ -31,14 +31,11 @@ function Login() {
         localStorage.setItem("email", data.account.email);
         localStorage.setItem("username", data.account.username);
 
-        localStorage.setItem(
-          "userPer",
-          JSON.stringify(data.account.user_permissions)
-        );
+        localStorage.setItem("userPer", JSON.stringify(data.account.role));
         navigate("/home", { replace: true });
       })
       .catch((error) => {
-        alert(error);
+        alert("Incorrect Username or Password");
       });
     setLoading(false);
   }

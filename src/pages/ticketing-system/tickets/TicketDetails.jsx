@@ -77,13 +77,8 @@ function TicketDetails() {
       }
     )
       .then((response) => response.json())
-      .then((data) => {
-        // console.log(data);
-
-        getComments();
-
-        // alert("new comment   added 😁");
-        // navigate("/tickets");
+      .then(async (data) => {
+        await getComments();
       })
       .catch((error) => {
         alert("Error In Adding new Comment 😕");
@@ -194,14 +189,14 @@ function TicketDetails() {
               />
             </div>
             <div className="col-md-2">
-              <p className="text-dark ">
-                <b
-                  className="btn btn-primary border rounded"
-                  onClick={addComment}
-                >
-                  Add Comment ✅
-                </b>
-              </p>
+              <button
+                className="btn btn-primary border rounded"
+                onClick={async () => {
+                  await addComment();
+                }}
+              >
+                Add Comment ✅
+              </button>
             </div>
           </div>
         </div>

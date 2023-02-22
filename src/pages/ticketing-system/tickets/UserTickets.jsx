@@ -8,7 +8,7 @@ import Loading from "../../../components/loading";
 import NavBar from "../../../components/navBar";
 import BACKEND_URL from "../../../global";
 
-function Tickets() {
+function UserTicketsPage() {
   const navigate = useNavigate();
 
   const [tickets, setTickets] = useState([]);
@@ -71,7 +71,7 @@ function Tickets() {
     setLoading(true);
     var token = localStorage.getItem("token");
 
-    await fetch(BACKEND_URL + "ticket_system/get_all_ticket", {
+    await fetch(BACKEND_URL + "ticket_system/get_all_your_ticket", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -167,7 +167,7 @@ function Tickets() {
             <thead>
               <tr className="text-center">
                 {Object.values(tickets)
-                  .slice(1, 2)
+                  .slice(1)
                   .map((header, index) =>
                     Object.keys(header)
                       .splice(1, 10)
@@ -217,11 +217,4 @@ function Tickets() {
   }
 }
 
-export default Tickets;
-
-// export const data = data;
-
-//set progressbar for all tickets priority low mid high urgent
-// set the auto sign for the vendor when the cc click on resturant
-// format the date in the column
-//
+export default UserTicketsPage;

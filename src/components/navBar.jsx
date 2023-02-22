@@ -103,40 +103,47 @@ function NavBar() {
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ">
               <li
-                className="nav-item"
-                style={data?.role === "cc" ? { display: "none" } : {}}
+                className="nav-item border rounded m-1"
+                // style={data?.role === "cc" ? { display: "none" } : {}}
               >
                 <Link className="nav-link text-primary" to="/home ">
                   <h5> Home 🏠</h5>
                 </Link>
               </li>
-              <li className="nav-item" style={showTickets}>
+              {/*  */}
+              <li className="nav-item border rounded m-1" style={showTickets}>
                 <Link className="nav-link text-primary" to="/tickets">
                   <h5> Tickets 🎟️</h5>
                 </Link>
               </li>
+              {/*  */}
+              <li className="nav-item border rounded m-1" style={showTickets}>
+                <Link className="nav-link text-primary" to="/user_tickets">
+                  <h5> My Tickets 👤🎟️</h5>
+                </Link>
+              </li>
               <li
-                className="nav-item"
-                style={data?.role === "cc" ? { display: "none" } : {}}
+                className="nav-item border rounded m-1"
+                // style={data?.role === "cc" ? { display: "none" } : {}}
               >
                 <Link className="nav-link text-primary" to="/users">
                   <h5> Users 👥</h5>
                 </Link>
               </li>
               <li
-                className="nav-item"
-                style={data?.role === "cc" ? { display: "none" } : {}}
+                className="nav-item  border rounded m-1"
+                // style={data?.role === "cc" ? { display: "none" } : {}}
               >
                 <Link className="nav-link text-primary" to="/vendors">
                   <h5> Vendors 🛍️</h5>
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item border rounded m-1">
                 <Link className="nav-link text-primary rounded p-2" to="#">
                   👤<b> {localStorage.getItem("username")}</b>
                 </Link>
               </li>
-              <li className="nav-item">
+              <li className="nav-item  m-1">
                 <Link
                   className="nav-link text-danger rounded p-2 border border-danger"
                   to="/login"

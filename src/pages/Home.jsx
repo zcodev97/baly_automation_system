@@ -11,9 +11,9 @@ function HomePage() {
   const [grossClassName, setGrossClassName] = useState("");
 
   const containerClassNameGauge =
-    "container p-1 text-center text-light border border-primary border-3 rounded";
+    "container p-3 text-center text-light  border border-light border-2 rounded ";
 
-  const cardStyle = { backgroundColor: "#003366" };
+  const cardStyle = { backgroundColor: "#0b2e34" };
 
   const [net, setNet] = useState(0);
   const [gross, setGross] = useState(0);
@@ -97,7 +97,7 @@ function HomePage() {
 
   useEffect(() => {
     getAllVendorsForCurrentAccountManager();
-    setInterval(() => getAllVendorsForCurrentAccountManager(), 10000);
+    setInterval(() => getAllVendorsForCurrentAccountManager(), 60000);
   }, []);
 
   function FirstRow() {
@@ -105,7 +105,9 @@ function HomePage() {
       <div className="row mt-1 p-1">
         <div className="col-md-3 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
-            <h3>Gross</h3>
+            <h3>
+              <b> Gross</b>
+            </h3>
             <h4
               className={
                 Number(data[2].gross) > 0 ? "text-success" : "text-danger"
@@ -113,7 +115,7 @@ function HomePage() {
             >
               Today {data[0].gross}
             </h4>
-            <h4 className=""> Yesterday {data[1].gross} </h4>
+            <h5 className=""> Yesterday {data[1].gross} </h5>
             <h4
               className={
                 Number(data[2].gross) > 0 ? "text-success" : "text-danger"
@@ -124,9 +126,11 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="col-md-3 mb-1">
+        <div className="col-md-3  mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
-            <h3>NET</h3>
+            <h3>
+              <b>NET </b>
+            </h3>
             <h4
               className={
                 Number(data[2].net) > 0 ? "text-success" : "text-danger"
@@ -134,7 +138,7 @@ function HomePage() {
             >
               {data[0].net}
             </h4>
-            <h4 className=""> Yesterday {data[1].net} </h4>
+            <h5 className=""> Yesterday {data[1].net} </h5>
             <h4
               className={
                 Number(data[2].net) > 0 ? "text-success" : "text-danger"
@@ -147,7 +151,9 @@ function HomePage() {
 
         <div className="col-md-3 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
-            <h3>DF</h3>
+            <h3>
+              <b>DF </b>
+            </h3>
             <h4
               className={
                 Number(data[2].DF) > 0 ? "text-success" : "text-danger"
@@ -155,9 +161,9 @@ function HomePage() {
             >
               {Math.round(data[0].DF).toLocaleString() + " $"}
             </h4>
-            <h4 className="">
+            <h5 className="">
               Yesterday {Math.round(data[1].DF).toLocaleString() + " $"}
-            </h4>
+            </h5>
             <h4
               className={
                 Number(data[2].DF) > 0 ? "text-success" : "text-danger"
@@ -169,7 +175,9 @@ function HomePage() {
         </div>
         <div className="col-md-3 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
-            <h3>NMV</h3>
+            <h3>
+              <b> NMV</b>
+            </h3>
             <h4
               className={
                 Number(data[2].NMV) > 0 ? "text-success" : "text-danger"
@@ -177,9 +185,9 @@ function HomePage() {
             >
               {Math.round(data[0].NMV).toLocaleString() + " $"}
             </h4>
-            <h4 className="">
+            <h5 className="">
               Yesterday {Math.round(data[1].NMV).toLocaleString() + " $"}
-            </h4>
+            </h5>
             <h4
               className={
                 Number(data[2].NMV) > 0 ? "text-success" : "text-danger"
@@ -198,7 +206,9 @@ function HomePage() {
       <div className="row mt-1 p-1">
         <div className="col-md-3 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
-            <h3>Sign Ups</h3>
+            <h3>
+              <b> Sign Ups</b>
+            </h3>
             <h4
               className={
                 Number(data[2].signups) > 0 ? "text-success" : "text-danger"
@@ -206,7 +216,7 @@ function HomePage() {
             >
               {data[0].signups}
             </h4>
-            <h4 className="">Yesterday {data[1].signups}</h4>
+            <h5 className="">Yesterday {data[1].signups}</h5>
             <h4
               className={
                 Number(data[2].signups) > 0 ? "text-success" : "text-danger"
@@ -219,7 +229,9 @@ function HomePage() {
 
         <div className="col-md-3 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
-            <h3>New User</h3>
+            <h3>
+              <b>New User </b>
+            </h3>
             <h4
               className={
                 Number(data[2].new_user) > 0 ? "text-success" : "text-danger"
@@ -227,7 +239,7 @@ function HomePage() {
             >
               Today {data[0].new_user}
             </h4>
-            <h4 className="">Yesterday {data[1].new_user}</h4>
+            <h5 className="">Yesterday {data[1].new_user}</h5>
             <h4
               className={
                 Number(data[2].new_user) > 0 ? "text-success" : "text-danger"
@@ -239,7 +251,9 @@ function HomePage() {
         </div>
         <div className="col-md-3 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
-            <h3>Blocked Users</h3>
+            <h3>
+              <b>Blocked Users </b>
+            </h3>
             <h4
               className={
                 Number(data[2].blocked_user) > 0
@@ -249,7 +263,7 @@ function HomePage() {
             >
               Today {data[0].blocked_user}
             </h4>
-            <h4 className="">Yesterday {data[1].blocked_user}</h4>
+            <h5 className="">Yesterday {data[1].blocked_user}</h5>
             <h4
               className={
                 Number(data[2].blocked_user) > 0
@@ -264,7 +278,9 @@ function HomePage() {
 
         <div className="col-md-3 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
-            <h3>Cancel</h3>
+            <h3>
+              <b> Cancel</b>
+            </h3>
             <h4
               className={
                 Number(data[2].cancel) > 0 ? "text-success" : "text-danger"
@@ -272,7 +288,7 @@ function HomePage() {
             >
               Today {data[0].cancel}
             </h4>
-            <h4 className="">Yesterday {data[1].cancel}</h4>
+            <h5 className="">Yesterday {data[1].cancel}</h5>
             <h4
               className={
                 Number(data[2].cancel) > 0 ? "text-success" : "text-danger"
@@ -293,11 +309,14 @@ function HomePage() {
   return (
     <>
       <NavBar />
-      <div className="container-fluid text-light text-center bg-dark p-2 rounded mt-4">
-        <div className="container text-center text-light">
-          <h4>
-            <b> Dashboard</b>
-          </h4>
+      <div
+        className="container-fluid text-light text-center bg-dark p-2 rounded mt-4"
+        style={{ backgroundColor: "#041d21" }}
+      >
+        <div className="container text-center text-light mt-2 mb-2 p-2 border border-light border-3 rounded ">
+          <h2>
+            <b>Real Time Dashboard</b>
+          </h2>
         </div>
         {FirstRow()}
         {/*  */}
