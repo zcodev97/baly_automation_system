@@ -49,9 +49,9 @@ function NavBar() {
 
   //get saved token and send it to backend to check its permissions
   async function checkUserPermissions() {
+    setLoading(true);
     var token = localStorage.getItem("token");
 
-    setLoading(true);
     await fetch(BACKEND_URL + "auth", {
       method: "GET",
       headers: {
@@ -61,8 +61,9 @@ function NavBar() {
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
+        console.log(data);
         setData(data);
+        setLoading(false);
       })
       .catch((error) => {
         alert(error);
@@ -111,13 +112,27 @@ function NavBar() {
                 </Link>
               </li>
               {/*  */}
-              <li className="nav-item border rounded m-1" style={showTickets}>
+              <li
+                className="nav-item border rounded m-1"
+                style={
+                  data?.role === "manager"
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
+              >
                 <Link className="nav-link text-primary" to="/tickets">
                   <h5> Tickets 🎟️</h5>
                 </Link>
               </li>
               {/*  */}
-              <li className="nav-item border rounded m-1" style={showTickets}>
+              <li
+                className="nav-item border rounded m-1"
+                style={
+                  data?.role === "manager"
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
+              >
                 <Link className="nav-link text-primary" to="/user_tickets">
                   <h5> My Tickets 👤🎟️</h5>
                 </Link>
@@ -125,6 +140,11 @@ function NavBar() {
               <li
                 className="nav-item border rounded m-1"
                 // style={data?.role === "cc" ? { display: "none" } : {}}
+                style={
+                  data?.role === "manager"
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
               >
                 <Link className="nav-link text-primary" to="/users">
                   <h5> Users 👥</h5>
@@ -132,7 +152,11 @@ function NavBar() {
               </li>
               <li
                 className="nav-item  border rounded m-1"
-                // style={data?.role === "cc" ? { display: "none" } : {}}
+                style={
+                  data?.role === "manager"
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
               >
                 <Link className="nav-link text-primary" to="/vendors">
                   <h5> Vendors 🛍️</h5>

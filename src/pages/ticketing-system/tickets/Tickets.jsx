@@ -131,9 +131,9 @@ function Tickets() {
   function TicketsView() {
     return (
       <>
-        <div className="container">
+        <div className="container-fluid">
           <div className="row   d-flex justify-content-center align-items-center">
-            <div className="col-md-6">
+            <div className="col-md-2">
               {/* order ID */}
               <input
                 className="form-control"
@@ -144,7 +144,46 @@ function Tickets() {
                 onChange={handleOrderIdInput}
               />
             </div>
-            <div className="col-md-4">
+            <div className="col-md-6">
+              {/* pagination */}
+              <div className="container-fluid">
+                {/* navigate to Initial table page */}
+                <div className="btn btn-light border border-2 border-dark m-1">
+                  {"<<"}
+                </div>
+                {/*   navigate to previous slide  */}
+                <div className="btn btn-light border border-2 border-dark m-1">
+                  {"<"}
+                </div>
+                {/* show only five buttons if the data more than 25 rows else show only buttons divided by the number of rows so for example is the data is 16 
+                16 / 5 = 3.2 
+                so we need to ceil it to 4, by calling Math.ceil(3.2)
+                now the nums of buttons is 4 
+                button 1 shows 5 rows 
+                button 2 shows 5 rows
+                button 3 shows 5 rows
+                button 4 shows only 1 row for coz 16 - ( 5 * 3 = 15 ) = 1 
+                */}
+
+                {tickets.length === 0
+                  ? "no data"
+                  : tickets.length < 5
+                  ? "."
+                  : tickets.length > 5
+                  ? showPaginationTable()
+                  : null}
+
+                {/*   navigate to next slide  */}
+                <div className="btn btn-light border border-2 border-dark m-1">
+                  {">"}
+                </div>
+                {/* navigate to end table page */}
+                <div className="btn btn-light border border-2 border-dark m-1">
+                  {">>"}
+                </div>
+              </div>
+            </div>
+            <div className="col-md-2">
               <div
                 className="btn btn-light border  border-3 border-success text-center"
                 onClick={addTicket}
@@ -204,6 +243,33 @@ function Tickets() {
         </div>
       </>
     );
+  }
+
+  function showPaginationTable(number) {
+    let rowsPerPage = 5;
+    let numberOfButtons = Math.ceil(tickets.length / rowsPerPage);
+
+    let buttonsElement = [];
+
+    for (let index = 0; index < numberOfButtons; index++) {
+      let button = (
+        <div
+          className="btn btn-light border border-dark border-1 m-1"
+          onClick={() => {
+            setTickets(
+              index === 0
+                ? tickets.slice(index, 5)
+                : tickets.slice(index + 5, index + 5 * 2)
+            );
+          }}
+        >
+          {index + 1}
+        </div>
+      );
+      buttonsElement.push(button);
+    }
+
+    return buttonsElement;
   }
 
   function formatDate(cell) {

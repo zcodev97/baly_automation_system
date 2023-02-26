@@ -132,9 +132,9 @@ function UserTicketsPage() {
   function TicketsView() {
     return (
       <>
-        <div className="container">
+        <div className="container-fluid">
           <div className="row   d-flex justify-content-center align-items-center">
-            <div className="col-md-6">
+            <div className="col-md-3">
               {/* order ID */}
               <input
                 className="form-control"
@@ -145,7 +145,25 @@ function UserTicketsPage() {
                 onChange={handleOrderIdInput}
               />
             </div>
-            <div className="col-md-4">
+            <div className="col-md-3">
+              {/* pagination */}
+              <div className="container">
+                {/* start Data */}
+                <div className="btn btn-light ">{"<<"}</div>
+                {/*   navigate to next slide  */}
+                {/* show only five buttons if the data more than 25 rows else show only buttons divided by the number of rows so for example is the data is 16 
+                16 / 5 = 3.2 
+                so we need to ceil it to 4, by calling Math.ceil(3.2)
+                now the nums of buttons is 4 
+                button 1 shows 5 rows 
+                button 2 shows 5 rows
+                button 3 shows 5 rows
+                button 4 shows only 1 row for coz 16 - ( 5 * 3 = 15 ) = 1 
+                */}
+                {/*   navigate to next slide  */}
+              </div>
+            </div>
+            <div className="col-md-4 text-end">
               <div
                 className="btn btn-light border  border-3 border-success text-center"
                 onClick={addTicket}
