@@ -12,6 +12,7 @@ function Tickets() {
   const navigate = useNavigate();
 
   const [tickets, setTickets] = useState([]);
+  const [tableData, setTableData] = useState([]);
   const [notFilteredTickets, setNotFilteredTickets] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -59,36 +60,8 @@ function Tickets() {
           return;
         }
         setTickets(data);
-        setNotFilteredTickets(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  }
-
-  async function GetAllTickets() {
-    setLoading(true);
-    var token = localStorage.getItem("token");
-
-    await fetch(BACKEND_URL + "ticket_system/get_all_ticket", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        if (data.detail) {
-          setDetail(data.detail);
-          setTickets([]);
-          setNotFilteredTickets([]);
-          setLoading(false);
-          return;
-        }
-        setTickets(data);
+        setTableData(data);
+        setTableData(data.slice(0, 5));
         setNotFilteredTickets(data);
         setLoading(false);
       })
@@ -205,7 +178,7 @@ function Tickets() {
           <table className="table   table-dark  table-striped  table-bordered table-hover">
             <thead>
               <tr className="text-center">
-                {Object.values(tickets)
+                {Object.values(tableData)
                   .slice(1, 2)
                   .map((header, index) =>
                     Object.keys(header)
@@ -219,7 +192,7 @@ function Tickets() {
               </tr>
             </thead>
             <tbody className="text-center ">
-              {Object.values(tickets).map((ticket) => (
+              {Object.values(tableData).map((ticket) => (
                 <tr key={ticket.id} onClick={() => GoToTicketDetails(ticket)}>
                   {Object.values(ticket)
                     .splice(1, 10)
@@ -256,11 +229,12 @@ function Tickets() {
         <div
           className="btn btn-light border border-dark border-1 m-1"
           onClick={() => {
-            setTickets(
+            setTableData(
               index === 0
                 ? tickets.slice(index, 5)
-                : tickets.slice(index + 5, index + 5 * 2)
+                : tickets.slice(index + 5, (index + 5) * 2)
             );
+            // setTableData(tickets);
           }}
         >
           {index + 1}
