@@ -111,7 +111,7 @@ function HomePage() {
   function FirstRow() {
     return (
       <div className="row mt-1 p-1">
-        <div className="col-md-3 mb-1">
+        <div className="col-md-2 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
             <h3>
               <b> Gross</b>
@@ -130,6 +130,31 @@ function HomePage() {
               }
             >
               <b> Diff {Number(data[2].gross).toFixed(2) + " %"} </b>
+            </h4>
+          </div>
+        </div>
+        <div className="col-md-2 mb-1">
+          <div className={containerClassNameGauge} style={cardStyle}>
+            <h3>
+              <b> FF</b>
+            </h3>
+            <h4
+              className={
+                Number(data[0].ff) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              Today {Number(data[0].ff).toFixed(2) + " %"}
+            </h4>
+            <h5 className="">
+              {" "}
+              Yesterday {Number(data[1].ff).toFixed(2) + " %"}{" "}
+            </h5>
+            <h4
+              className={
+                Number(data[2].ff) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              <b> Diff {Number(data[2].ff).toFixed(2) + " %"} </b>
             </h4>
           </div>
         </div>
@@ -181,7 +206,7 @@ function HomePage() {
             </h4>
           </div>
         </div>
-        <div className="col-md-3 mb-1">
+        <div className="col-md-2 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
             <h3>
               <b> NMV</b>
