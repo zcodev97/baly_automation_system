@@ -78,7 +78,9 @@ function Vendors() {
 
     var token = localStorage.getItem("token");
 
-    if (token !== "" || token !== null || token !== undefined) {
+    console.log(token);
+
+    if (token === "" || token === null || token === undefined) {
       navigate("/login", { replace: true });
       setLoading(false);
 
