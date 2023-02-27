@@ -74,6 +74,16 @@ function Vendors() {
   });
 
   useEffect(() => {
+    setLoading(true);
+
+    var token = localStorage.getItem("token");
+
+    if (token !== "" || token !== null || token !== undefined) {
+      navigate("/login", { replace: true });
+      setLoading(false);
+
+      return;
+    }
     getVendors();
   }, []);
 
