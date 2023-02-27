@@ -130,11 +130,28 @@ function NavBar() {
                 style={
                   data?.role === "manager"
                     ? { display: "block" }
+                    : data?.role === "am"
+                    ? { display: "block" }
                     : { display: "none" }
                 }
               >
                 <Link className="nav-link text-primary" to="/user_tickets">
                   <h5> My Tickets 👤🎟️</h5>
+                </Link>
+              </li>
+              {/*  */}
+              <li
+                className="nav-item border rounded m-1"
+                style={
+                  data?.role === "manager"
+                    ? { display: "block" }
+                    : data?.role === "cc"
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
+              >
+                <Link className="nav-link text-primary" to="/newticket">
+                  <h5> New Ticket ➕</h5>
                 </Link>
               </li>
               <li
