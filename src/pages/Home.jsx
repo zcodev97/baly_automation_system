@@ -15,15 +15,6 @@ function HomePage() {
 
   const cardStyle = { backgroundColor: "#0b2e34" };
 
-  const [net, setNet] = useState(0);
-  const [gross, setGross] = useState(0);
-  const [cancel, setCancel] = useState(0);
-  const [nmv, setNVM] = useState(0);
-  const [df, setDF] = useState(0);
-  const [signup, setSignUp] = useState(0);
-  const [newUser, setNewUser] = useState(0);
-  const [blockedUser, setBlockedUser] = useState(0);
-
   const [data, setData] = useState([
     {
       date: "today",
@@ -300,7 +291,9 @@ function HomePage() {
             </h3>
             <h4
               className={
-                Number(data[2].cancel) > 0 ? "text-success" : "text-danger"
+                Number(data[0].cancel) < Number(data[1].cancel)
+                  ? "text-success"
+                  : "text-danger"
               }
             >
               Today {data[0].cancel}
