@@ -4,7 +4,7 @@ import NewTicket from "./pages/ticketing-system/tickets/NewTicket";
 import Footer from "./components/footer";
 import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import TicketDetails from "./pages/ticketing-system/tickets/TicketDetails";
 import Loading from "./components/loading";
@@ -37,14 +37,10 @@ function App() {
 
     var token = localStorage.getItem("token");
 
-    // console.log(token === null);
-
     if (token === null || token === "") {
       setLoggedIn(false);
 
       setLoading(false);
-
-      alert("You Must Login");
 
       return;
     }

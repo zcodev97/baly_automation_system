@@ -186,6 +186,11 @@ function NewTicketPage() {
   return (
     <>
       <NavBar />
+      <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
+        <h3 className="text-center">
+          <b> New Ticket</b>
+        </h3>
+      </div>
       <div className="container text-center border  border-3 bg-dark mt-2 p-3 w-50 rounded">
         {/* vendor name */}
         <div className="container border-bottom border-light border-3  p-2">

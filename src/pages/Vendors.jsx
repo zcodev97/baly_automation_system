@@ -87,6 +87,11 @@ function Vendors() {
   return (
     <>
       <NavBar />
+      <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
+        <h3 className="text-center">
+          <b> Vendors</b>
+        </h3>
+      </div>
 
       <div className="container-fluid p-4 text-center">
         <BootstrapTable

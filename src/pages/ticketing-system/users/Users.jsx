@@ -101,6 +101,16 @@ function Users() {
   });
 
   useEffect(() => {
+    setLoading(true);
+
+    var token = localStorage.getItem("token");
+
+    if (token !== "" || token !== null || token !== undefined) {
+      navigate("/login", { replace: true });
+      setLoading(false);
+
+      return;
+    }
     getAllUsers();
   }, []);
 
@@ -115,6 +125,11 @@ function Users() {
   return (
     <>
       <NavBar />
+      <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
+        <h3 className="text-center">
+          <b> Users</b>
+        </h3>
+      </div>
       <div className="container w-75 bg-light rounded p-4 text-center">
         <BootstrapTable
           hover={true}

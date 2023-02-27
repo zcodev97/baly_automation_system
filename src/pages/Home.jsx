@@ -96,9 +96,24 @@ function HomePage() {
   }
 
   useEffect(() => {
+    setLoading(true);
+
+    var token = localStorage.getItem("token");
+
+    if (token !== "" || token !== null || token !== undefined) {
+      navigate("/login", { replace: true });
+      setLoading(false);
+
+      return;
+    }
+
     getAllVendorsForCurrentAccountManager();
     setInterval(() => getAllVendorsForCurrentAccountManager(), 60000);
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   function FirstRow() {
     return (
@@ -300,10 +315,6 @@ function HomePage() {
         </div>
       </div>
     );
-  }
-
-  if (loading) {
-    return <Loading />;
   }
 
   return (

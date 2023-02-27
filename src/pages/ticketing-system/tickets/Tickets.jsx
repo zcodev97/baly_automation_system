@@ -175,7 +175,11 @@ function Tickets() {
   return (
     <>
       <NavBar />
-
+      <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
+        <h3 className="text-center">
+          <b> All Tickets</b>
+        </h3>
+      </div>
       <div className="container-fluid">
         <div className="table-responsive text-center">
           <BootstrapTable
