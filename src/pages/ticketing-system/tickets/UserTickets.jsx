@@ -1,72 +1,78 @@
+import axios from "axios";
+import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
+import paginationFactory from "react-bootstrap-table2-paginator";
+import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import NoDataView from "../../../components/noData";
+import supabase from "../../../supabase";
 import Loading from "../../../components/loading";
+import { Navbar } from "react-bootstrap";
 import NavBar from "../../../components/navBar";
+import * as Icon from "react-bootstrap-icons";
+import moment from "moment";
 import BACKEND_URL from "../../../global";
 
-function UserTicketsPage() {
+// Data for the table to display; can be anything
+
+function Tickets() {
   const navigate = useNavigate();
 
   const [tickets, setTickets] = useState([]);
-  const [notFilteredTickets, setNotFilteredTickets] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [detail, setDetail] = useState("");
+  const [lowPendingPriorityTickets, setLowPendingPriorityTickets] = useState(0);
+  const [midPendingPriorityTickets, setMidPendingPriorityTickets] = useState(0);
+  const [highPendingPriorityTickets, setHighPendingPriorityTickets] =
+    useState(0);
+  const [urgentPendingPriorityTickets, setUrgenPendingtPriorityTickets] =
+    useState(0);
 
-  function GoToTicketDetails(row) {
-    navigate("/ticket_details", {
-      state: {
-        id: row.id,
-        created_by: row.created_by,
-        vendor: row.vendor,
-        issue_type: row.issue_type,
-        order_id: row.order_id,
-        description: row.description,
-        assign_to: row.assign_to,
-        priority: row.priority,
-        status: row.status,
-        created_at: row.created,
-        resolved_at: row.resolve_at,
-        resolved_by: row.resolve_by,
-        comments: row.comment_ticket,
-      },
-    });
-  }
+  const [lowResolvedPriorityTickets, setLowResolvedPriorityTickets] =
+    useState(0);
+  const [midResolvedPriorityTickets, setMidResolvedPriorityTickets] =
+    useState(0);
+  const [highResolvedPriorityTickets, setHighResolvedPriorityTickets] =
+    useState(0);
+  const [urgentResolvedPriorityTickets, setUrgenResolvedtPriorityTickets] =
+    useState(0);
 
-  async function GetAllTickets() {
-    setLoading(true);
-    var token = localStorage.getItem("token");
-
-    await fetch(BACKEND_URL + "ticket_system/get_all_ticket", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        if (data.detail) {
-          setDetail(data.detail);
-          setTickets([]);
-          setNotFilteredTickets([]);
-          setLoading(false);
-          return;
-        }
-
-        setTickets(data);
-        setNotFilteredTickets(data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        alert(error);
+  const rowEvents = {
+    onClick: (e, row, rowIndex) => {
+      navigate("/ticket_details", {
+        state: {
+          id: row.id,
+          created_by: row.created_by,
+          vendor: row.vendor,
+          issue_type: row.issue_type,
+          order_id: row.order_id,
+          description: row.description,
+          assign_to: row.assign_to,
+          priority: row.priority,
+          status: row.status,
+          created_at: row.created,
+          resolved_at: row.resolve_at,
+          resolved_by: row.resolve_by,
+          comments: row.comment_ticket,
+        },
       });
-  }
+    },
+  };
+
+  const pagination = paginationFactory({
+    page: 1,
+    sizePerPage: 10,
+    lastPageText: ">>",
+    firstPageText: "<<",
+    nextPageText: ">",
+    prePageText: "<",
+    showTotal: true,
+    alwaysShowAllBtns: false,
+  });
 
   async function GetAllTickets() {
     setLoading(true);
@@ -83,14 +89,12 @@ function UserTicketsPage() {
       .then((data) => {
         console.log(data);
         if (data.detail) {
-          setDetail(data.detail);
           setTickets([]);
-          setNotFilteredTickets([]);
+
           setLoading(false);
           return;
         }
         setTickets(data);
-        setNotFilteredTickets(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -98,25 +102,94 @@ function UserTicketsPage() {
       });
   }
 
+  const dateFormatter = (cell) => {
+    return cell != null ? moment(cell).format("MM/DD/YYYY") : "";
+  };
+
   function addTicket() {
     navigate("/newticket");
   }
 
   useEffect(() => {
     GetAllTickets();
+    // getAllTickets();
   }, []);
 
-  function handleOrderIdInput(e) {
-    let filteredTickets = tickets.filter((ticket) =>
-      ticket.order_id.toString().includes(e.target.value.toString())
-    );
-    // setTimeout(() => {}, 1000);
+  // Fields to show in the table, and what object properties in the data they bind to
+  const fields = [
+    {
+      dataField: "vendor",
+      text: "Vendor",
+      sort: true,
+      filter: textFilter(),
+      showTitle: false,
+      fixed: true,
+    },
+    {
+      dataField: "issue_type",
+      text: "Issue Type",
+      sort: true,
+      filter: textFilter(),
+    },
+    {
+      dataField: "order_id",
+      text: "Order ID",
+      sort: true,
+      filter: textFilter(),
+    },
+    {
+      dataField: "description",
+      text: "Description",
+      sort: true,
+      filter: textFilter(),
+    },
+    {
+      dataField: "assign_to",
+      text: "Assign To",
+      sort: true,
+      filter: textFilter(),
+    },
+    {
+      dataField: "priority",
+      text: "Priority",
+      sort: true,
+      filter: textFilter(),
+    },
 
-    setTickets(filteredTickets);
-    if (e.target.value.length === 0) {
-      setTickets(notFilteredTickets);
-    }
-  }
+    {
+      dataField: "status",
+      text: "Status",
+      sort: true,
+      filter: textFilter(),
+    },
+    {
+      dataField: "created",
+      text: "Created At",
+      sort: true,
+      filter: textFilter(),
+      formatter: dateFormatter,
+    },
+    {
+      dataField: "created_by",
+      text: "Created By",
+
+      sort: true,
+      filter: textFilter(),
+    },
+    {
+      dataField: "resolve_at",
+      text: "Resolved At",
+      sort: true,
+      filter: textFilter(),
+      formatter: dateFormatter,
+    },
+    {
+      dataField: "resolve_by",
+      text: "Resolved By",
+      sort: true,
+      filter: textFilter(),
+    },
+  ];
 
   if (loading) {
     return <Loading />;
@@ -125,115 +198,32 @@ function UserTicketsPage() {
   return (
     <>
       <NavBar />
-      {detail.length > 0 ? detail : TicketsView()}
+
+      <div className="container-fluid">
+        <div className="table-responsive text-center">
+          <BootstrapTable
+            bordered={true}
+            hover={true}
+            keyField="id"
+            columns={fields}
+            data={tickets}
+            pagination={pagination}
+            filter={filterFactory()}
+            responsive={true}
+            rowEvents={rowEvents}
+          />
+        </div>
+      </div>
+      <div className="container-fluid  text-start ">
+        <b
+          className="btn btn-success border w-10 text-center border-3 mt-2 mb-2"
+          onClick={addTicket}
+        >
+          Add Ticket ➕
+        </b>
+      </div>
     </>
   );
-
-  function TicketsView() {
-    return (
-      <>
-        <div className="container-fluid">
-          <div className="row   d-flex justify-content-center align-items-center">
-            <div className="col-md-3">
-              {/* order ID */}
-              <input
-                className="form-control"
-                id="uname"
-                placeholder="Search Here By Order ID"
-                name="uname"
-                required=""
-                onChange={handleOrderIdInput}
-              />
-            </div>
-            <div className="col-md-3">
-              {/* pagination */}
-              <div className="container">
-                {/* start Data */}
-                <div className="btn btn-light ">{"<<"}</div>
-                {/*   navigate to next slide  */}
-                {/* show only five buttons if the data more than 25 rows else show only buttons divided by the number of rows so for example is the data is 16 
-                16 / 5 = 3.2 
-                so we need to ceil it to 4, by calling Math.ceil(3.2)
-                now the nums of buttons is 4 
-                button 1 shows 5 rows 
-                button 2 shows 5 rows
-                button 3 shows 5 rows
-                button 4 shows only 1 row for coz 16 - ( 5 * 3 = 15 ) = 1 
-                */}
-                {/*   navigate to next slide  */}
-              </div>
-            </div>
-            <div className="col-md-4 text-end">
-              <div
-                className="btn btn-light border  border-3 border-success text-center"
-                onClick={addTicket}
-              >
-                <b> Add Ticket ➕ </b>
-              </div>
-            </div>
-
-            <div className="col-md-2">
-              {/* order ID */}
-              <div className="container border-bottom   border-3   m-2 p-2">
-                <b> Tickets : {detail ? 0 : tickets.length} </b>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {tickets.length === 0 ? (
-          "No Tickets"
-        ) : (
-          <div className="table-responsive">
-            <table className="table   table-dark  table-striped  table-bordered table-hover">
-              <thead>
-                <tr className="text-center">
-                  {Object.keys(tickets[0])
-                    .splice(1, 10)
-                    .map((header, index) => (
-                      <th key={index} className={"bg-light text-dark"}>
-                        <b> {header.toLocaleUpperCase()}</b>
-                      </th>
-                    ))}
-                </tr>
-              </thead>
-              <tbody className="text-center ">
-                {Object.values(tickets).map((ticket) => (
-                  <tr key={ticket.id} onClick={() => GoToTicketDetails(ticket)}>
-                    {Object.values(ticket)
-                      .splice(1, 10)
-                      .map((cell, index) => (
-                        <td key={index}>
-                          {" "}
-                          {index === 0
-                            ? formatDate(cell)
-                            : index === 1
-                            ? new Date(cell).toLocaleDateString() ===
-                              new Date("1970-01-01").toLocaleDateString()
-                              ? ""
-                              : formatDate(cell)
-                            : cell}
-                        </td>
-                      ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </>
-    );
-  }
-
-  function formatDate(cell) {
-    const date = new Date(cell);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-
-    const formattedDate = `${year}-${month}-${day}`;
-    return formattedDate + " " + date.toLocaleTimeString();
-  }
 }
 
-export default UserTicketsPage;
+export default Tickets;
