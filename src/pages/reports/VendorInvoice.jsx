@@ -250,7 +250,7 @@ function VendorInvoiceReport() {
             style={{ height: 500, overflow: "auto" }}
           >
             <table className="table table-sm table-bordered table-hover">
-              <thead>
+              <thead style={{ position: "sticky", top: 0 }}>
                 <tr className="text-center  bg-dark text-light ">
                   {data.length === 0 ? (
                     <th className="text-start ">
