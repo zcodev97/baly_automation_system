@@ -7,7 +7,6 @@ import BACKEND_URL from "../../global";
 import { useEffect } from "react";
 import Loading from "../../components/loading";
 import font from "./Amiri-Regular-normal";
-import SelectCompo from "../../components/selecto";
 
 function VendorInvoiceReport() {
   const [startFirstDate, setStartFirstDate] = useState(new Date());
@@ -38,11 +37,7 @@ function VendorInvoiceReport() {
     pdf.autoTable({
       head: [["Vendor payment", "   ", "   "]],
       body: [
-        [
-          "  ",
-          "Total:",
-          data[data.length - 1].raw_value_total.toLocaleString(),
-        ],
+        ["  ", "Total:", data[data.length - 1].raw_value.toLocaleString()],
 
         ["   ", "Final", data[data.length - 1].to_be_paid.toLocaleString()],
 
@@ -249,12 +244,12 @@ function VendorInvoiceReport() {
           </div>
         </div>
 
-        <div className="table-responsive">
+        <div className="table-responsive border ">
           <div
             className="container-fluid"
             style={{ height: 500, overflow: "auto" }}
           >
-            <table className="table  table-sm   table-bordered table-hover ">
+            <table className="table table-sm table-bordered table-hover">
               <thead>
                 <tr className="text-center  bg-dark text-light ">
                   {data.length === 0 ? (

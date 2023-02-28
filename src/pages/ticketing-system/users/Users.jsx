@@ -136,7 +136,7 @@ function Users() {
       <div className="container w-75 bg-light rounded p-4 text-center">
         <BootstrapTable
           hover={true}
-          bordered={false}
+          bordered={true}
           keyField="id"
           columns={fields}
           data={users}

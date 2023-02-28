@@ -17,6 +17,14 @@ import { Navbar } from "react-bootstrap";
 import NavBar from "../../components/navBar";
 import * as Icon from "react-bootstrap-icons";
 import moment from "moment";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts";
 import DateTimePicker from "react-datetime-picker";
 
 function HourlyReportPage() {
@@ -246,6 +254,28 @@ function HourlyReportPage() {
               )}
             </tbody>
           </table>
+        </div>
+
+        <div className="container text-center mt-5 mb-5">
+          <LineChart
+            width={600}
+            height={300}
+            data={Object.values(data).map((record) => {
+              return {
+                name: record.hour,
+                uv: record.gross_orders,
+                pv: 2400,
+                amt: 2400,
+              };
+            })}
+            margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+          >
+            <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+          </LineChart>
         </div>
       </div>
     </>
