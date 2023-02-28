@@ -6,6 +6,14 @@ import Loading from "../../components/loading";
 import NavBar from "../../components/navBar";
 import DatePickerCompo from "../../components/datePicker";
 import ExcelExport from "../../components/excelExport";
+import {
+  LineChart,
+  Line,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+} from "recharts";
 
 function CancellationReport() {
   const [loading, setLoading] = useState(false);
@@ -145,6 +153,34 @@ function CancellationReport() {
             )}
           </tbody>
         </table>
+      </div>
+
+      <div className="container">
+        <LineChart
+          width={1000}
+          height={300}
+          data={Object.values(data)
+            .slice(1, 0)
+            .map((record) => {
+              return {
+                name: record.hour,
+                gross_orders: record.gross_orders,
+                net_orders: record.net_orders,
+                cancelled_orders: record.cancelled_orders,
+                pv: 2400,
+                amt: 2400,
+              };
+            })}
+          margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
+        >
+          <Line type="monotone" dataKey="gross_orders" stroke="#8884d8" />
+          <Line type="monotone" dataKey="net_orders" stroke="green" />
+          <Line type="monotone" dataKey="cancelled_orders" stroke="red" />
+          <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+        </LineChart>
       </div>
     </>
   );
