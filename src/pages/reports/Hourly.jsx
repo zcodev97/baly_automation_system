@@ -98,17 +98,6 @@ function HourlyReportPage() {
       });
   }
 
-  const pagination = paginationFactory({
-    page: 1,
-    sizePerPage: 5,
-    lastPageText: ">>",
-    firstPageText: "<<",
-    nextPageText: ">",
-    prePageText: "<",
-    showTotal: true,
-    alwaysShowAllBtns: false,
-  });
-
   const fields = [
     {
       dataField: "hour",
@@ -129,17 +118,6 @@ function HourlyReportPage() {
     },
   ];
 
-  // const rowStyle = (row, rowIndex) => {
-  //   // if(row.created_at){
-  //   //     return row.created_at.toLocaleDateString()
-  //   // }
-  //   if (row.hour >= 0 && row.hour < 12) {
-  //     return { color: "white", background: "#40916c", fontWeight: "bold" };
-  //   } else {
-  //     return { color: "black", background: "#40916c", fontWeight: "bold" };
-  //   }
-  // };
-
   if (loading) {
     return <Loading />;
   }
@@ -147,12 +125,12 @@ function HourlyReportPage() {
   return (
     <>
       <NavBar />
-      <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
+      <div className="container p-2 mt-1   border-2 border-bottom border-primary text-dark rounded">
         <h3 className="text-center">
           <b>Hourly Report </b>
         </h3>
       </div>
-      <div className="container border border-2 border-dark  rounded p-2 mt-2 mb-2 ">
+      <div className="container border border-2 border-dark  rounded p-2 mt-1 mb-1 ">
         <div className="row">
           <div className="col-md-3">
             <div className="container p-2 ">
@@ -203,79 +181,78 @@ function HourlyReportPage() {
           </div>
         </div>
       </div>
-      <div className="container mt-4 ">
-        {/* <BootstrapTable
-          // className="table-responsive"
-          bordered={true}
-          bootstrap4
-          hover={true}
-          keyField="id"
-          columns={fields}
-          data={data}
-          //   pagination={pagination}
-          filter={filterFactory()}
-          // rowStyle={rowStyle}
-        /> */}
-
-        <div className="table-responsive">
-          <table className="table table-sm   table-bordered table-dark table-hover">
-            <thead>
-              <tr className="text-center">
-                {/* view all of the selected days from the returned object by iterating throw it  */}
-                {data.length === 0
-                  ? ""
-                  : Object.keys(Object.values(data)[0]).map((header, index) => (
-                      <th
-                        key={index}
-                        style={{
-                          minWidth: 200,
-                          width: 200,
-                          textAlign: "center",
-                        }}
-                      >
-                        {header}
-                      </th>
-                    ))}
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              {data.length === 0 ? (
-                <p className="text-dark">
-                  Please Select Start and End Date and Press Get Report 😁
-                </p>
-              ) : (
-                Object.values(data).map((header, index) => (
-                  <tr>
-                    {Object.values(header).map((sh, si) => (
-                      <td key={si}>{sh}</td>
-                    ))}{" "}
+      <div className="container-fluid mt-2">
+        <div className="row p-0 m-0 d-flex justify-content-center align-items-center">
+          <div className="col-xl-4 m-0 p-0">
+            <div className="table-responsive p-0 m-0">
+              <table className="table table-sm   table-bordered table-hover">
+                <thead className="bg-dark text-light">
+                  <tr className="text-center">
+                    {/* view all of the selected days from the returned object by iterating throw it  */}
+                    {data.length === 0
+                      ? ""
+                      : Object.keys(Object.values(data)[0]).map(
+                          (header, index) => (
+                            <th
+                              key={index}
+                              style={{
+                                minWidth: 100,
+                                width: 100,
+                                textAlign: "center",
+                              }}
+                            >
+                              {header}
+                            </th>
+                          )
+                        )}
                   </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+                </thead>
+                <tbody className="text-center m-0 bg-secondary text-light">
+                  {data.length === 0 ? (
+                    <p className="text-dark">
+                      Please Select Start and End Date and Press Get Report 😁
+                    </p>
+                  ) : (
+                    Object.values(data).map((header, index) => (
+                      <tr>
+                        {Object.values(header).map((sh, si) => (
+                          <td key={si}>{sh}</td>
+                        ))}{" "}
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
 
-        <div className="container text-center mt-5 mb-5">
-          <LineChart
-            width={600}
-            height={300}
-            data={Object.values(data).map((record) => {
-              return {
-                name: record.hour,
-                uv: record.gross_orders,
-                pv: 2400,
-                amt: 2400,
-              };
-            })}
-            margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
-          >
-            <Line type="monotone" dataKey="uv" stroke="#8884d8" />
-            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-          </LineChart>
+          <div className="col-xl-8 m-0 p-0">
+            <LineChart
+              width={1000}
+              height={300}
+              data={Object.values(data)
+                .slice(0, -1)
+                .map((record) => {
+                  return {
+                    name: record.hour,
+                    gross_orders: record.gross_orders,
+                    net_orders: record.net_orders,
+                    cancelled_orders: record.cancelled_orders,
+                    pv: 2400,
+                    amt: 2400,
+                  };
+                })}
+              margin={{ top: 5, right: 5, bottom: 5, left: 5 }}
+            >
+              <Line type="monotone" dataKey="gross_orders" stroke="#8884d8" />
+              <Line type="monotone" dataKey="net_orders" stroke="green" />
+              <Line type="monotone" dataKey="cancelled_orders" stroke="red" />
+              <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+            </LineChart>
+          </div>
         </div>
       </div>
     </>
