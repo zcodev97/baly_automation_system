@@ -145,20 +145,20 @@ function HomePage() {
         </div>
         <div className="col-md-2 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
-            <h3>
+            <h4>
               <b> FF</b>
-            </h3>
-            <h4
+            </h4>
+            <h1
               className={
                 Number(data[0].ff) > 0 ? "text-success" : "text-danger"
               }
             >
               {Number(data[0].ff).toFixed(2) + " %"}
-            </h4>
-            <h5 className="">
+            </h1>
+            <h6 className="">
               {" "}
               Yesterday {Number(data[1].ff).toFixed(2) + " %"}{" "}
-            </h5>
+            </h6>
             <h4
               className={
                 Number(data[2].ff) > 0 ? "text-success" : "text-danger"
@@ -182,14 +182,14 @@ function HomePage() {
             <h3>
               <b>NET </b>
             </h3>
-            <h4
+            <h1
               className={
                 Number(data[2].net) > 0 ? "text-success" : "text-danger"
               }
             >
               {data[0].net}
-            </h4>
-            <h5 className=""> Yesterday {data[1].net} </h5>
+            </h1>
+            <h6 className=""> Yesterday {data[1].net} </h6>
             <h4
               className={
                 Number(data[2].net) > 0 ? "text-success" : "text-danger"
@@ -213,16 +213,16 @@ function HomePage() {
             <h3>
               <b>DF </b>
             </h3>
-            <h4
+            <h1
               className={
                 Number(data[2].DF) > 0 ? "text-success" : "text-danger"
               }
             >
               {Math.round(data[0].DF).toLocaleString() + " $"}
-            </h4>
-            <h5 className="">
+            </h1>
+            <h6 className="">
               Yesterday {Math.round(data[1].DF).toLocaleString() + " $"}
-            </h5>
+            </h6>
             <h4
               className={
                 Number(data[2].DF) > 0 ? "text-success" : "text-danger"
@@ -245,16 +245,16 @@ function HomePage() {
             <h3>
               <b> NMV</b>
             </h3>
-            <h4
+            <h1
               className={
                 Number(data[2].NMV) > 0 ? "text-success" : "text-danger"
               }
             >
               {Math.round(data[0].NMV).toLocaleString() + " $"}
-            </h4>
-            <h5 className="">
+            </h1>
+            <h6 className="">
               Yesterday {Math.round(data[1].NMV).toLocaleString() + " $"}
-            </h5>
+            </h6>
             <h4
               className={
                 Number(data[2].NMV) > 0 ? "text-success" : "text-danger"
@@ -277,14 +277,14 @@ function HomePage() {
             <h3>
               <b> Sign Ups</b>
             </h3>
-            <h4
+            <h1
               className={
                 Number(data[2].signups) > 0 ? "text-success" : "text-danger"
               }
             >
               {data[0].signups}
-            </h4>
-            <h5 className="">Yesterday {data[1].signups}</h5>
+            </h1>
+            <h6 className="">Yesterday {data[1].signups}</h6>
             <h4
               className={
                 Number(data[2].signups) > 0 ? "text-success" : "text-danger"
@@ -314,14 +314,14 @@ function HomePage() {
             <h3>
               <b>New User </b>
             </h3>
-            <h4
+            <h1
               className={
                 Number(data[2].new_user) > 0 ? "text-success" : "text-danger"
               }
             >
               {data[0].new_user}
-            </h4>
-            <h5 className="">Yesterday {data[1].new_user}</h5>
+            </h1>
+            <h6 className="">Yesterday {data[1].new_user}</h6>
             <h4
               className={
                 Number(data[2].new_user) > 0 ? "text-success" : "text-danger"
@@ -344,7 +344,7 @@ function HomePage() {
             <h3>
               <b>Blocked Users </b>
             </h3>
-            <h4
+            <h1
               className={
                 Number(data[2].blocked_user) > 0
                   ? "text-success"
@@ -352,8 +352,8 @@ function HomePage() {
               }
             >
               {data[0].blocked_user}
-            </h4>
-            <h5 className="">Yesterday {data[1].blocked_user}</h5>
+            </h1>
+            <h6 className="">Yesterday {data[1].blocked_user}</h6>
             <h4
               className={
                 Number(data[2].blocked_user) > 0
@@ -379,7 +379,7 @@ function HomePage() {
             <h3>
               <b> Cancel</b>
             </h3>
-            <h4
+            <h1
               className={
                 Number(data[0].cancel) < Number(data[1].cancel)
                   ? "text-success"
@@ -387,8 +387,8 @@ function HomePage() {
               }
             >
               {data[0].cancel}
-            </h4>
-            <h5 className="">Yesterday {data[1].cancel}</h5>
+            </h1>
+            <h6 className="">Yesterday {data[1].cancel}</h6>
             <h4
               className={
                 Number(data[2].cancel) > 0 ? "text-success" : "text-danger"
