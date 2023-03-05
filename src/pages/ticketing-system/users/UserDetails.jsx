@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import NavBar from "../../../components/navBar";
 import Select from "react-select";
 import Loading from "../../../components/loading";
-import BACKEND_URL from "../../../global";
+import { BACKEND_URL } from "../../../global";
 
 var fields = [
   {

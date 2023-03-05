@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../components/navBar";
 import React, { useState, useEffect } from "react";
 import Loading from "../components/loading";
-import BACKEND_URL from "../global";
+import { BACKEND_URL } from "../global";
 
 function HomePage() {
   const navigate = useNavigate();

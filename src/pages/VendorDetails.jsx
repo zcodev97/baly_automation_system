@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Loading from "../components/loading";
 import NavBar from "../components/navBar";
-import BACKEND_URL from "../global";
+import { BACKEND_URL } from "../global";
 
 function VendorDetails({ id }) {
   const navigate = useNavigate();

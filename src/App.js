@@ -11,16 +11,13 @@ import Loading from "./components/loading";
 import { Vendors } from "./pages/Vendors";
 import VendorDetails from "./pages/VendorDetails";
 import { Users } from "./pages/ticketing-system/users/Users";
-
-import AddUser from "./pages/ticketing-system/users/AddUser";
 import UserDetails from "./pages/ticketing-system/users/UserDetails";
 import ReportView from "./pages/ReportView";
 import ReportsPage from "./pages/Reports";
-import MostSellingItemsPerVendor from "./pages/MostSellingItemsPerVendor";
 import HomePage from "./pages/Home";
 import GetNewCustomersReportPage from "./pages/reports/GetNewCustomers";
 import HourlyReportPage from "./pages/reports/Hourly";
-import BACKEND_URL from "./global";
+import { BACKEND_URL } from "./global";
 import VendorKPIReport from "./pages/reports/VendorKpiReport";
 import CancellationReport from "./pages/reports/CancellationReport";
 import VendorInvoiceReport from "./pages/reports/VendorInvoice";
@@ -110,8 +107,6 @@ function App() {
 
             <Route path="/newticket" element={<NewTicket />} />
 
-            <Route path="/adduser" element={<AddUser />} />
-
             <Route path="/get_report" element={<ReportView />} />
 
             <Route
@@ -127,11 +122,6 @@ function App() {
             <Route
               path="/get_vendor_kpi_report"
               element={<VendorKPIReport />}
-            />
-
-            <Route
-              path="/most_selling"
-              element={<MostSellingItemsPerVendor />}
             />
 
             <Route path="/reports" element={<ReportsPage />} />

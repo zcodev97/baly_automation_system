@@ -10,7 +10,7 @@ import supabase from "../../../supabase";
 import Loading from "../../../components/loading";
 import NoDataView from "../../../components/noData";
 import NavBar from "../../../components/navBar";
-import BACKEND_URL from "../../../global";
+import { BACKEND_URL } from "../../../global";
 var fields = [
   {
     dataField: "username",

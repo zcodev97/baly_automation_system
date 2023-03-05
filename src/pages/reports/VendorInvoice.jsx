@@ -3,7 +3,7 @@ import NavBar from "../../components/navBar";
 import DateTimePicker from "react-datetime-picker";
 import { useState } from "react";
 import Select from "react-select";
-import BACKEND_URL from "../../global";
+import { BACKEND_URL } from "../../global";
 import { useEffect } from "react";
 import Loading from "../../components/loading";
 import font from "./Amiri-Regular-normal";

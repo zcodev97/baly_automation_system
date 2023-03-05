@@ -5,7 +5,7 @@ import Loading from "../../../components/loading";
 import supabase from "../../../supabase";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../../../components/navBar";
-import BACKEND_URL from "../../../global";
+import { BACKEND_URL } from "../../../global";
 
 function NewTicketPage() {
   const navigate = useNavigate();

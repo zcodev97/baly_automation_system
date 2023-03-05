@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import NavBar from "../../../components/navBar";
 import { useState } from "react";
 import { useEffect } from "react";
-import BACKEND_URL from "../../../global";
+import { BACKEND_URL } from "../../../global";
 
 function getDate() {
   return new Date().toLocaleString();

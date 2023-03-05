@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import Loading from "./loading";
 import { useNavigate } from "react-router-dom";
-import BACKEND_URL from "../global";
+import { BACKEND_URL } from "../global";
 
 // db password Qymbg5QhNbAzRn!
 

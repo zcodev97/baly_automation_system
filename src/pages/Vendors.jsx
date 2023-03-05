@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import supabase from "../supabase";
 import Loading from "../components/loading";
 import NavBar from "../components/navBar";
-import BACKEND_URL from "../global";
+import { BACKEND_URL } from "../global";
 
 // Fields to show in the table, and what object properties in the data they bind to
 const fields = [

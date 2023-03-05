@@ -1,7 +1,7 @@
 import { useState, React, useEffect } from "react";
 import Loading from "../components/loading";
 import { useNavigate } from "react-router-dom";
-import BACKEND_URL from "../global";
+import { BACKEND_URL } from "../global";
 
 function Login() {
   const navigate = useNavigate();

@@ -8,7 +8,7 @@ import Loading from "../../components/loading";
 import NavBar from "../../components/navBar";
 import DateTimePicker from "react-datetime-picker";
 import Select from "react-select";
-import BACKEND_URL from "../../global";
+import { BACKEND_URL } from "../../global";
 import ExcelExport from "../../components/excelExport";
 import DatePickerCompo from "../../components/datePicker";
 function VendorKPIReport() {

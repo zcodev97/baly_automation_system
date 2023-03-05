@@ -15,7 +15,7 @@ import { Navbar } from "react-bootstrap";
 import NavBar from "../../../components/navBar";
 import * as Icon from "react-bootstrap-icons";
 import moment from "moment";
-import BACKEND_URL from "../../../global";
+import { BACKEND_URL } from "../../../global";
 
 // Data for the table to display; can be anything
 
