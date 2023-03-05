@@ -21,21 +21,6 @@ function NavBar() {
 
   const [customStyle, setCustomStyle] = useState({});
 
-  // "user_permissions": [
-  //   {
-  //     "name": "am",
-  //     "codename": "am"
-  //   },
-  //   {
-  //     "name": "cc",
-  //     "codename": "cc"
-  //   },
-  //   {
-  //     "name": "manager",
-  //     "codename": "manager"
-  //   }
-  // ]
-
   async function handleLogout() {
     setLoading(true);
     localStorage.removeItem("token");
@@ -107,15 +92,31 @@ function NavBar() {
                 className="nav-item border rounded m-1"
                 // style={data?.role === "cc" ? { display: "none" } : {}}
               >
-                <Link className="nav-link text-primary" to="/home ">
+                <Link className="nav-link text-primary" to="/home">
                   <h5> Home 🏠</h5>
+                </Link>
+              </li>
+              <li
+                className="nav-item border rounded m-1"
+                style={
+                  data?.role === "superuser"
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
+              >
+                <Link className="nav-link text-primary" to="/excel_reader">
+                  <h5> Excel Reader 📄📄</h5>
                 </Link>
               </li>
               {/*  */}
               <li
                 className="nav-item border rounded m-1"
                 style={
-                  data?.role === "manager"
+                  data?.role === "superuser"
+                    ? { display: "block" }
+                    : data?.role === "manager"
+                    ? { display: "block" }
+                    : data?.role === "am"
                     ? { display: "block" }
                     : { display: "none" }
                 }
@@ -127,13 +128,7 @@ function NavBar() {
               {/*  */}
               <li
                 className="nav-item border rounded m-1"
-                style={
-                  data?.role === "manager"
-                    ? { display: "block" }
-                    : data?.role === "am"
-                    ? { display: "block" }
-                    : { display: "none" }
-                }
+                style={{ display: "block" }}
               >
                 <Link className="nav-link text-primary" to="/user_tickets">
                   <h5> My Tickets 👤🎟️</h5>
@@ -142,13 +137,7 @@ function NavBar() {
               {/*  */}
               <li
                 className="nav-item border rounded m-1"
-                style={
-                  data?.role === "manager"
-                    ? { display: "block" }
-                    : data?.role === "cc"
-                    ? { display: "block" }
-                    : { display: "none" }
-                }
+                style={{ display: "block" }}
               >
                 <Link className="nav-link text-primary" to="/newticket">
                   <h5> New Ticket ➕</h5>
@@ -156,12 +145,7 @@ function NavBar() {
               </li>
               <li
                 className="nav-item border rounded m-1"
-                // style={data?.role === "cc" ? { display: "none" } : {}}
-                style={
-                  data?.role === "manager"
-                    ? { display: "block" }
-                    : { display: "none" }
-                }
+                style={{ display: "block" }}
               >
                 <Link className="nav-link text-primary" to="/users">
                   <h5> Users 👥</h5>
@@ -170,8 +154,12 @@ function NavBar() {
               <li
                 className="nav-item  border rounded m-1"
                 style={
-                  data?.role === "manager"
+                  data?.role === "superuser"
                     ? { display: "block" }
+                    : data?.role === "manager"
+                    ? { display: "block" }
+                    : data?.role === "am"
+                    ? { display: "none" }
                     : { display: "none" }
                 }
               >

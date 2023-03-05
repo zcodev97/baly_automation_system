@@ -25,6 +25,7 @@ import VendorKPIReport from "./pages/reports/VendorKpiReport";
 import CancellationReport from "./pages/reports/CancellationReport";
 import VendorInvoiceReport from "./pages/reports/VendorInvoice";
 import UserTicketsPage from "./pages/ticketing-system/tickets/UserTickets";
+import ExceReaderPage from "./pages/ExcelReader";
 
 function App() {
   const [savedUser, setSavedUser] = useState([]);
@@ -86,6 +87,8 @@ function App() {
                 loading ? <Loading /> : loggedIn ? <HomePage /> : <Login />
               }
             />
+
+            <Route path="/excel_reader" element={<ExceReaderPage />} />
 
             <Route path="/home" element={<HomePage />} />
 

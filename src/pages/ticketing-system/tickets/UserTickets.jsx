@@ -23,6 +23,8 @@ function Tickets() {
   const navigate = useNavigate();
 
   const [tickets, setTickets] = useState([]);
+  const [ticketsFilterType, setFilterTicketsType] = useState(0);
+  const [filteredTickets, setFilteredtickets] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const [lowPendingPriorityTickets, setLowPendingPriorityTickets] = useState(0);
@@ -74,7 +76,7 @@ function Tickets() {
     alwaysShowAllBtns: false,
   });
 
-  async function GetAllTickets() {
+  async function GetMyTickets() {
     setLoading(true);
     var token = localStorage.getItem("token");
 
@@ -95,6 +97,8 @@ function Tickets() {
           return;
         }
         setTickets(data);
+        setFilteredtickets(data);
+
         setLoading(false);
       })
       .catch((error) => {
@@ -108,6 +112,41 @@ function Tickets() {
 
   function addTicket() {
     navigate("/newticket");
+  }
+
+  function filterTickets(filter) {
+    let currentUser = localStorage.getItem("username");
+
+    currentUser = currentUser.replace(/['"]/g, "");
+
+    setFilteredtickets(tickets);
+
+    setTimeout(() => {}, 1000);
+
+    console.log(filteredTickets);
+
+    if (filter === 0) {
+      setFilterTicketsType(0);
+      return;
+    }
+
+    if (filter === 1) {
+      setFilterTicketsType(1);
+
+      let createdByCurrentUser = tickets.filter(
+        (v) => v.created_by === currentUser
+      );
+      setFilteredtickets(createdByCurrentUser);
+    }
+
+    if (filter === 2) {
+      setFilterTicketsType(2);
+
+      let assignToCurrentUser = tickets.filter(
+        (v) => v.assign_to === currentUser
+      );
+      setFilteredtickets(assignToCurrentUser);
+    }
   }
 
   useEffect(() => {
@@ -124,8 +163,7 @@ function Tickets() {
       return;
     }
 
-    GetAllTickets();
-    // getAllTickets();
+    GetMyTickets();
   }, []);
 
   // Fields to show in the table, and what object properties in the data they bind to
@@ -216,28 +254,56 @@ function Tickets() {
           <b> My Tickets</b>
         </h3>
       </div>
-      <div className="container-fluid">
-        <div className="table-responsive text-center">
-          <BootstrapTable
-            bordered={true}
-            hover={true}
-            keyField="id"
-            columns={fields}
-            data={tickets}
-            pagination={pagination}
-            filter={filterFactory()}
-            responsive={true}
-            rowEvents={rowEvents}
-          />
+      <div className="container bg-warning rounded mt-1 mb-1 text-center">
+        <div className="row d-flex justify-content-center align-items-center">
+          <div className="col-xl-3">
+            <div
+              className="btn btn-light border w-10 text-center border-3 mt-2 mb-2"
+              onClick={addTicket}
+            >
+              <b> Add Ticket </b> ➕
+            </div>
+          </div>
+          <div className="col-xl-3">
+            <b
+              className="btn btn-secondary border w-10 text-center border-3 mt-2 mb-2"
+              onClick={() => filterTickets(0)}
+            >
+              My Tickets {ticketsFilterType === 0 ? " 🤚" : ""}
+            </b>
+          </div>
+          <div className="col-xl-3">
+            <b
+              className="btn btn-primary border w-10 text-center border-3 mt-2 mb-2"
+              onClick={() => filterTickets(1)}
+            >
+              Submitted Tickets {ticketsFilterType === 1 ? " 🤚" : ""}
+            </b>
+          </div>
+          <div className="col-xl-3">
+            <b
+              className="btn btn-danger border w-10 text-center border-3 mt-2 mb-2"
+              onClick={() => filterTickets(2)}
+            >
+              Assigned To me {ticketsFilterType === 2 ? " 🤚" : ""}
+            </b>
+          </div>
         </div>
       </div>
-      <div className="container-fluid  text-start ">
-        <b
-          className="btn btn-success border w-10 text-center border-3 mt-2 mb-2"
-          onClick={addTicket}
-        >
-          Add Ticket ➕
-        </b>
+      <div className="container-fluid">
+        <BootstrapTable
+          bordered={true}
+          hover={true}
+          keyField="id"
+          columns={fields}
+          striped
+          data={filteredTickets}
+          pagination={pagination}
+          filter={filterFactory()}
+          responsive={true}
+          rowEvents={rowEvents}
+          wrapperClasses="table-responsive"
+        />
       </div>
     </>
   );

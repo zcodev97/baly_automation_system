@@ -133,7 +133,7 @@ function Users() {
           <b> Users</b>
         </h3>
       </div>
-      <div className="container w-75 bg-light rounded p-4 text-center">
+      <div className="container-fluid bg-light rounded p-1 text-center">
         <BootstrapTable
           hover={true}
           bordered={true}
@@ -143,6 +143,7 @@ function Users() {
           pagination={pagination}
           filter={filterFactory()}
           rowEvents={rowEvents}
+          wrapperClasses="table-responsive"
         />
       </div>
     </>
