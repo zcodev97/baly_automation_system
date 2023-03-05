@@ -3,12 +3,15 @@ import NavBar from "../../components/navBar";
 import DateTimePicker from "react-datetime-picker";
 import { useState } from "react";
 import Select from "react-select";
-import { BACKEND_URL } from "../../global";
+import { BACKEND_URL, CheckUserPermissions } from "../../global";
 import { useEffect } from "react";
 import Loading from "../../components/loading";
+import { useNavigate } from "react-router-dom";
 import font from "./Amiri-Regular-normal";
 
 function VendorInvoiceReport() {
+  const navigate = useNavigate();
+
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
   const [data, setData] = useState([]);
@@ -127,7 +130,15 @@ function VendorInvoiceReport() {
         },
       }
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          alert("You Don't have Permission to get this report");
+          setData([]);
+          setLoading(false);
+          return response.status;
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log(data);
         setData(data);
@@ -157,6 +168,15 @@ function VendorInvoiceReport() {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    if (res.status !== 200) {
+      alert("You Don't have Permission to get this report");
+      setLoading(false);
+
+      navigate("/home");
+
+      return null;
+    }
 
     let vendors = await res.json();
 

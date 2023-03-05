@@ -14,9 +14,12 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
+import { useNavigate } from "react-router-dom";
 
 function CancellationReport() {
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
@@ -24,6 +27,7 @@ function CancellationReport() {
 
   async function getReport() {
     setLoading(true);
+
     var token = localStorage.getItem("token");
 
     let formattedFirstDateStart = new Date(startFirstDate)
@@ -43,7 +47,15 @@ function CancellationReport() {
         },
       }
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          alert("You Don't have Permission to get this report");
+          setLoading(false);
+          navigate("/home");
+          return;
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log(data);
         setData(data);

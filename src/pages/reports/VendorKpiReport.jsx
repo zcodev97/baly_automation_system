@@ -8,10 +8,14 @@ import Loading from "../../components/loading";
 import NavBar from "../../components/navBar";
 import DateTimePicker from "react-datetime-picker";
 import Select from "react-select";
-import { BACKEND_URL } from "../../global";
+import { BACKEND_URL, CheckUserPermissions } from "../../global";
 import ExcelExport from "../../components/excelExport";
 import DatePickerCompo from "../../components/datePicker";
+import { useNavigate } from "react-router-dom";
+
 function VendorKPIReport() {
+  const navigate = useNavigate();
+
   const [startFirstDate, setStartFirstDate] = useState(new Date());
   const [endFirstDate, setEndFirstDate] = useState(new Date());
 
@@ -131,6 +135,7 @@ function VendorKPIReport() {
 
   async function getReport() {
     setLoading(true);
+
     var token = localStorage.getItem("token");
 
     let formattedFirstDateStart = new Date(startFirstDate)
@@ -165,7 +170,16 @@ function VendorKPIReport() {
           }),
         }
       )
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.status !== 200) {
+            alert("You Don't have Permission to get this report");
+            setReportData([]);
+            setLoading(false);
+
+            return response.status;
+          }
+          return response.json();
+        })
         .then((data) => {
           setReportData(data);
 
@@ -198,7 +212,14 @@ function VendorKPIReport() {
         }),
       }
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          alert("You Don't have Permission to get this report");
+          setLoading(false);
+          return response.status;
+        }
+        return response.json();
+      })
       .then((data) => {
         setReportData(data);
 
@@ -233,6 +254,15 @@ function VendorKPIReport() {
         Authorization: `Bearer ${token}`,
       },
     });
+
+    if (res.status !== 200) {
+      alert("You Don't have Permission to get this report");
+      setLoading(false);
+
+      navigate("/home");
+
+      return null;
+    }
 
     let vendors = await res.json();
 

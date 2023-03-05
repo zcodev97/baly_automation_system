@@ -87,24 +87,6 @@ function GetNewCustomersReportPage() {
     alwaysShowAllBtns: false,
   });
 
-  const rowStyle = (row, rowIndex) => {
-    // if(row.created_at){
-    //     return row.created_at.toLocaleDateString()
-    // }
-    if (row.status === "resolved") {
-      return { color: "white", background: "#40916c", fontWeight: "bold" };
-    } else if (row.priority === 1) {
-      // #0d6efd
-      return { color: "white", background: "#0d6efd", fontWeight: "bold" };
-    } else if (row.priority === 2) {
-      return { color: "white", background: "#B22222", fontWeight: "bold" };
-    } else if (row.priority === 3) {
-      return { color: "white", background: "#CD5C5C", fontWeight: "bold" };
-    } else if (row.priority === 4) {
-      return { color: "black", background: "#FF8C00", fontWeight: "bold" };
-    }
-  };
-
   // Fields to show in the table, and what object properties in the data they bind to
   const fields = [
     {
@@ -140,6 +122,7 @@ function GetNewCustomersReportPage() {
 
   async function getReport() {
     setLoading(true);
+
     var token = localStorage.getItem("token");
 
     let formattedFirstDateStart = new Date(startFirstDate)
@@ -165,7 +148,15 @@ function GetNewCustomersReportPage() {
         },
       }
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          alert("You Don't have Permission to get this report");
+          setLoading(false);
+          navigate("/home");
+          return;
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log(data);
 
@@ -176,7 +167,7 @@ function GetNewCustomersReportPage() {
         setLoading(false);
       })
       .catch((error) => {
-        alert("Error In Adding new Comment 😕");
+        alert("Error  😕");
         setLoading(false);
       });
   }
@@ -280,7 +271,6 @@ function GetNewCustomersReportPage() {
           columns={fields}
           data={data}
           filter={filterFactory()}
-          rowStyle={rowStyle}
         />
         <div className="row">
           <div className="col-md-6">

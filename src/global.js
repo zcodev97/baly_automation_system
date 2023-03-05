@@ -13,12 +13,10 @@ async function CheckUserPermissions() {
       Authorization: `Bearer ${token}`,
     },
   })
-    .then((response) => response.json())
-    .then((data) => {
-      return data;
-    })
+    .then((response) => response.status)
     .catch((error) => {
       alert(error);
+      return null;
     });
 }
 

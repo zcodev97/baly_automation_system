@@ -3,7 +3,6 @@ import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
@@ -17,6 +16,7 @@ import { Navbar } from "react-bootstrap";
 import NavBar from "../../components/navBar";
 import * as Icon from "react-bootstrap-icons";
 import moment from "moment";
+
 import {
   LineChart,
   Line,
@@ -26,8 +26,12 @@ import {
   Tooltip,
 } from "recharts";
 import DateTimePicker from "react-datetime-picker";
+import { useNavigate } from "react-router-dom";
+import { BACKEND_URL } from "../../global";
 
 function HourlyReportPage() {
+  const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
 
   const [startFirstDate, setStartFirstDate] = useState(new Date());
@@ -67,6 +71,7 @@ function HourlyReportPage() {
 
   async function getReport() {
     setLoading(true);
+
     var token = localStorage.getItem("token");
 
     let formattedFirstDateStart = new Date(startFirstDate)
@@ -77,7 +82,8 @@ function HourlyReportPage() {
       .slice(0, 10);
 
     fetch(
-      `http://django-env-v1.eba-cveq8rvb.us-west-2.elasticbeanstalk.com/api/reports/get_hourly_report?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}`,
+      BACKEND_URL +
+        `reports/get_hourly_report?start_date=${formattedFirstDateStart}&end_date=${formattedFirstDateEnd}`,
       {
         method: "GET",
         headers: {
@@ -86,10 +92,21 @@ function HourlyReportPage() {
         },
       }
     )
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status !== 200) {
+          alert("You Don't have Permission to get this report");
+          setLoading(false);
+
+          navigate("/home");
+
+          return null;
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log(data);
         setData(data);
+
         setLoading(false);
       })
       .catch((error) => {
