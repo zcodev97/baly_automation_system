@@ -3,6 +3,8 @@ import NavBar from "../components/navBar";
 import React, { useState, useEffect } from "react";
 import Loading from "../components/loading";
 import { BACKEND_URL } from "../global";
+import redArrow from "../arrow-trend-down.png";
+import greenArrow from "../arrow-trend-up.png";
 
 function HomePage() {
   const navigate = useNavigate();
@@ -11,9 +13,9 @@ function HomePage() {
   const [grossClassName, setGrossClassName] = useState("");
 
   const containerClassNameGauge =
-    "container p-3 text-center text-light  border border-light border-2 rounded ";
+    "container p-2 text-center text-light  border border-light border-1 rounded ";
 
-  const cardStyle = { backgroundColor: "#0b2e34" };
+  const cardStyle = { backgroundColor: "#0b2e34", height: 200, width: 200 };
 
   const [data, setData] = useState([
     {
@@ -113,23 +115,31 @@ function HomePage() {
       <div className="row mt-1 p-1">
         <div className="col-md-2 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
-            <h3>
+            <h4>
               <b> Gross</b>
-            </h3>
-            <h4
-              className={
-                Number(data[2].gross) > 0 ? "text-success" : "text-danger"
-              }
-            >
-              Today {data[0].gross}
             </h4>
-            <h5 className=""> Yesterday {data[1].gross} </h5>
+            <h1
+              className={
+                Number(data[2].gross) > 0 ? "text-success" : "text-danger"
+              }
+            >
+              <b>{data[0].gross} </b>
+            </h1>
+            <h6 className=""> Yesterday {data[1].gross} </h6>
             <h4
               className={
                 Number(data[2].gross) > 0 ? "text-success" : "text-danger"
               }
             >
-              <b> Diff {Number(data[2].gross).toFixed(2) + " %"} </b>
+              <b>
+                {Number(data[2].gross) > 0 ? (
+                  <img src={greenArrow} height={25} alt="" srcset="" />
+                ) : (
+                  <img src={redArrow} height={25} alt="" srcset="" />
+                )}
+                {"  "}
+                {Number(data[2].gross).toFixed(2) + " %"}{" "}
+              </b>
             </h4>
           </div>
         </div>
@@ -143,7 +153,7 @@ function HomePage() {
                 Number(data[0].ff) > 0 ? "text-success" : "text-danger"
               }
             >
-              Today {Number(data[0].ff).toFixed(2) + " %"}
+              {Number(data[0].ff).toFixed(2) + " %"}
             </h4>
             <h5 className="">
               {" "}
@@ -154,12 +164,20 @@ function HomePage() {
                 Number(data[2].ff) > 0 ? "text-success" : "text-danger"
               }
             >
-              <b> Diff {Number(data[2].ff).toFixed(2) + " %"} </b>
+              <b>
+                {" "}
+                {Number(data[2].ff) > 0 ? (
+                  <img src={greenArrow} height={25} alt="" srcset="" />
+                ) : (
+                  <img src={redArrow} height={25} alt="" srcset="" />
+                )}
+                {"  "} {Number(data[2].ff).toFixed(2) + " %"}{" "}
+              </b>
             </h4>
           </div>
         </div>
 
-        <div className="col-md-3  mb-1">
+        <div className="col-md-2  mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
             <h3>
               <b>NET </b>
@@ -177,12 +195,20 @@ function HomePage() {
                 Number(data[2].net) > 0 ? "text-success" : "text-danger"
               }
             >
-              <b>Diff {Number(data[2].net).toFixed(2) + " %"} </b>
+              <b>
+                {" "}
+                {Number(data[2].net) > 0 ? (
+                  <img src={greenArrow} height={25} alt="" srcset="" />
+                ) : (
+                  <img src={redArrow} height={25} alt="" srcset="" />
+                )}
+                {"  "} {Number(data[2].net).toFixed(2) + " %"}{" "}
+              </b>
             </h4>
           </div>
         </div>
 
-        <div className="col-md-3 mb-1">
+        <div className="col-md-2 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
             <h3>
               <b>DF </b>
@@ -202,7 +228,15 @@ function HomePage() {
                 Number(data[2].DF) > 0 ? "text-success" : "text-danger"
               }
             >
-              <b> Diff {Number(data[2].DF).toFixed(2) + " %"}</b>
+              <b>
+                {" "}
+                {Number(data[2].DF) > 0 ? (
+                  <img src={greenArrow} height={25} alt="" srcset="" />
+                ) : (
+                  <img src={redArrow} height={25} alt="" srcset="" />
+                )}
+                {"  "} {Number(data[2].DF).toFixed(2) + " %"}
+              </b>
             </h4>
           </div>
         </div>
@@ -226,18 +260,19 @@ function HomePage() {
                 Number(data[2].NMV) > 0 ? "text-success" : "text-danger"
               }
             >
-              <b> Diff {Number(data[2].NMV).toFixed(2) + " %"} </b>
+              <b>
+                {" "}
+                {Number(data[2].NMV) > 0 ? (
+                  <img src={greenArrow} height={25} alt="" srcset="" />
+                ) : (
+                  <img src={redArrow} height={25} alt="" srcset="" />
+                )}
+                {"  "} {Number(data[2].NMV).toFixed(2) + " %"}{" "}
+              </b>
             </h4>
           </div>
         </div>
-      </div>
-    );
-  }
-
-  function SecondRow() {
-    return (
-      <div className="row mt-1 p-1">
-        <div className="col-md-3 mb-1">
+        <div className="col-md-2 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
             <h3>
               <b> Sign Ups</b>
@@ -255,12 +290,26 @@ function HomePage() {
                 Number(data[2].signups) > 0 ? "text-success" : "text-danger"
               }
             >
-              <b> Diff {Number(data[2].signups).toFixed(2) + " %"} </b>
+              <b>
+                {" "}
+                {Number(data[2].signups) > 0 ? (
+                  <img src={greenArrow} height={25} alt="" srcset="" />
+                ) : (
+                  <img src={redArrow} height={25} alt="" srcset="" />
+                )}
+                {"  "} {Number(data[2].signups).toFixed(2) + " %"}{" "}
+              </b>
             </h4>
           </div>
         </div>
+      </div>
+    );
+  }
 
-        <div className="col-md-3 mb-1">
+  function SecondRow() {
+    return (
+      <div className="row mt-1 p-1">
+        <div className="col-md-2 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
             <h3>
               <b>New User </b>
@@ -270,7 +319,7 @@ function HomePage() {
                 Number(data[2].new_user) > 0 ? "text-success" : "text-danger"
               }
             >
-              Today {data[0].new_user}
+              {data[0].new_user}
             </h4>
             <h5 className="">Yesterday {data[1].new_user}</h5>
             <h4
@@ -278,11 +327,19 @@ function HomePage() {
                 Number(data[2].new_user) > 0 ? "text-success" : "text-danger"
               }
             >
-              <b>Diff {Number(data[2].new_user).toFixed(2) + " %"} </b>
+              <b>
+                {" "}
+                {Number(data[2].new_user) > 0 ? (
+                  <img src={greenArrow} height={25} alt="" srcset="" />
+                ) : (
+                  <img src={redArrow} height={25} alt="" srcset="" />
+                )}
+                {"  "} {Number(data[2].new_user).toFixed(2) + " %"}{" "}
+              </b>
             </h4>
           </div>
         </div>
-        <div className="col-md-3 mb-1">
+        <div className="col-md-2 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
             <h3>
               <b>Blocked Users </b>
@@ -294,7 +351,7 @@ function HomePage() {
                   : "text-danger"
               }
             >
-              Today {data[0].blocked_user}
+              {data[0].blocked_user}
             </h4>
             <h5 className="">Yesterday {data[1].blocked_user}</h5>
             <h4
@@ -304,12 +361,20 @@ function HomePage() {
                   : "text-danger"
               }
             >
-              <b> Diff {Number(data[2].blocked_user).toFixed(2) + " %"}</b>
+              <b>
+                {" "}
+                {Number(data[2].blocked_user) > 0 ? (
+                  <img src={greenArrow} height={25} alt="" srcset="" />
+                ) : (
+                  <img src={redArrow} height={25} alt="" srcset="" />
+                )}
+                {"  "} {Number(data[2].blocked_user).toFixed(2) + " %"}
+              </b>
             </h4>
           </div>
         </div>
 
-        <div className="col-md-3 mb-1">
+        <div className="col-md-2 mb-1">
           <div className={containerClassNameGauge} style={cardStyle}>
             <h3>
               <b> Cancel</b>
@@ -321,7 +386,7 @@ function HomePage() {
                   : "text-danger"
               }
             >
-              Today {data[0].cancel}
+              {data[0].cancel}
             </h4>
             <h5 className="">Yesterday {data[1].cancel}</h5>
             <h4
@@ -329,10 +394,19 @@ function HomePage() {
                 Number(data[2].cancel) > 0 ? "text-success" : "text-danger"
               }
             >
-              <b> Diff {Number(data[2].cancel).toFixed(2) + " %"}</b>
+              <b>
+                {" "}
+                {Number(data[2].cancel) > 0 ? (
+                  <img src={greenArrow} height={25} alt="" srcset="" />
+                ) : (
+                  <img src={redArrow} height={25} alt="" srcset="" />
+                )}
+                {"  "} {Number(data[2].cancel).toFixed(2) + " %"}
+              </b>
             </h4>
           </div>
         </div>
+        <div className="col-md-2 mb-1"></div>
       </div>
     );
   }
@@ -340,65 +414,68 @@ function HomePage() {
   return (
     <>
       <NavBar />
-      <div
-        className="container-fluid text-light text-center bg-dark p-2 rounded mt-4"
-        style={{ backgroundColor: "#041d21" }}
-      >
-        <div className="container text-center text-light mt-2 mb-2 p-2 border border-light border-3 rounded ">
-          <h2>
-            <b>Real Time Dashboard</b>
-          </h2>
-        </div>
-        {FirstRow()}
-        {/*  */}
-        {SecondRow()}
-        {/*  */}
+      <div className="img"></div>
+      <div className="container-fluid bg-dark rounded">
+        <div
+          className="container text-light text-center bg-dark p-2 rounded mt-4"
+          style={{ backgroundColor: "#041d21" }}
+        >
+          <div className="container text-center text-light mt-2 mb-2 p-2 border border-light  rounded ">
+            <h2>
+              <b>Real Time Dashboard</b>
+            </h2>
+          </div>
+          {FirstRow()}
+          {/*  */}
+          {SecondRow()}
+          {/*  */}
 
-        <hr className="mt-2" />
-        <div className="container mt-5 bg-light p-1 border border-primary border-1 rounded ">
-          <h3 className="text-primary">
-            <b> Reports</b>
-          </h3>
-          <button
-            className="btn btn-light  border border-primary border-3 m-1"
-            onClick={() => {
-              navigate("/vendor_invoice");
-            }}
-          >
-            <b> Vendor Invoice 📰</b>
-          </button>
-          <button
-            className="btn btn-light  border border-primary border-3 m-1"
-            onClick={GetHourlyReport}
-          >
-            <b> Hourly Report ⌛</b>
-          </button>
-          <button
-            className="btn btn-light  border border-primary border-3 m-1"
-            onClick={GetVendorKPIReport}
-          >
-            <b> KPIs & Units Economics Report 🍽️</b>
-          </button>
-          <button
-            className="btn btn-light border border-primary border-3 m-1"
-            onClick={() => {
-              navigate("/cancellation_report");
-            }}
-          >
-            <b> Cancellation ❌</b>
-          </button>
-          {/* <button className="btn btn-dark border-light border-1 m-1">
+          <hr className="mt-2" />
+          <div className="container mt-5 bg-light p-1 border border-primary border-1 rounded ">
+            <h3 className="text-primary">
+              <b> Reports</b>
+            </h3>
+            <button
+              className="btn btn-light  border border-primary border-3 m-1"
+              onClick={() => {
+                navigate("/vendor_invoice");
+              }}
+            >
+              <b> Vendor Invoice 📰</b>
+            </button>
+            <button
+              className="btn btn-light  border border-primary border-3 m-1"
+              onClick={GetHourlyReport}
+            >
+              <b> Hourly Report ⌛</b>
+            </button>
+            <button
+              className="btn btn-light  border border-primary border-3 m-1"
+              onClick={GetVendorKPIReport}
+            >
+              <b> KPIs & Units Economics Report 🍽️</b>
+            </button>
+            <button
+              className="btn btn-light border border-primary border-3 m-1"
+              onClick={() => {
+                navigate("/cancellation_report");
+              }}
+            >
+              <b> Cancellation ❌</b>
+            </button>
+            {/* <button className="btn btn-dark border-light border-1 m-1">
             <b> Commission 💵</b>
           </button> */}
-          {/* <button className="btn btn-dark border-light border-1 m-1">
+            {/* <button className="btn btn-dark border-light border-1 m-1">
             <b> Voucher Usage 🔃</b>
           </button> */}
-          <button
-            className="btn btn-light border border-primary border-3 m-1"
-            onClick={GetNEwCustomersReport}
-          >
-            <b> Get New Customers 🧑‍🤝‍🧑</b>
-          </button>
+            <button
+              className="btn btn-light border border-primary border-3 m-1"
+              onClick={GetNEwCustomersReport}
+            >
+              <b> Get New Customers 🧑‍🤝‍🧑</b>
+            </button>
+          </div>
         </div>
       </div>
     </>

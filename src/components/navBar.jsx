@@ -145,7 +145,11 @@ function NavBar() {
               </li>
               <li
                 className="nav-item border rounded m-1"
-                style={{ display: "block" }}
+                style={
+                  data?.role === "superuser"
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
               >
                 <Link className="nav-link text-primary" to="/users">
                   <h5> Users 👥</h5>
