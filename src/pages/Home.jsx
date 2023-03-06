@@ -328,13 +328,12 @@ function HomePage() {
               }
             >
               <b>
-                {" "}
                 {Number(data[2].new_user) > 0 ? (
                   <img src={greenArrow} height={25} alt="" srcset="" />
                 ) : (
                   <img src={redArrow} height={25} alt="" srcset="" />
                 )}
-                {"  "} {Number(data[2].new_user).toFixed(2) + " %"}{" "}
+                {Number(data[2].new_user).toFixed(2) + " %"}{" "}
               </b>
             </h4>
           </div>
@@ -362,13 +361,12 @@ function HomePage() {
               }
             >
               <b>
-                {" "}
                 {Number(data[2].blocked_user) > 0 ? (
                   <img src={greenArrow} height={25} alt="" srcset="" />
                 ) : (
                   <img src={redArrow} height={25} alt="" srcset="" />
                 )}
-                {"  "} {Number(data[2].blocked_user).toFixed(2) + " %"}
+                {Number(data[2].blocked_user).toFixed(2) + " %"}
               </b>
             </h4>
           </div>

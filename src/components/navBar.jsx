@@ -73,7 +73,11 @@ function NavBar() {
       <nav className="navbar navbar-expand-sm navbar-dark bg-light  border-bottom border-primary border-2 rounded p-2">
         <div className="container-fluid">
           <a className="navbar-brand text-primary border border-3 border-primary rounded p-2">
-            <b> BALY </b>
+            <Link className="nav-link text-primary" to="/home">
+              <h5>
+                <b> BALY</b>
+              </h5>
+            </Link>
           </a>
           <button
             className="navbar-toggler bg-dark"
@@ -87,27 +91,18 @@ function NavBar() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ">
+            <ul className="navbar-nav ms-auto">
               <li
                 className="nav-item border rounded m-1"
                 // style={data?.role === "cc" ? { display: "none" } : {}}
               >
                 <Link className="nav-link text-primary" to="/home">
-                  <h5> Home 🏠</h5>
+                  <h5>
+                    <b>Home </b>
+                  </h5>
                 </Link>
               </li>
-              <li
-                className="nav-item border rounded m-1"
-                style={
-                  data?.role === "superuser"
-                    ? { display: "block" }
-                    : { display: "none" }
-                }
-              >
-                <Link className="nav-link text-primary" to="/excel_reader">
-                  <h5> Excel Reader 📄📄</h5>
-                </Link>
-              </li>
+
               {/*  */}
               <li
                 className="nav-item border rounded m-1"
@@ -122,7 +117,7 @@ function NavBar() {
                 }
               >
                 <Link className="nav-link text-primary" to="/tickets">
-                  <h5> Tickets 🎟️</h5>
+                  <h5> Tickets</h5>
                 </Link>
               </li>
               {/*  */}
@@ -131,7 +126,7 @@ function NavBar() {
                 style={{ display: "block" }}
               >
                 <Link className="nav-link text-primary" to="/user_tickets">
-                  <h5> My Tickets 👤🎟️</h5>
+                  <h5> My Tickets</h5>
                 </Link>
               </li>
               {/*  */}
@@ -140,7 +135,7 @@ function NavBar() {
                 style={{ display: "block" }}
               >
                 <Link className="nav-link text-primary" to="/newticket">
-                  <h5> New Ticket ➕</h5>
+                  <h5> New Ticket </h5>
                 </Link>
               </li>
               <li
@@ -152,7 +147,7 @@ function NavBar() {
                 }
               >
                 <Link className="nav-link text-primary" to="/users">
-                  <h5> Users 👥</h5>
+                  <h5> Users </h5>
                 </Link>
               </li>
               <li
@@ -168,7 +163,7 @@ function NavBar() {
                 }
               >
                 <Link className="nav-link text-primary" to="/vendors">
-                  <h5> Vendors 🛍️</h5>
+                  <h5> Vendors </h5>
                 </Link>
               </li>
               <li className="nav-item border rounded m-1">
