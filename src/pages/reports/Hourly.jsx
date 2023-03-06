@@ -226,7 +226,7 @@ function HourlyReportPage() {
                 </thead>
                 <tbody className="text-center m-0 bg-secondary text-light">
                   {data.length === 0 ? (
-                    <p className="text-dark">
+                    <p className="text-light text-center ">
                       Please Select Start and End Date and Press Get Report 😁
                     </p>
                   ) : (

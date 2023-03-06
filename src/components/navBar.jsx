@@ -11,15 +11,7 @@ function NavBar() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
-  const [showHome, setShowHome] = useState({ display: "block" });
-  const [showTickets, setShowTickets] = useState({ display: "block" });
-  const [showVendors, setShowVendors] = useState({ display: "block" });
-  const [showUsers, setShowUsers] = useState({ display: "block" });
   const [data, setData] = useState();
-
-  const [userPermissions, setUserPermissions] = useState([]);
-
-  const [customStyle, setCustomStyle] = useState({});
 
   async function handleLogout() {
     setLoading(true);
@@ -92,14 +84,9 @@ function NavBar() {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto">
-              <li
-                className="nav-item border rounded m-1"
-                // style={data?.role === "cc" ? { display: "none" } : {}}
-              >
+              <li className="nav-item border rounded m-1">
                 <Link className="nav-link text-primary" to="/home">
-                  <h5>
-                    <b>Home </b>
-                  </h5>
+                  <h5>Home</h5>
                 </Link>
               </li>
 
@@ -117,7 +104,7 @@ function NavBar() {
                 }
               >
                 <Link className="nav-link text-primary" to="/tickets">
-                  <h5> Tickets</h5>
+                  <h5>Tickets</h5>
                 </Link>
               </li>
               {/*  */}
@@ -126,7 +113,7 @@ function NavBar() {
                 style={{ display: "block" }}
               >
                 <Link className="nav-link text-primary" to="/user_tickets">
-                  <h5> My Tickets</h5>
+                  <h5>My Tickets</h5>
                 </Link>
               </li>
               {/*  */}
@@ -135,7 +122,7 @@ function NavBar() {
                 style={{ display: "block" }}
               >
                 <Link className="nav-link text-primary" to="/newticket">
-                  <h5> New Ticket </h5>
+                  <h5>New Ticket</h5>
                 </Link>
               </li>
               <li
@@ -147,7 +134,7 @@ function NavBar() {
                 }
               >
                 <Link className="nav-link text-primary" to="/users">
-                  <h5> Users </h5>
+                  <h5>Users</h5>
                 </Link>
               </li>
               <li
@@ -163,7 +150,7 @@ function NavBar() {
                 }
               >
                 <Link className="nav-link text-primary" to="/vendors">
-                  <h5> Vendors </h5>
+                  <h5>Vendors</h5>
                 </Link>
               </li>
               <li className="nav-item border rounded m-1">

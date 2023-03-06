@@ -177,54 +177,51 @@ function Tickets() {
     },
   ];
 
-  if (loading) {
-    return <Loading />;
-  }
-
-  // if (tickets.length === 0) {
-  //   return <NoDataView />;
-  // }
-
   return (
     <>
       <NavBar />
-      <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
-        <h3 className="text-center">
-          <b> All Tickets</b>
-        </h3>
-      </div>
-      <div className="container-fluid">
-        <div className="table-responsive text-center">
-          <BootstrapTable
-            bordered={true}
-            hover={true}
-            keyField="id"
-            columns={fields}
-            data={tickets}
-            pagination={pagination}
-            filter={filterFactory()}
-            responsive={true}
-            // rowStyle={rowStyle}
-            // style={{
-            //   borderCollapse: "collapse",
-            //   tableLayout: "fixed",
-            //   width: "100%",
-            //   overflowX: "auto",
-            //   minWidth: "fit-content",
-            // }}
-            rowEvents={rowEvents}
-            wrapperClasses="table-responsive"
-          />
-        </div>
-      </div>
-      <div className="container-fluid  text-start ">
-        <b
-          className="btn btn-success border w-10 text-center border-3 mt-2 mb-2"
-          onClick={addTicket}
-        >
-          Add Ticket ➕
-        </b>
-      </div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
+            <h3 className="text-center">
+              <b> All Tickets</b>
+            </h3>
+          </div>
+          <div className="container-fluid">
+            <div className="table-responsive text-center">
+              <BootstrapTable
+                bordered={true}
+                hover={true}
+                keyField="id"
+                columns={fields}
+                data={tickets}
+                pagination={pagination}
+                filter={filterFactory()}
+                responsive={true}
+                // rowStyle={rowStyle}
+                // style={{
+                //   borderCollapse: "collapse",
+                //   tableLayout: "fixed",
+                //   width: "100%",
+                //   overflowX: "auto",
+                //   minWidth: "fit-content",
+                // }}
+                rowEvents={rowEvents}
+              />
+            </div>
+          </div>
+          <div className="container-fluid  text-start ">
+            <b
+              className="btn btn-success border w-10 text-center border-3 mt-2 mb-2"
+              onClick={addTicket}
+            >
+              Add Ticket ➕
+            </b>
+          </div>{" "}
+        </>
+      )}
     </>
   );
 }

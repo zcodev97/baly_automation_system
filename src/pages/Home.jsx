@@ -106,10 +106,6 @@ function HomePage() {
     setInterval(() => getAllVendorsForCurrentAccountManager(), 60000);
   }, []);
 
-  if (loading) {
-    return <Loading />;
-  }
-
   function FirstRow() {
     return (
       <div className="row mt-1 p-1">
@@ -412,72 +408,79 @@ function HomePage() {
   return (
     <>
       <NavBar />
-      <div className="img"></div>
-      <div className="container-fluid bg-dark rounded">
-        <div
-          className="container text-light text-center bg-dark p-2 rounded mt-4"
-          style={{ backgroundColor: "#041d21" }}
-        >
-          <div className="container text-center text-light mt-2 mb-2 p-2 border border-light  rounded ">
-            <h2>
-              <b>Real Time Dashboard</b>
-            </h2>
-          </div>
-          {FirstRow()}
-          {/*  */}
-          {SecondRow()}
-          {/*  */}
+      {loading ? <Loading /> : pageBody()}
+    </>
+  );
 
-          <hr className="mt-2" />
-          <div className="container mt-5 bg-light p-1 border border-primary border-1 rounded ">
-            <h3 className="text-primary">
-              <b> Reports</b>
-            </h3>
-            <button
-              className="btn btn-light  border border-primary border-3 m-1"
-              onClick={() => {
-                navigate("/vendor_invoice");
-              }}
-            >
-              <b> Vendor Invoice 📰</b>
-            </button>
-            <button
-              className="btn btn-light  border border-primary border-3 m-1"
-              onClick={GetHourlyReport}
-            >
-              <b> Hourly Report ⌛</b>
-            </button>
-            <button
-              className="btn btn-light  border border-primary border-3 m-1"
-              onClick={GetVendorKPIReport}
-            >
-              <b> KPIs & Units Economics Report 🍽️</b>
-            </button>
-            <button
-              className="btn btn-light border border-primary border-3 m-1"
-              onClick={() => {
-                navigate("/cancellation_report");
-              }}
-            >
-              <b> Cancellation ❌</b>
-            </button>
-            {/* <button className="btn btn-dark border-light border-1 m-1">
-            <b> Commission 💵</b>
-          </button> */}
-            {/* <button className="btn btn-dark border-light border-1 m-1">
-            <b> Voucher Usage 🔃</b>
-          </button> */}
-            <button
-              className="btn btn-light border border-primary border-3 m-1"
-              onClick={GetNEwCustomersReport}
-            >
-              <b> Get New Customers 🧑‍🤝‍🧑</b>
-            </button>
+  function pageBody() {
+    return (
+      <div className="container-fluid m-0 p-0">
+        <div className="container-fluid bg-dark rounded">
+          <div
+            className="container text-light text-center bg-dark p-2 rounded mt-4"
+            style={{ backgroundColor: "#041d21" }}
+          >
+            <div className="container text-center text-light mt-2 mb-2 p-2 border border-light  rounded ">
+              <h2>
+                <b>Real Time Dashboard</b>
+              </h2>
+            </div>
+            {FirstRow()}
+            {/*  */}
+            {SecondRow()}
+            {/*  */}
+
+            <hr className="mt-2" />
+            <div className="container mt-5 bg-light p-1 border border-primary border-1 rounded ">
+              <h3 className="text-primary">
+                <b> Reports</b>
+              </h3>
+              <button
+                className="btn btn-light  border border-primary border-3 m-1"
+                onClick={() => {
+                  navigate("/vendor_invoice");
+                }}
+              >
+                <b> Vendor Invoice 📰</b>
+              </button>
+              <button
+                className="btn btn-light  border border-primary border-3 m-1"
+                onClick={GetHourlyReport}
+              >
+                <b> Hourly Report ⌛</b>
+              </button>
+              <button
+                className="btn btn-light  border border-primary border-3 m-1"
+                onClick={GetVendorKPIReport}
+              >
+                <b> KPIs & Units Economics Report 🍽️</b>
+              </button>
+              <button
+                className="btn btn-light border border-primary border-3 m-1"
+                onClick={() => {
+                  navigate("/cancellation_report");
+                }}
+              >
+                <b> Cancellation ❌</b>
+              </button>
+              {/* <button className="btn btn-dark border-light border-1 m-1">
+        <b> Commission 💵</b>
+      </button> */}
+              {/* <button className="btn btn-dark border-light border-1 m-1">
+        <b> Voucher Usage 🔃</b>
+      </button> */}
+              <button
+                className="btn btn-light border border-primary border-3 m-1"
+                onClick={GetNEwCustomersReport}
+              >
+                <b> Get New Customers 🧑‍🤝‍🧑</b>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </>
-  );
+    );
+  }
 }
 
 export default HomePage;
