@@ -2,7 +2,15 @@ function Footer() {
   return (
     <>
       {/* Footer */}
-      <footer>
+      <footer
+        className="rounded"
+        style={{
+          marginTop: "-600px",
+          backgroundColor: "#d9d9d9",
+          clear: "both",
+          position: "relative",
+        }}
+      >
         {/* Grid container */}
         {/* Copyright */}
         <div className="text-center p-3">

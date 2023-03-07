@@ -62,10 +62,13 @@ function NavBar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-sm navbar-dark bg-light  border-bottom border-primary border-2 rounded p-2">
+      <nav
+        className="navbar navbar-expand-sm navbar-dark rounded p-2"
+        style={{ backgroundColor: "#d9d9d9" }}
+      >
         <div className="container-fluid">
-          <a className="navbar-brand text-primary border border-3 border-primary rounded p-2">
-            <Link className="nav-link text-primary" to="/home">
+          <a className="navbar-brand text-primary border border-3 border-dark rounded p-2">
+            <Link className="nav-link text-dark" to="/home">
               <h5>
                 <b> BALY</b>
               </h5>
@@ -83,16 +86,16 @@ function NavBar() {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              <li className="nav-item border rounded m-1">
-                <Link className="nav-link text-primary" to="/home">
+            <ul className="navbar-nav ">
+              <li className="nav-item  m-1">
+                <Link className="nav-link text-dark" to="/home">
                   <h5>Home</h5>
                 </Link>
               </li>
 
               {/*  */}
               <li
-                className="nav-item border rounded m-1"
+                className="nav-item  m-1"
                 style={
                   data?.role === "superuser"
                     ? { display: "block" }
@@ -103,42 +106,36 @@ function NavBar() {
                     : { display: "none" }
                 }
               >
-                <Link className="nav-link text-primary" to="/tickets">
+                <Link className="nav-link text-dark" to="/tickets">
                   <h5>Tickets</h5>
                 </Link>
               </li>
               {/*  */}
-              <li
-                className="nav-item border rounded m-1"
-                style={{ display: "block" }}
-              >
-                <Link className="nav-link text-primary" to="/user_tickets">
+              <li className="nav-item  m-1" style={{ display: "block" }}>
+                <Link className="nav-link text-dark" to="/user_tickets">
                   <h5>My Tickets</h5>
                 </Link>
               </li>
               {/*  */}
-              <li
-                className="nav-item border rounded m-1"
-                style={{ display: "block" }}
-              >
-                <Link className="nav-link text-primary" to="/newticket">
+              <li className="nav-item  m-1" style={{ display: "block" }}>
+                <Link className="nav-link text-dark" to="/newticket">
                   <h5>New Ticket</h5>
                 </Link>
               </li>
               <li
-                className="nav-item border rounded m-1"
+                className="nav-item  m-1"
                 style={
                   data?.role === "superuser"
                     ? { display: "block" }
                     : { display: "none" }
                 }
               >
-                <Link className="nav-link text-primary" to="/users">
+                <Link className="nav-link text-dark" to="/users">
                   <h5>Users</h5>
                 </Link>
               </li>
               <li
-                className="nav-item  border rounded m-1"
+                className="nav-item   m-1"
                 style={
                   data?.role === "superuser"
                     ? { display: "block" }
@@ -149,22 +146,22 @@ function NavBar() {
                     : { display: "none" }
                 }
               >
-                <Link className="nav-link text-primary" to="/vendors">
-                  <h5>Vendors</h5>
+                <Link className="nav-link text-dark" to="/vendors">
+                  <h5>Vendors </h5>
                 </Link>
               </li>
-              <li className="nav-item border rounded m-1">
-                <Link className="nav-link text-primary rounded p-2" to="#">
+              <li className="nav-item  m-1">
+                <Link className="nav-link text-dark rounded p-2" to="#">
                   👤<b> {localStorage.getItem("username")}</b>
                 </Link>
               </li>
               <li className="nav-item  m-1">
                 <Link
-                  className="nav-link text-danger rounded p-2 border border-danger"
+                  className="nav-link text-danger rounded p-2 border border-3 border-danger"
                   to="/login"
                   onClick={handleLogout}
                 >
-                  ➡️
+                  Logout
                 </Link>
               </li>
             </ul>
