@@ -4,12 +4,12 @@ function Footer() {
       {/* Footer */}
       <footer
         className="rounded"
-        style={{
-          marginTop: "-600px",
-          backgroundColor: "#d9d9d9",
-          clear: "both",
-          position: "relative",
-        }}
+        // style={{
+        //   marginTop: "-600px",
+        //   backgroundColor: "#d9d9d9",
+        //   clear: "both",
+        //   position: "relative",
+        // }}
       >
         {/* Grid container */}
         {/* Copyright */}

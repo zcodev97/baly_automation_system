@@ -105,12 +105,12 @@ function HomePage() {
     setInterval(() => getAllVendorsForCurrentAccountManager(), 60000);
   }, []);
 
-  function FirstRow() {
+  function DashboardSection() {
     return (
-      <div className="row">
-        <div className="col-xl-4">
-          <div className="row">
-            <div className="col-xl-4">
+      <div className="row d-flex align-items-center justify-content-center p-0 m-0">
+        <div className="col-sm-4 m-1">
+          <div className="row d-flex align-items-center justify-content-center p-0 m-0">
+            <div className="col-sm-4 m-1">
               <div className={containerClassNameGauge} style={cardStyle}>
                 <h4>
                   <b> Gross</b>
@@ -140,7 +140,7 @@ function HomePage() {
                 </h4>
               </div>
             </div>
-            <div className="col-xl-4">
+            <div className="col-sm-4 m-1">
               <div className={containerClassNameGauge} style={cardStyle}>
                 <h4>
                   <b> FF</b>
@@ -174,8 +174,7 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-xl-4">
-              {" "}
+            <div className="col-sm-4 m-1">
               <div className={containerClassNameGauge} style={cardStyle}>
                 <h3>
                   <b>NET </b>
@@ -208,9 +207,9 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="col-xl-4 ">
+        <div className="col-sm-4 m-1">
           <div className="row">
-            <div className="col-xl-4">
+            <div className="col-sm-4 m-1">
               <div className={containerClassNameGauge} style={cardStyle}>
                 <h3>
                   <b>DF </b>
@@ -243,7 +242,7 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-xl-4">
+            <div className="col-sm-4 m-1">
               <div className={containerClassNameGauge} style={cardStyle}>
                 <h3>
                   <b> NMV</b>
@@ -276,7 +275,7 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-xl-4">
+            <div className="col-sm-4 m-1">
               <div className={containerClassNameGauge} style={cardStyle}>
                 <h3>
                   <b> Sign Ups</b>
@@ -308,9 +307,9 @@ function HomePage() {
             </div>
           </div>
         </div>
-        <div className="col-xl-4">
+        <div className="col-sm-4 m-1">
           <div className="row">
-            <div className="col-xl-4">
+            <div className="col-sm-4 m-1">
               <div className={containerClassNameGauge} style={cardStyle}>
                 <h3>
                   <b>New User </b>
@@ -344,7 +343,7 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-xl-4">
+            <div className="col-sm-4 m-1">
               <div className={containerClassNameGauge} style={cardStyle}>
                 <h3>
                   <b>Blocked Users </b>
@@ -378,7 +377,7 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="col-xl-4">
+            <div className="col-sm-4 m-1">
               <div className={containerClassNameGauge} style={cardStyle}>
                 <h3>
                   <b> Cancel</b>
@@ -426,10 +425,10 @@ function HomePage() {
   function pageBody() {
     return (
       <div className="container-fluid m-0 p-0 text-start">
-        <div className="container-fluid  rounded">
-          <div className="container-fluid text-light text-center  p-2 rounded mt-4">
+        <div className="container-fluid m-0 p-0  rounded">
+          <div className="container-fluid m-0 p-0  text-center rounded">
             <div
-              className="container-fluid text-start text-dark mt-2 mb-2 p-4 rounded "
+              className="container-fluid text-start text-dark mt-2 mb-2  rounded "
               style={{ backgroundColor: "#d9d9d9" }}
             >
               <h2 className=" text-center">
@@ -437,8 +436,7 @@ function HomePage() {
                 <hr style={{ color: "#d9d9d9" }} />
               </h2>
 
-              {FirstRow()}
-              {/*  */}
+              {DashboardSection()}
             </div>
 
             <div
@@ -449,7 +447,7 @@ function HomePage() {
 
               <div className="row d-flex align-items-center justify-content-center">
                 <div
-                  className="container btn text-dark m-1 rounded text-center d-flex align-items-center"
+                  className="btn text-dark m-1 rounded text-center d-flex align-items-center"
                   onClick={() => {
                     navigate("/vendor_invoice");
                   }}
@@ -462,7 +460,7 @@ function HomePage() {
                   <b> Vendor Invoice </b>
                 </div>
                 <div
-                  className="container btn text-dark m-1 rounded text-center d-flex align-items-center"
+                  className="btn text-dark m-1 rounded text-center d-flex align-items-center"
                   onClick={GetHourlyReport}
                   style={{
                     backgroundColor: "#f2f2f2",
@@ -473,7 +471,7 @@ function HomePage() {
                   <b> Hourly Report </b>
                 </div>
                 <div
-                  className="container btn text-dark m-1 rounded text-center d-flex align-items-center"
+                  className="btn text-dark m-1 rounded text-center d-flex align-items-center"
                   onClick={GetVendorKPIReport}
                   style={{
                     backgroundColor: "#f2f2f2",
@@ -489,7 +487,7 @@ function HomePage() {
                     height: 100,
                     width: 100,
                   }}
-                  className="container btn text-dark m-1 rounded text-center d-flex align-items-center"
+                  className="btn text-dark m-1 rounded text-center d-flex align-items-center justify-content-centerk"
                   onClick={() => {
                     navigate("/cancellation_report");
                   }}
@@ -502,7 +500,7 @@ function HomePage() {
                     height: 100,
                     width: 100,
                   }}
-                  className="container btn text-dark m-1 rounded text-center d-flex align-items-center"
+                  className="btn text-dark m-1 rounded text-center d-flex align-items-center"
                   onClick={GetNEwCustomersReport}
                 >
                   <b> New Customers </b>

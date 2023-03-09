@@ -10,6 +10,8 @@ import { BACKEND_URL } from "../global";
 function NavBar() {
   const navigate = useNavigate();
 
+  let navLinkClassName = "nav-link text-dark rounded";
+
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState();
 
@@ -87,15 +89,15 @@ function NavBar() {
           </button>
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ">
-              <li className="nav-item  m-1">
-                <Link className="nav-link text-dark" to="/home">
+              <li className="nav-item rounded m-1">
+                <Link className={navLinkClassName} to="/home">
                   <h5>Home</h5>
                 </Link>
               </li>
 
               {/*  */}
               <li
-                className="nav-item  m-1"
+                className="nav-item rounded  m-1"
                 style={
                   data?.role === "superuser"
                     ? { display: "block" }
@@ -106,36 +108,42 @@ function NavBar() {
                     : { display: "none" }
                 }
               >
-                <Link className="nav-link text-dark" to="/tickets">
+                <Link className={navLinkClassName} to="/tickets">
                   <h5>Tickets</h5>
                 </Link>
               </li>
               {/*  */}
-              <li className="nav-item  m-1" style={{ display: "block" }}>
-                <Link className="nav-link text-dark" to="/user_tickets">
+              <li
+                className="nav-item rounded  m-1"
+                style={{ display: "block" }}
+              >
+                <Link className={navLinkClassName} to="/user_tickets">
                   <h5>My Tickets</h5>
                 </Link>
               </li>
               {/*  */}
-              <li className="nav-item  m-1" style={{ display: "block" }}>
-                <Link className="nav-link text-dark" to="/newticket">
+              <li
+                className="nav-item rounded  m-1"
+                style={{ display: "block" }}
+              >
+                <Link className={navLinkClassName} to="/newticket">
                   <h5>New Ticket</h5>
                 </Link>
               </li>
               <li
-                className="nav-item  m-1"
+                className="nav-item rounded  m-1"
                 style={
                   data?.role === "superuser"
                     ? { display: "block" }
                     : { display: "none" }
                 }
               >
-                <Link className="nav-link text-dark" to="/users">
+                <Link className={navLinkClassName} to="/users">
                   <h5>Users</h5>
                 </Link>
               </li>
               <li
-                className="nav-item   m-1"
+                className="nav-item rounded   m-1"
                 style={
                   data?.role === "superuser"
                     ? { display: "block" }
@@ -146,16 +154,16 @@ function NavBar() {
                     : { display: "none" }
                 }
               >
-                <Link className="nav-link text-dark" to="/vendors">
+                <Link className={navLinkClassName} to="/vendors">
                   <h5>Vendors </h5>
                 </Link>
               </li>
-              <li className="nav-item  m-1">
+              <li className="nav-item rounded  m-1">
                 <Link className="nav-link text-dark rounded p-2" to="#">
                   👤<b> {localStorage.getItem("username")}</b>
                 </Link>
               </li>
-              <li className="nav-item  m-1">
+              <li className="nav-item rounded  m-1">
                 <Link
                   className="nav-link text-danger rounded p-2 border border-3 border-danger"
                   to="/login"

@@ -1,3 +1,17 @@
 .react-bootstrap-table table {
     table-layout: auto !important;
   }
+
+
+.btn:hover {
+    background-color: grey !important;
+    cursor: pointer;
+    color: white !important;
+}
+
+
+.nav-link:hover {
+    background-color: grey !important;
+    cursor: pointer;
+    color: white !important;
+}
