@@ -125,39 +125,33 @@ function TicketDetails() {
     setLoading(true);
     var token = localStorage.getItem("token");
 
-    fetch(BACKEND_URL + `ticket_system/all_users`, {
+    let res = await fetch(BACKEND_URL + `ticket_system/all_users`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.detail) {
-          alert(data.detail);
-          setLoading(false);
+    });
 
-          return;
-        }
-        setUsers(data);
+    let data = await res.json();
 
-        users.forEach((user) => {
-          usersList.push({
-            label: user.username,
-            value: user.id,
-          });
-        });
+    if (data.detail) {
+      alert(data.detail);
+      setLoading(false);
 
-        setUsersDropDownMenu(usersList);
-        setLoading(false);
+      return;
+    }
+    setUsers(data);
 
-        //
-      })
-      .catch((error) => {
-        alert(error);
-        setLoading(false);
+    users.forEach((user) => {
+      usersList.push({
+        label: user.username,
+        value: user.id,
       });
+    });
+
+    setUsersDropDownMenu(usersList);
+    setLoading(false);
   }
 
   //reassign ticket to new  user

@@ -223,7 +223,6 @@ function NewTicketPage() {
           <b className="text-white">Vendor</b>
           <Select
             options={vendorsDropDownMenu}
-            // onChange={(opt) => setSelectedVendor(opt.value)}
             onChange={(opt) => autoAssignAccountManager(opt.value)}
             // isMulti
           />
