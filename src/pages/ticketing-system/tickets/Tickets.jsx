@@ -39,8 +39,8 @@ function Tickets() {
           priority: row.priority,
           status: row.status,
           created_at: row.created,
-          resolved_at: row.resolve_at,
-          resolved_by: row.resolve_by,
+          resolve_at: row.resolve_at,
+          resolve_by: row.resolve_by,
           comments: row.comment_ticket,
         },
       });
@@ -200,14 +200,6 @@ function Tickets() {
                 pagination={pagination}
                 filter={filterFactory()}
                 responsive={true}
-                // rowStyle={rowStyle}
-                // style={{
-                //   borderCollapse: "collapse",
-                //   tableLayout: "fixed",
-                //   width: "100%",
-                //   overflowX: "auto",
-                //   minWidth: "fit-content",
-                // }}
                 rowEvents={rowEvents}
               />
             </div>

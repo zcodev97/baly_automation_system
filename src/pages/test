@@ -1,0 +1,30 @@
+<div className="col-sm-4 m-1">
+              <div className={containerClassNameGauge} style={cardStyle}>
+                <h4>
+                  <b> Gross</b>
+                </h4>
+                <h1
+                  className={
+                    Number(data[2].gross) > 0 ? "text-success" : "text-danger"
+                  }
+                >
+                  <b>{data[0].gross} </b>
+                </h1>
+                <h6 className=""> Yesterday {data[1].gross} </h6>
+                <h4
+                  className={
+                    Number(data[2].gross) > 0 ? "text-success" : "text-danger"
+                  }
+                >
+                  <b>
+                    {Number(data[2].gross) > 0 ? (
+                      <img src={greenArrow} height={25} alt="" srcset="" />
+                    ) : (
+                      <img src={redArrow} height={25} alt="" srcset="" />
+                    )}
+                    {"  "}
+                    {Number(data[2].gross).toFixed(2) + " %"}{" "}
+                  </b>
+                </h4>
+              </div>
+            </div>

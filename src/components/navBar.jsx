@@ -104,7 +104,7 @@ function NavBar() {
                     : data?.role === "manager"
                     ? { display: "block" }
                     : data?.role === "am"
-                    ? { display: "block" }
+                    ? { display: "none" }
                     : { display: "none" }
                 }
               >
@@ -135,6 +135,8 @@ function NavBar() {
                 style={
                   data?.role === "superuser"
                     ? { display: "block" }
+                    : data?.role === "am_lead"
+                    ? { display: "block" }
                     : { display: "none" }
                 }
               >
@@ -148,6 +150,8 @@ function NavBar() {
                   data?.role === "superuser"
                     ? { display: "block" }
                     : data?.role === "manager"
+                    ? { display: "block" }
+                    : data?.role === "am_lead"
                     ? { display: "block" }
                     : data?.role === "am"
                     ? { display: "none" }

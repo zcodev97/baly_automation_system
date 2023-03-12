@@ -133,7 +133,7 @@ function NewTicketPage() {
   }
 
   //priority
-  const [priority, setPriority] = useState([]);
+  const [priority, setPriority] = useState("");
   const priorityDropDown = [
     { label: "Low", value: "Low" },
     { label: "Medium", value: "Medium" },
@@ -149,6 +149,32 @@ function NewTicketPage() {
 
   async function addNewTicket() {
     var token = localStorage.getItem("token");
+
+    if (
+      (selectedVendor === null) |
+      (selectedVendor === undefined) |
+      (selectedVendor === "")
+    ) {
+      alert("Please Select Vendor");
+      return;
+    }
+    if (
+      (selectedIssueType === null) |
+      (selectedIssueType === undefined) |
+      (selectedIssueType === "")
+    ) {
+      alert("Please Select Issue Type");
+      return;
+    }
+
+    if (orderId === 0) {
+      alert("Order ID ??!!");
+      return;
+    }
+    if ((priority === null) | (priority === undefined) | (priority === "")) {
+      alert("Please Select Priority");
+      return;
+    }
 
     fetch(BACKEND_URL + "ticket_system/create_ticket", {
       method: "POST",
@@ -171,7 +197,7 @@ function NewTicketPage() {
       .then((data) => {
         console.log(data);
         alert("new ticket added 😁");
-        navigate("/tickets");
+        navigate("/user_tickets");
       })
       .catch((error) => {
         console.log(error);

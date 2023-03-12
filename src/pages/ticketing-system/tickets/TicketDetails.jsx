@@ -6,6 +6,7 @@ import NavBar from "../../../components/navBar";
 import { useState } from "react";
 import { useEffect } from "react";
 import { BACKEND_URL } from "../../../global";
+import Select from "react-select";
 
 function getDate() {
   return new Date().toLocaleString();
@@ -14,6 +15,8 @@ function getDate() {
 function TicketDetails() {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
 
   const [ticketId, setTicketId] = useState("");
   const [vendor, setVendor] = useState("");
@@ -28,9 +31,16 @@ function TicketDetails() {
   const [resolveAt, setResolveAt] = useState(new Date());
   const [resolveBy, setResolveBy] = useState("");
   const [comments, setComments] = useState([]);
-  const [commentMessage, setCommentMessage] = useState([]);
+  const [commentMessage, setCommentMessage] = useState("");
 
-  async function updateTicket() {
+  const [users, setUsers] = useState([]);
+  const [usersDropDownMenu, setUsersDropDownMenu] = useState([]);
+
+  let usersList = [];
+
+  const [selectedUserId, setSelectedUserId] = useState("");
+
+  async function resolveTicket() {
     var token = localStorage.getItem("token");
 
     fetch(BACKEND_URL + `ticket_system/resolve_ticket?ticket_id=${ticketId}`, {
@@ -42,6 +52,10 @@ function TicketDetails() {
     })
       .then((response) => response.json())
       .then((data) => {
+        if (data.detail) {
+          alert(data.detail);
+          return;
+        }
         console.log(data);
         alert("ticket resolved 😁");
         navigate("/tickets");
@@ -51,16 +65,9 @@ function TicketDetails() {
       });
   }
 
-  const rowStyle = (row, rowIndex) => {
-    if (row.status === "pending") {
-      return { color: "red" };
-    }
-    return { color: "green" };
-  };
-
   async function addComment() {
     if (commentMessage.length === 0) {
-      alert("please add some text to your comment 😕");
+      alert("please add a comment 😕");
       return;
     }
     var token = localStorage.getItem("token");
@@ -78,6 +85,12 @@ function TicketDetails() {
     )
       .then((response) => response.json())
       .then(async (data) => {
+        if (
+          data.detail === "you do not have permission to comment on this ticket"
+        ) {
+          alert("You Don't Have Permission To Comment on This Ticket");
+          return;
+        }
         await getComments();
       })
       .catch((error) => {
@@ -99,6 +112,7 @@ function TicketDetails() {
     )
       .then((response) => response.json())
       .then((data) => {
+        setCommentMessage("");
         setComments(data);
       })
       .catch((error) => {
@@ -106,13 +120,90 @@ function TicketDetails() {
       });
   }
 
+  //get all users
+  async function getAllUsers() {
+    setLoading(true);
+    var token = localStorage.getItem("token");
+
+    fetch(BACKEND_URL + `ticket_system/all_users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.detail) {
+          alert(data.detail);
+          setLoading(false);
+
+          return;
+        }
+        setUsers(data);
+
+        users.forEach((user) => {
+          usersList.push({
+            label: user.username,
+            value: user.id,
+          });
+        });
+
+        setUsersDropDownMenu(usersList);
+        setLoading(false);
+
+        //
+      })
+      .catch((error) => {
+        alert(error);
+        setLoading(false);
+      });
+  }
+
+  //reassign ticket to new  user
+
+  async function reassignTicket() {
+    setLoading(true);
+
+    var token = localStorage.getItem("token");
+
+    fetch(
+      BACKEND_URL +
+        `ticket_system/reassign_ticket?ticket_id=${ticketId}&assign_user_id=${selectedUserId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.detail) {
+          alert(data.detail);
+          setLoading(false);
+
+          return;
+        }
+        alert(`assinged to ${selectedUserId}`);
+        setLoading(false);
+      })
+      .catch((error) => {
+        alert(error);
+        setLoading(false);
+      });
+  }
+
   useEffect(() => {
+    getAllUsers();
+
     setTicketId(location.state.id);
     setVendor(location.state.vendor);
     setCreated(location.state.created_at);
     setCreatedBy(location.state.created_by);
-    setResolveAt(location.state.resolved_at);
-    setResolveBy(location.state.resolved_by);
+    setResolveAt(location.state.resolve_at);
+    setResolveBy(location.state.resolve_by);
     setIssueType(location.state.issue_type);
     setOrderId(location.state.order_id);
     setDescription(location.state.description);
@@ -120,8 +211,6 @@ function TicketDetails() {
     setPriority(location.state.priority);
     setStatus(location.state.status);
     setComments(location.state.comments);
-
-    console.log();
   }, []);
 
   return (
@@ -151,7 +240,8 @@ function TicketDetails() {
             {widgetView(
               "resolveAt",
 
-              new Date(resolveAt) < new Date()
+              new Date(resolveAt).toLocaleDateString() ===
+                new Date("1/1/1970").toLocaleDateString()
                 ? ""
                 : new Date(resolveAt).toLocaleDateString() +
                     " " +
@@ -246,14 +336,42 @@ function TicketDetails() {
         </div>
       </div>
 
-      <div className="container text-center mt-3">
-        {status == "Pending" ? (
-          <div className="btn btn-success" onClick={updateTicket}>
-            Resolve
+      <div className="row d-flex align-items-center justify-content-center">
+        <div className="col-md-6">
+          {/* assign new user for current ticket  */}
+          <div className="container text-dark border-bottom border-light border-3  p-2">
+            <b className="text-dark">Assign New User :</b>
+            <Select
+              options={usersDropDownMenu}
+              onChange={(opt) => setSelectedUserId(opt.value)}
+            />
           </div>
-        ) : (
-          <div className="btn btn-success disabled">Resolved</div>
-        )}
+        </div>
+
+        <div className="col-md-4">
+          <div className="container text-center mt-3">
+            <div
+              className="btn btn-primary"
+              onClick={async () => {
+                await reassignTicket();
+              }}
+            >
+              <b>Re-assign </b>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-2">
+          <div className="container text-center mt-3">
+            {status == "Pending" ? (
+              <div className="btn btn-success" onClick={resolveTicket}>
+                Resolve
+              </div>
+            ) : (
+              <div className="btn btn-success disabled">Resolved</div>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );
