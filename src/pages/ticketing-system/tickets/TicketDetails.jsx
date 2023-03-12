@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { BACKEND_URL } from "../../../global";
 import Select from "react-select";
+import Loading from "../../../components/loading";
 
 function getDate() {
   return new Date().toLocaleString();
@@ -123,6 +124,7 @@ function TicketDetails() {
   //get all users
   async function getAllUsers() {
     setLoading(true);
+
     var token = localStorage.getItem("token");
 
     let res = await fetch(BACKEND_URL + `ticket_system/all_users`, {
@@ -141,16 +143,9 @@ function TicketDetails() {
 
       return;
     }
+
     setUsers(data);
 
-    users.forEach((user) => {
-      usersList.push({
-        label: user.username,
-        value: user.id,
-      });
-    });
-
-    setUsersDropDownMenu(usersList);
     setLoading(false);
   }
 
@@ -190,8 +185,6 @@ function TicketDetails() {
   }
 
   useEffect(() => {
-    getAllUsers();
-
     setTicketId(location.state.id);
     setVendor(location.state.vendor);
     setCreated(location.state.created_at);
@@ -207,12 +200,30 @@ function TicketDetails() {
     setComments(location.state.comments);
   }, []);
 
+  useEffect(() => {
+    getAllUsers();
+  }, []);
+  useEffect(() => {
+    users.forEach((user) => {
+      usersList.push({
+        label: user.username,
+        value: user.id,
+      });
+    });
+
+    setUsersDropDownMenu(usersList);
+  }, [users]);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <>
       <NavBar />
       <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
         <h3 className="text-center">
-          <b> Ticket Details</b>{" "}
+          <b> Ticket Details / Assgined To {assignTo} </b>
         </h3>
       </div>
 
