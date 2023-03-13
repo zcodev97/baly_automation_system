@@ -17,6 +17,12 @@ function TicketDetails() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const charWidth = 8; // estimated width of a single character in pixels
+  const charHeight = 16; // estimated height of a single character in pixels
+
+  const [rows, setRows] = useState(0);
+  const [cols, setCols] = useState(0);
+
   const [loading, setLoading] = useState(false);
 
   const [ticketId, setTicketId] = useState("");
@@ -199,6 +205,16 @@ function TicketDetails() {
     setPriority(location.state.priority);
     setStatus(location.state.status);
     setComments(location.state.comments);
+
+    let rows = Math.ceil(description.length / (window.innerWidth / charWidth));
+
+    let cols = Math.ceil(description.length / rows);
+
+    setRows(rows);
+    setCols(cols);
+
+    console.log(rows);
+    console.log(cols);
   }, []);
 
   useEffect(() => {
@@ -272,7 +288,6 @@ function TicketDetails() {
                 <b> description </b>
               </p>
               <input
-                style={{ height: 200 }}
                 disabled
                 value={description}
                 type="text"
@@ -280,6 +295,7 @@ function TicketDetails() {
                 id="uname"
                 name="uname"
                 required=""
+
                 // onChange={(e) => setVendor(e.target.value)}
               />
             </div>

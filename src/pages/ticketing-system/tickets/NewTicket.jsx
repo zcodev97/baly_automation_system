@@ -217,86 +217,93 @@ function NewTicketPage() {
           <b> New Ticket</b>
         </h3>
       </div>
-      <div className="container text-center border  border-3 bg-dark mt-2 p-3 w-50 rounded">
-        {/* vendor name */}
-        <div className="container border-bottom border-light border-3  p-2">
-          <b className="text-white">Vendor</b>
-          <Select
-            options={vendorsDropDownMenu}
-            onChange={(opt) => autoAssignAccountManager(opt.value)}
-            // isMulti
-          />
-        </div>
+      <div className="row">
+        <div className="col-xl-4"></div>
+        <div className="col-xl-4">
+          <div className="container text-center text-dark mt-2 p-3 border border-4 rounded bg-light">
+            {/* vendor name */}
+            <div className="container border-bottom border-light border-3  p-2">
+              <b className="text-dark">Vendor</b>
+              <Select
+                options={vendorsDropDownMenu}
+                onChange={(opt) => autoAssignAccountManager(opt.value)}
+                // isMulti
+              />
+            </div>
 
-        {/* issue type */}
-        <div className="container border-bottom border-light border-3   m-1 p-2">
-          <p className="text-white">Issue Type</p>
-          <Select
-            options={issueTypes}
-            onChange={(opt) => setSelectedIssueType(opt.value)}
-            // isMulti
-          />
-        </div>
+            {/* issue type */}
+            <div className="container border-bottom border-light border-3   m-1 p-2">
+              <b className="text-dark">Issue Type</b>
+              <Select
+                options={issueTypes}
+                onChange={(opt) => setSelectedIssueType(opt.value)}
+                // isMulti
+              />
+            </div>
 
-        {/* order ID */}
-        <div className="container border-bottom border-light border-3   m-2 p-2">
-          <p className="text-white">Order ID</p>
-          <input
-            type="number"
-            className="form-control"
-            id="uname"
-            placeholder="Order ID ex...1532"
-            name="uname"
-            required=""
-            onChange={handleOrderIdInput}
-          />
-        </div>
+            {/* order ID */}
+            <div className="container border-bottom border-light border-3   m-2 p-2">
+              <b className="text-dark">Order ID</b>
+              <input
+                type="number"
+                className="form-control"
+                id="uname"
+                placeholder="Order ID ex...1532"
+                name="uname"
+                required=""
+                onChange={handleOrderIdInput}
+              />
+            </div>
 
-        {/* Description */}
-        <div className="container border-bottom border-light border-3   m-2 p-2">
-          <div className="form-group">
-            <label htmlFor="comment" className="text-white">
-              Description:
-            </label>
-            <textarea
-              className="form-control"
-              rows={5}
-              id="comment"
-              defaultValue={""}
-              onChange={handleDescriptionInput}
-            />
+            {/* Description */}
+            <div className="container border-bottom border-light border-3   m-2 p-2">
+              <div className="form-group">
+                <label htmlFor="comment" className="text-dark">
+                  <b> Description </b>
+                </label>
+                <textarea
+                  className="form-control"
+                  rows={5}
+                  id="comment"
+                  defaultValue={""}
+                  onChange={handleDescriptionInput}
+                />
+              </div>
+            </div>
+
+            {/* Assign To */}
+            <div className="container border-bottom border-light border-3   m-1 p-2">
+              <b className="text-dark">Account Manager</b>
+
+              <div className="container text-center text-light bg-dark rounded p-3  ">
+                {accountManagerTitle}
+              </div>
+            </div>
+
+            {/* Priority */}
+            <div className="container border-bottom border-light border-3   m-1 p-2">
+              <b className="text-dark">Priority</b>
+              <Select
+                options={priorityDropDown}
+                onChange={(opt) => setPriority(opt.value)}
+                // isMulti
+              />
+            </div>
+
+            {/* Submit Ticket Button */}
+            <div className="container mt-2 text-center">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={addNewTicket}
+              >
+                Submit Ticket
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* Assign To */}
-        <div className="container border-bottom border-light border-3   m-1 p-2">
-          <p className="text-white">Account Manager</p>
-
-          <div className="container text-center text-dark bg-light rounded  ">
-            {accountManagerTitle}
-          </div>
-        </div>
-
-        {/* Priority */}
-        <div className="container border-bottom border-light border-3   m-1 p-2">
-          <p className="text-white">Priority</p>
-          <Select
-            options={priorityDropDown}
-            onChange={(opt) => setPriority(opt.value)}
-            // isMulti
-          />
-        </div>
-
-        {/* Submit Ticket Button */}
-        <div className="container mt-2 text-center">
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={addNewTicket}
-          >
-            Submit Ticket
-          </button>
-        </div>
+        <div className="col-xl-4"></div>
       </div>
     </>
   );

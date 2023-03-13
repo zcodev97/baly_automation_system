@@ -40,7 +40,11 @@ function VendorInvoiceReport() {
     pdf.autoTable({
       head: [["Vendor payment", "   ", "   "]],
       body: [
-        ["  ", "Total:", data[data.length - 1].raw_value.toLocaleString()],
+        [
+          "  ",
+          "Total:",
+          data[data.length - 1].raw_value_total.toLocaleString(),
+        ],
 
         ["   ", "Final", data[data.length - 1].to_be_paid.toLocaleString()],
 
