@@ -89,7 +89,7 @@ function Tickets() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.detail) {
           setTickets([]);
 
@@ -123,7 +123,7 @@ function Tickets() {
 
     setTimeout(() => {}, 1000);
 
-    console.log(filteredTickets);
+    // console.log(filteredTickets);
 
     if (filter === 0) {
       setFilterTicketsType(0);
@@ -154,7 +154,7 @@ function Tickets() {
 
     var token = localStorage.getItem("token");
 
-    console.log(token);
+    // console.log(token);
 
     if (token === "" || token === null || token === undefined) {
       navigate("/login", { replace: true });

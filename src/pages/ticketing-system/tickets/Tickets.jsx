@@ -88,7 +88,7 @@ function Tickets() {
 
     var token = localStorage.getItem("token");
 
-    console.log(token);
+    // console.log(token);
 
     if (token === "" || token === null || token === undefined) {
       navigate("/login", { replace: true });

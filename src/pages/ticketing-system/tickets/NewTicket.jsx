@@ -95,7 +95,7 @@ function NewTicketPage() {
 
     setIssueTypes(issueTypesList);
 
-    console.log(issueTypes);
+    // console.log(issueTypes);
 
     setLoading(false);
   }

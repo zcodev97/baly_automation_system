@@ -39,7 +39,7 @@ function TicketDetails() {
 
   let usersList = [];
 
-  const [selectedUserId, setSelectedUserId] = useState("");
+  const [selectedUser, setSelectedUser] = useState("");
 
   async function resolveTicket() {
     var token = localStorage.getItem("token");
@@ -57,7 +57,7 @@ function TicketDetails() {
           alert(data.detail);
           return;
         }
-        console.log(data);
+        // console.log(data);
         alert("ticket resolved 😁");
         navigate("/tickets");
       })
@@ -158,7 +158,7 @@ function TicketDetails() {
 
     fetch(
       BACKEND_URL +
-        `ticket_system/reassign_ticket?ticket_id=${ticketId}&assign_user_id=${selectedUserId}`,
+        `ticket_system/reassign_ticket?ticket_id=${ticketId}&assign_user_id=${selectedUser?.value}`,
       {
         method: "PUT",
         headers: {
@@ -171,11 +171,12 @@ function TicketDetails() {
       .then((data) => {
         if (data.detail) {
           alert(data.detail);
+          // navigate("/user_tickets");
+          setAssignTo(selectedUser.label);
           setLoading(false);
-
           return;
         }
-        alert(`assinged to ${selectedUserId}`);
+        console.log(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -223,7 +224,8 @@ function TicketDetails() {
       <NavBar />
       <div className="container p-2 mt-2   border-2 border-bottom border-primary text-dark rounded">
         <h3 className="text-center">
-          <b> Ticket Details / Assgined To {assignTo} </b>
+          Ticket Details / Assigned To{" "}
+          <b className="text-danger"> {assignTo} </b>
         </h3>
       </div>
 
@@ -341,19 +343,21 @@ function TicketDetails() {
         </div>
       </div>
 
-      <div className="row d-flex align-items-center justify-content-center">
-        <div className="col-md-6">
+      <div className="row d-flex align-items-center justify-content-center bg-light  m-2">
+        <div className="col-md-2"></div>
+
+        <div className="col-md-2">
           {/* assign new user for current ticket  */}
           <div className="container text-dark border-bottom border-light border-3  p-2">
             <b className="text-dark">Assign New User :</b>
             <Select
               options={usersDropDownMenu}
-              onChange={(opt) => setSelectedUserId(opt.value)}
+              onChange={(opt) => setSelectedUser(opt)}
             />
           </div>
         </div>
 
-        <div className="col-md-4">
+        <div className="col-md-2">
           <div className="container text-center mt-3">
             <div
               className="btn btn-primary"
@@ -377,6 +381,7 @@ function TicketDetails() {
             )}
           </div>
         </div>
+        <div className="col-md-4"></div>
       </div>
     </>
   );
