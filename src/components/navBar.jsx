@@ -105,6 +105,8 @@ function NavBar() {
                     ? { display: "block" }
                     : data?.role === "am_lead"
                     ? { display: "block" }
+                    : data?.role === "cc_lead"
+                    ? { display: "block" }
                     : data?.role === "am"
                     ? { display: "none" }
                     : { display: "none" }
